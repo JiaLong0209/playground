@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>rain</title>
+    <script src="https://cdn.jsdelivr.net/npm/p5@1.2.0/lib/p5.js">
+    </script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        body {
+            height: 100vh;
+            width: 100%;
+            background: linear-gradient(rgb(0, 0, 0) 20%, rgb(0, 0, 0));
+            overflow: hidden;
+        }
+
+        i {
+            height: 200px;
+            position: absolute;
+            background: linear-gradient(transparent, #fff);
+            border-radius: 10px;
+            animation: animate 2s infinite linear ;
+        }
+
+        i:nth-child(4n +1) {
+            background: linear-gradient(transparent, rgb(199, 200, 221));
+        }
+
+        i:nth-child(4n +2) {
+            background: linear-gradient(transparent, rgb(202, 48, 86));
+        }
+
+        i:nth-child(4n +3) {
+            background: linear-gradient(transparent, rgb(194, 233, 111));
+        }
+        i:nth-child(4n +4) {
+            background: linear-gradient(transparent, rgb(106, 105, 196));
+        }
+
+
+        @keyframes animate {
+            0% {
+                transform: translateY(-350px);
+            }
+
+            100% {
+                transform: translateY(calc(100vh + 300px));
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <script type="text/javascript">
+        window.addEventListener("keydown", keydownFn);
+        var amount = 500;
+        var israin = false;
+        var i = document.querySelector("i");
+        function keydownFn() {
+            // if (israin === true) {
+            //     israin = false;
+            //     window.rain = function (){
+            //         i.remove();
+            //     };
+                
+            // } else {
+            //     israin = true;
+            //     rain();
+            // }
+        }
+        function rain() {
+            let i = 0;
+            var body = document.querySelector('body');
+            while (i < amount) {
+                let drop = document.createElement('i');
+                let size = Math.random() * 3 + 2;
+                let posX = Math.floor(Math.random() * window.innerWidth);
+                let posY = -300;
+                let delay = Math.random() * -10;
+                let duration = Math.random() * 3 + 2;
+
+                drop.style.width = size + "px";
+                drop.style.left = posX + "px";
+                drop.style.top = posY + "px";
+                drop.style.animationDelay = delay + "s";
+                drop.style.animationDuration = duration + "s";
+                body.appendChild(drop);
+                i++;
+            }
+        }
+        rain();
+    </script>
+</body>
+
+</html>
