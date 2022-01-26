@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neon Light Button</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            text-transform: uppercase;
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+        }
+        body{
+            width: 100%;
+            height: 100vh;
+            background: #000;
+            display:flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: row;
+        }
+        a {
+            position: relative;
+            display: inline-block;
+            margin: 20px 20px;
+            padding: 20px 20px;
+            background: none;
+            font-size: 24px;
+            color: aqua;
+            text-decoration: none;
+            letter-spacing: 4px;
+            transition: 0.2s;
+            overflow: hidden;
+            -webkit-box-reflect:below -1px 
+            linear-gradient(transparent,rgb(53, 215, 255,0.4)) ;
+        }
+
+        a:hover{
+            color: rgb(88, 88, 88);
+            background: rgb(53, 215, 255);
+            box-shadow: 
+            0px 0px 5px rgb(53, 215, 255),
+            0px 0px 25px rgb(53, 215, 255),
+            0px 0px 50px rgb(53, 215, 255),
+            0px 0px 150px rgb(53, 215, 255);
+        }
+
+        a span{
+            position: absolute;
+            display: block;
+        }
+        a span:nth-child(1){
+            width: 100%;
+            height: 2px;
+            top: 0;
+            left: 0;
+            background:linear-gradient(90deg,transparent,rgb(53, 215, 255));
+            animation: animate1 0.5s infinite linear;
+
+        }
+        a:nth-child(2){
+            filter:hue-rotate(150deg);
+        }
+        a:nth-child(3){
+            filter: hue-rotate(260deg);
+        }
+        @keyframes animate1{
+            0%{
+                left: -100%;
+            }
+            100%{
+                left: 100%;
+            }
+        }
+        
+        a span:nth-child(2){
+            width:  2px;
+            height: 100%;
+            top: -100%;
+            right: 0;
+            background:linear-gradient(180deg,transparent,rgb(53, 215, 255));
+            animation: animate2 0.5s 0.25s infinite linear;
+
+        }
+        @keyframes animate2{
+            0%{
+                top: -100%;
+            }
+            100%{
+                top: 100%;
+            }
+        }
+        
+        a span:nth-child(3){
+            width: 100%;
+            height: 2px;
+            bottom: 0;
+            right: -100%;
+            background:linear-gradient(270deg,transparent,rgb(53, 215, 255));
+            animation: animate3 0.5s 0.5s infinite linear;
+
+        }
+        @keyframes animate3{
+            0%{
+                right: -100%;
+            }
+            100%{
+                right: 100%;
+            }
+        }
+        
+        a span:nth-child(4){
+            width:  2px;
+            height: 100%;
+            bottom: -100%;
+            left: 0;
+            background:linear-gradient(0deg,transparent,rgb(53, 215, 255));
+            animation: animate4 0.5s 0.75s infinite linear;
+
+        }
+        @keyframes animate4{
+            0%{
+                bottom: -100%;
+            }
+            100%{
+                bottom: 100%;
+            }
+        }
+        @media screen and (max-width:770px) {
+            body{
+                flex-direction: column;
+            }
+            a{
+                margin: 38px 0px;
+            }
+        }
+        
+    </style>
+</head>
+<body>
+    
+    <a href="#">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        Neon Button
+    </a>
+    
+    <a href="#">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        Neon Button
+    </a>
+    
+    <a href="#">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        Neon Button
+    </a>
+
+
+
+</body>
+</html>
