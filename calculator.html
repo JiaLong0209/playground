@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #333;
+        }
+
+        .container {
+            position: relative;
+            min-width: 300px;
+            min-height: 400px;
+            padding: 40px 30px 30px;
+            background: #333;
+            border-radius: 30px;
+            box-shadow: 25px 25px 70px rgba(0, 0, 0, .5),
+                10px 10px 30px rgba(0, 0, 0, .5),
+                inset 5px 5px 15px rgba(0, 0, 0, .5),
+                inset -5px -5px 15px rgba(0, 0, 0, .5);
+        }
+
+        .calculator {
+            position: relative;
+            display: grid;
+        }
+
+        .calculator .value {
+            position: relative;
+            grid-column: span 4;
+            height: 80px;
+            left: 6px;
+            width: calc(100% - 12px);
+            border: none;
+            outline: none;
+            background: rgb(204, 162, 179);
+            border-radius: 10px;
+            text-align: right;
+            padding: 10px;
+            margin: 0 0 5px 0;
+            font-size: 20px;
+            box-shadow: 0px 0px 0px 2px rgba(0, 0, 0, 0.3);
+
+        }
+
+        .calculator span {
+            position: relative;
+            display: grid;
+            border-radius: 5px;
+            width: 60px;
+            height: 60px;
+            place-items: center;
+            margin: 6px;
+            color: #fff;
+            background: linear-gradient(180deg, #2f2f2f, #3f3f3f);
+            box-shadow: inset -8px 0 8px #0002,
+                inset 0 -8px 8px #0002,
+                10px 20px 25px #0002,
+                0 0 0 2px #0004;
+            user-select: none;
+            cursor: pointer;
+            font-size: 20px;
+            font-weight: 500;
+        }
+
+        .calculator span::before {
+            position: absolute;
+            content: '';
+            top: 3px;
+            left: 3px;
+            bottom: 10px;
+            right: 12px;
+            border-radius: 5px;
+            background: linear-gradient(90deg, #2d2d2d, #4d4d4d);
+            box-shadow: -5px -5px 10px #0002,
+                10px 5px 10px #0002;
+            border-left: 1px solid #0003;
+            border-bottom: 1px solid #0003;
+            border-top: 1px solid #0008;
+
+
+        }
+
+        .calculator span i {
+            position: relative;
+            font-style: normal;
+            font-size: 1em;
+            left: -5px;
+            text-transform: uppercase;
+        }
+
+        .calculator span:active {
+            transform: scale(0.85);
+            filter: brightness(1.5);
+        }
+
+        .calculator .clear {
+            grid-column: span 2;
+            width: 132px;
+            background: rgb(177, 1, 1);
+        }
+
+        .calculator .clear::before {
+            background: linear-gradient(90deg, #d20000, #fff5);
+            box-shadow: -5px -5px 10px #fff2,
+                10px 5px 10px #fff2;
+            border-left: 1px solid #fff1;
+            border-bottom: 1px solid #fff3;
+            border-top: 1px solid #fff3;
+        }
+
+        .calculator .plus {
+            grid-row: span 2;
+            height: 132px;
+        }
+
+        .calculator .equal {
+            background: rgb(19, 141, 189);
+        }
+        .calculator .equal::before{
+            background: linear-gradient(90deg, rgb(20, 152, 204), #fff5);
+            box-shadow: -5px -5px 10px #fff2,
+                10px 5px 10px #fff2;
+            border-left: 1px solid #fff1;
+            border-bottom: 1px solid #fff3;
+            border-top: 1px solid #fff3;
+        } 
+
+
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <form class="calculator" name="calc">
+            <input type="text" class="value" name="txt">
+            <span class="num clear" onclick="calc.txt.value=''"><i>C</i></span>
+            <span class="num" onclick="calc.txt.value+='/'"><i>/</i></span>
+            <span class="num" onclick="calc.txt.value+='*'"><i>*</i></span>
+            <span class="num" onclick="calc.txt.value+='7'"><i>7</i></span>
+            <span class="num" onclick="calc.txt.value+='8'"><i>8</i></span>
+            <span class="num" onclick="calc.txt.value+='9'"><i>9</i></span>
+            <span class="num" onclick="calc.txt.value+='-'"><i>-</i></span>
+            <span class="num" onclick="calc.txt.value+='4'"><i>4</i></span>
+            <span class="num" onclick="calc.txt.value+='5'"><i>5</i></span>
+            <span class="num" onclick="calc.txt.value+='6'"><i>6</i></span>
+            <span class="num plus" onclick="calc.txt.value+='+'"><i>+</i></span>
+            <span class="num" onclick="calc.txt.value+='1'"><i>1</i></span>
+            <span class="num" onclick="calc.txt.value+='2'"><i>2</i></span>
+            <span class="num" onclick="calc.txt.value+='3'"><i>3</i></span>
+            <span class="num" onclick="calc.txt.value+='0'"><i>0</i></span>
+            <span class="num" onclick="calc.txt.value+='00'"><i>00</i></span>
+            <span class="num" onclick="calc.txt.value+='.'"><i>.</i></span>
+            <span class="num equal" onclick="calc.txt.value=eval(calc.txt.value)"><i>=</i></span>
+        </form>
+    </div>
+</body>
+
+</html>
