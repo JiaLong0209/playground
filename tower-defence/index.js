@@ -85,8 +85,8 @@ class Enemy {
 
     update(){
         this.draw();
-        this.x += this.velocity.x ;
-        this.y += this.velocity.y ;
+        this.x += this.velocity.x * enemySpeed;
+        this.y += this.velocity.y * enemySpeed;
     }
 }
 const enemies = [];
@@ -95,9 +95,10 @@ const projectiles = [];
 // spawnEnemies 
 function spawnEnemies(){
     setInterval(()=> {
-        const radius = Math.random() * 20 + 10;
+        const radius = Math.random() * 50 + 20;
         let x;
         let y;
+        let color;
         if ( Math.random() < 0.5 ){   
             x = Math.random() < 0.5 ? 0 - radius : canvas.width + radius;
             y = Math.random() * canvas.height ;
@@ -106,7 +107,22 @@ function spawnEnemies(){
             x = Math.random() * canvas.width;
             y = Math.random() < 0.5 ? 0 - radius : canvas.height + radius;
         }
-        const color = "#f6f394"
+        if(Math.random() < 0.5){
+            if(Math.random() < 0.5){
+                color = "hsl(137, 25%, 30%)"
+            }
+            else{
+                color = "hsl(271, 34%, 35%)"
+            }
+        }
+        else{   
+            if(Math.random() < 0.2){
+                color = "hsl(71, 100%, 69%)"
+            }
+            else{
+                color = "hsl(0, 68%, 28%)"
+            }
+        }
         const angle = Math.atan2(
             playerY - y,
             playerX - x 
@@ -118,37 +134,26 @@ function spawnEnemies(){
 
         enemies.push(new Enemy(x,y,radius,color,velocity))
         // console.log(enemies);
-    },10)
+    },500)
 }
 let animationId
 function animate (){
     animationId = requestAnimationFrame(animate);
-    c.clearRect(0,0,canvas.width ,canvas.height);
+    c.fillStyle = "rgba(0,0,0,0.4)"
+    c.fillRect(0,0,canvas.width ,canvas.height);
     player.draw();
     projectiles.forEach((projectile,index) =>{
         projectile.update();
 
         // remove from edges of screen
-        if(projectile.x - projectile.radius < 0){  //left 
-            setTimeout(()=>{
-                projectiles.splice(index,1);
-            },0)
-        }
-        if(projectile.x + projectile.radius > canvas.width ){ //right
-            setTimeout(()=>{
-                projectiles.splice(index,1);
-
-            },0)
-        }
-        if(projectile.y - projectile.radius < 0){  //top
-            setTimeout(()=>{
-                projectiles.splice(index,1);
-            },0)
-        }
-        if(projectile.y + projectile.radius > canvas.height){  //top
-            setTimeout(()=>{
-                projectiles.splice(index,1);
-            },0)
+        if(projectile.x - projectile.radius < 0 || //left
+           projectile.x + projectile.radius > canvas.width || //right
+           projectile.y - projectile.radius < 0 ||  //top
+           projectile.y + projectile.radius > canvas.height  //bottom
+           ){ 
+            // setTimeout(()=>{
+                projectiles.splice(index,1)
+            // },0)
         }
     })
     
@@ -164,22 +169,23 @@ function animate (){
             
             //  objects touch
             if(distance - projectile.radius - enemy.radius < -1  ){  //數字越大就越外面觸發
-                setTimeout(()=> {
+                // setTimeout(()=> {
                     enemies.splice(index, 1);
                     projectiles.splice(projectileIndex, 1);
-                },0)
+                // },0)
 
             }
         })
     })
     
 }
-const bulletSpeed = 3;
+const enemySpeed = 2;
+const bulletSpeed = 5;
 const playerX = canvas.width / 2;
 const playerY = canvas.height / 2;
 const player = new Player(playerX, playerY, 31, '#09f9f9');
 
-addEventListener('mousemove',(e)=>{
+addEventListener('click',(e)=>{
     const angle = Math.atan2(
         e.clientY - playerY,
         e.clientX - playerX 
