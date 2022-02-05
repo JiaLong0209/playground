@@ -18,6 +18,7 @@ const c = canvas.getContext('2d');  //ctx api
 canvas.width = innerWidth ;
 canvas.height = innerHeight -4;
 
+// Player
 class Player {
     constructor(x, y, radius, color) {
         this.x = x;
@@ -33,7 +34,7 @@ class Player {
         c.fill();
     }
 }
-
+// Projectile
 class Projectile {
     constructor (x, y, radius, color, velocity) {
         this.x = x;
@@ -52,8 +53,8 @@ class Projectile {
 
     update(){
         this.draw();
-        this.x += this.velocity.x * speed;
-        this.y += this.velocity.y * speed;
+        this.x += this.velocity.x * bulletSpeed;
+        this.y += this.velocity.y * bulletSpeed;
     }
 }
 
@@ -65,7 +66,7 @@ class Projectile {
 //     {x:1,y:1}
 //     )
     
-
+// Enemy
 class Enemy {
     constructor (x, y, radius, color, velocity) {
         this.x = x;
@@ -91,51 +92,104 @@ class Enemy {
 const enemies = [];
 const projectiles = [];
 
+// spawnEnemies 
 function spawnEnemies(){
     setInterval(()=> {
-        const x = 0;
-        const y = 0;
-        const radius = 20;
-        const color = "#f6f394"
-        const velocity = {
-            x: 1,
-            y: 1
+        const radius = Math.random() * 20 + 10;
+        let x;
+        let y;
+        if ( Math.random() < 0.5 ){   
+            x = Math.random() < 0.5 ? 0 - radius : canvas.width + radius;
+            y = Math.random() * canvas.height ;
         }
-        enemies.push(new Enemy(x,y,radius,color,velocity))
-        console.log(enemies);
-    },1000)
-}
+        else{
+            x = Math.random() * canvas.width;
+            y = Math.random() < 0.5 ? 0 - radius : canvas.height + radius;
+        }
+        const color = "#f6f394"
+        const angle = Math.atan2(
+            playerY - y,
+            playerX - x 
+            )
+        const velocity = {
+            x: Math.cos(angle),
+            y: Math.sin(angle)
+        }
 
+        enemies.push(new Enemy(x,y,radius,color,velocity))
+        // console.log(enemies);
+    },10)
+}
+let animationId
 function animate (){
-    requestAnimationFrame(animate);
+    animationId = requestAnimationFrame(animate);
     c.clearRect(0,0,canvas.width ,canvas.height);
     player.draw();
-    projectiles.forEach((projectile) =>{
+    projectiles.forEach((projectile,index) =>{
         projectile.update();
+
+        // remove from edges of screen
+        if(projectile.x - projectile.radius < 0){  //left 
+            setTimeout(()=>{
+                projectiles.splice(index,1);
+            },0)
+        }
+        if(projectile.x + projectile.radius > canvas.width ){ //right
+            setTimeout(()=>{
+                projectiles.splice(index,1);
+
+            },0)
+        }
+        if(projectile.y - projectile.radius < 0){  //top
+            setTimeout(()=>{
+                projectiles.splice(index,1);
+            },0)
+        }
+        if(projectile.y + projectile.radius > canvas.height){  //top
+            setTimeout(()=>{
+                projectiles.splice(index,1);
+            },0)
+        }
     })
     
-    enemies.forEach((enemy) =>{
+    enemies.forEach((enemy, index) =>{
         enemy.update();
+
+        const distance = Math.hypot(player.x - enemy.x,player.y - enemy.y);
+        if(distance - player.radius - enemy.radius < -1 ){
+            cancelAnimationFrame(animationId);
+        }
+        projectiles.forEach((projectile,projectileIndex)=>{
+            const distance = Math.hypot(projectile.x - enemy.x ,projectile.y - enemy.y);   //hypotenuse , the x and y distance
+            
+            //  objects touch
+            if(distance - projectile.radius - enemy.radius < -1  ){  //數字越大就越外面觸發
+                setTimeout(()=> {
+                    enemies.splice(index, 1);
+                    projectiles.splice(projectileIndex, 1);
+                },0)
+
+            }
+        })
     })
     
 }
-const speed = 5;
-const x = canvas.width / 2;
-const y = canvas.height / 2;
-const player = new Player(x, y, 31, '#09f9f9');
+const bulletSpeed = 3;
+const playerX = canvas.width / 2;
+const playerY = canvas.height / 2;
+const player = new Player(playerX, playerY, 31, '#09f9f9');
 
-addEventListener('click',(e)=>{
+addEventListener('mousemove',(e)=>{
     const angle = Math.atan2(
-        e.clientY - canvas.height / 2,
-        e.clientX - canvas.width / 2 
+        e.clientY - playerY,
+        e.clientX - playerX 
         )
-    console.log(angle);
     const velocity = {
         x: Math.cos(angle),
         y: Math.sin(angle)
     }
     projectiles.push(
-        new Projectile(canvas.width /2,canvas.height /2,
+        new Projectile(playerX,playerY,
             5,'white',velocity)     
     )
 })
