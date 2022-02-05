@@ -65,7 +65,47 @@ class Projectile {
 //     {x:1,y:1}
 //     )
     
+
+class Enemy {
+    constructor (x, y, radius, color, velocity) {
+        this.x = x;
+        this.y = y;
+        this.radius = radius;
+        this.color = color;
+        this.velocity = velocity;
+    }
+
+    draw() {
+        c.beginPath();
+        c.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
+        c.fillStyle = this.color;
+        c.fill();
+    }
+
+    update(){
+        this.draw();
+        this.x += this.velocity.x ;
+        this.y += this.velocity.y ;
+    }
+}
+const enemies = [];
 const projectiles = [];
+
+function spawnEnemies(){
+    setInterval(()=> {
+        const x = 0;
+        const y = 0;
+        const radius = 20;
+        const color = "#f6f394"
+        const velocity = {
+            x: 1,
+            y: 1
+        }
+        enemies.push(new Enemy(x,y,radius,color,velocity))
+        console.log(enemies);
+    },1000)
+}
+
 function animate (){
     requestAnimationFrame(animate);
     c.clearRect(0,0,canvas.width ,canvas.height);
@@ -74,12 +114,15 @@ function animate (){
         projectile.update();
     })
     
+    enemies.forEach((enemy) =>{
+        enemy.update();
+    })
+    
 }
 const speed = 5;
 const x = canvas.width / 2;
 const y = canvas.height / 2;
 const player = new Player(x, y, 31, '#09f9f9');
-// player.draw();
 
 addEventListener('click',(e)=>{
     const angle = Math.atan2(
@@ -97,6 +140,7 @@ addEventListener('click',(e)=>{
     )
 })
 animate();
+spawnEnemies();
 
 
 
