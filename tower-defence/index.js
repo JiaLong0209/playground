@@ -18,6 +18,13 @@ const c = canvas.getContext('2d');  //ctx api
 canvas.width = innerWidth;
 canvas.height = innerHeight - 4;
 
+const levelNumber = document.querySelector('.levelNumber')
+const scoreNumber = document.querySelector('.scoreNumber');
+const goldNumber = document.querySelector('.goldNumber');
+const startBtn = document.querySelector('#startBtn');
+const container = document.querySelector('.container');
+const endScore = document.querySelector("#endScore");
+
 // Player
 class Player {
     constructor(x, y, radius, color) {
@@ -81,10 +88,6 @@ class Enemy {
         this.y += this.velocity.y * enemySpeed;
     }
 }
-const enemies = [];
-const projectiles = [];
-const particles = [];
-
 // the touch particle
 class Particle {
     constructor(x, y, radius, color, velocity, alpha) {
@@ -108,11 +111,51 @@ class Particle {
 
     update() {
         this.draw();
+        this.velocity.x *= friction;
+        this.velocity.y *= friction;
         this.x += this.velocity.x * enemySpeed;
         this.y += this.velocity.y * enemySpeed;
         this.alpha -= 0.01;
     }
 }
+let friction = 0.96;
+let bulletSpeed = 10;
+let bulletSize = 5;
+let bulletDamage = bulletSize * 3.5;
+let enemyTime = 2000;
+let enemySpeed = 1;
+let enemySize = 30;
+let particleSpeed = 15;
+let particleCount = 50;
+let particleSize = bulletSize / 3;
+let playerX = canvas.width / 2;
+let playerY = canvas.height / 2;
+
+let score = 0;
+let gold = 0;
+let hitScore = 100;
+let killScore = 250;
+let hitGold = 10;
+let killGold = 25;
+let level = 1;
+
+
+let enemies = [];
+let projectiles = [];
+let particles = [];
+let player = new Player(playerX, playerY, 20, '#09f9f9');
+
+function init() {
+    enemies = [];
+    projectiles = [];
+    particles = [];
+    player = new Player(playerX, playerY, 20, '#09f9f9');
+    score = 0;
+    scoreNumber.innerHTML = score;
+    endScore.innerHTML = score;
+}
+
+
 // spawnEnemies 
 function spawnEnemies() {
     setInterval(() => {
@@ -157,6 +200,7 @@ function spawnEnemies() {
         // console.log(enemies);
     }, enemyTime)
 }
+
 let animationId
 function animate() {
     animationId = requestAnimationFrame(animate);
@@ -187,10 +231,12 @@ function animate() {
 
     enemies.forEach((enemy, index) => {
         enemy.update();
-
         const distance = Math.hypot(player.x - enemy.x, player.y - enemy.y);
+        //end game 
         if (distance - player.radius - enemy.radius < -1) {
             cancelAnimationFrame(animationId);
+            container.style.display = 'flex';
+            endScore.innerHTML = score;
         }
         // particles.forEach((particle, particleIndex)=>{
         //     const distance = Math.hypot(particle.x - enemy.x, particle.y - enemy.y);
@@ -208,9 +254,11 @@ function animate() {
         projectiles.forEach((projectile, projectileIndex) => {
             const distance = Math.hypot(projectile.x - enemy.x, projectile.y - enemy.y);   //hypotenuse , the x and y distance
 
-            //  
+            //  when projectile touch enemy
             if (distance - projectile.radius - enemy.radius < -3) {  //數字越大就越外面觸發
-                for (let i = 0; i < enemy.radius * 0.7; i++) {
+
+                // create explosions
+                for (let i = 0; i < enemy.radius * 0.5; i++) {
                     particles.push(new Particle(projectile.x,
                         projectile.y,
                         Math.random() * particleSize + enemy.radius * 0.02 + 1,
@@ -221,15 +269,37 @@ function animate() {
                         }))
                 };
                 projectiles.splice(projectileIndex, 1);
-                if (enemy.radius - 40 > 5) {
+                if (enemy.radius - bulletDamage > 10) {
+
+                    // increase our score
+                    score += hitScore;
+                    scoreNumber.innerHTML = score;
+                    gold += hitGold;
+                    goldNumber.innerHTML = gold;
+
                     gsap.to(enemy, {
                         radius: enemy.radius - bulletDamage
                     })
                 }
                 else {
-                    // setTimeout(()=> {
+                    for (let i = 0; i < enemy.radius * 1; i++) {
+                        particles.push(new Particle(enemy.x,
+                            enemy.y,
+                            Math.random() * particleSize + enemy.radius * 0.08 + 1,
+                            enemy.color,
+                            {
+                                x: (Math.random() - 0.5) * (Math.random() * particleSpeed) * 2,
+                                y: (Math.random() - 0.5) * (Math.random() * particleSpeed) * 2
+                            }))
+                    };
+                    // remove from scene altogether
+                    score += killScore;
+                    scoreNumber.innerHTML = score;
+                    gold += killGold;
+                    goldNumber.innerHTML = gold;
+                    // setTimeout(() => {
                     enemies.splice(index, 1);
-                    // },0)
+                    // }, 0)
                 }
 
             }
@@ -237,20 +307,7 @@ function animate() {
     })
 
 }
-const enemyTime = 2000;
-const enemySpeed = 1;
-const enemySize = 350;
-const particleSpeed = 15;
-const particleCount = 50;
-const particleSize = 6;
-const bulletSpeed = 15;
-const bulletSize = 20;
-const bulletDamage = bulletSize * 1.5;
-const playerX = canvas.width / 2;
-const playerY = canvas.height / 2;
-const player = new Player(playerX, playerY, 20, '#09f9f9');
-
-addEventListener('mousemove', (e) => {
+addEventListener('click', (e) => {
     const angle = Math.atan2(
         e.clientY - playerY,
         e.clientX - playerX
@@ -264,8 +321,12 @@ addEventListener('mousemove', (e) => {
             bulletSize, 'white', velocity)
     )
 })
-animate();
-spawnEnemies();
+startBtn.addEventListener("click", () => {
+    init();
+    animate();
+    spawnEnemies();
+    container.style.display = 'none';
+})
 
 
 

@@ -8,21 +8,150 @@
     <style>
         *{
             cursor: url(cursor04.cur),auto !important;
+            box-sizing: border-box;
+
         }
         body{
             margin: 0;
             padding: 0;
             list-style:none;
-            box-sizing: border-box;
-            background: rgb(20, 11, 39);
+            background: rgb(0, 0, 0);
         }
-        canvas{
+        /* canvas{
             background: hsl(4, 79%, 30%);
+        } */
+        .box{
+            position: absolute;
+            width: 100%;
+            height: 100vh;
+            background: none;
+            display: flex;
+            justify-content: center;
+        }
+        .score,.scoreBox,.scoreNumber{
+            z-index: 2;
+            color: #fff;
+            font-size: 30px;
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+            
+        }
+        .scoreBox{
+            background: none;
+            position: absolute;
+            left: 2%;
+            display: flex;
+            user-select: none;
+        }
+        .score{
+            position: relative;
+            margin-right: 5px;
+        }
+        .scoreNumber{
+            position: relative;
+        }
+        
+        .gold,.goldBox,.goldNumber{
+            z-index: 2;
+            color: #fff;
+            font-size: 30px;
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+            
+        }
+        .goldBox{
+            background: none;
+            position: absolute;
+            left: 2%;
+            top: 6%;
+            display: flex;
+            user-select: none;
+        }
+        .gold,.goldNumber{
+            position: relative;
+            margin-right: 5px;
+
+        }
+        .level,.levelBox,.levelNumber{
+            z-index: 2;
+            color: #fff;
+            font-size: 30px;
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+            
+        }
+        .levelBox{
+            background: none;
+            position: absolute;
+            display: flex;
+            user-select: none;
+        }
+        .level,.levelNumber{
+            position: relative;
+            margin-right: 5px;
+
+        }
+        
+        .container{
+            width: 100%;
+            height: 100vh;
+            position: absolute;
+            display: flex;
+            justify-content:center;
+            align-items:center;
+            user-select: none;
+
+        }
+        .goBox{
+            background: rgb(236, 236, 236);
+            display: flex;
+            text-align: center;
+            flex-direction: column;
+            padding: 40px;
+            min-width: 40%;
+            
+        }
+        .goBox h1{
+            font-size: 40px;
+            font-weight: 600;
+            height: 30px;
+            line-height: none;
+            margin-top: -5px;
+        }
+        .goBox p{
+            color: #444;
+            margin-top: -15px;
+        }
+        .goBox button{
+            background: rgb(51, 198, 235);
+            color: #fff;
+            margin-top: 0px;
+            outline: none;
+            border: none;
+            font-size: 15px;
+            width: 100%;
+            height: 3em;
+            border-radius: 30px;
+            transition: 0.3s;
+        }
+        .goBox button:hover{
+            background: rgb(145, 114, 255);
         }
     </style>
 </head>
 <body>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js" integrity="sha512-H6cPm97FAsgIKmlBA4s774vqoN24V5gSQL4yBTDOY2su2DeXZVhQPxFK4P6GPdnZqM9fg1G3cMv5wD7e6cFLZQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <div class="box">
+    <div class="scoreBox"><span class="score">Score: </span><span class="scoreNumber">0</span></div>
+    <div class="goldBox"><span class="gold">Gold: </span><span class="goldNumber">0</span></div>
+    <div class="levelBox"><span class="level">Level: </span><span class="levelNumber">1</span></div>
+    </div>
+    <div class="container">
+        <div class="goBox">
+            <h1 id="endScore">0</h1>
+            <p>Points</p>
+            <div class="start">
+                <button id="startBtn">Start Game</button>
+            </div>
+        </div>
+    </div>
     <canvas></canvas>
     <script src="index.js"></script>
 </body>
