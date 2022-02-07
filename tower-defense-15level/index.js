@@ -24,6 +24,10 @@ const goldNumber = document.querySelector('.goldNumber');
 const startBtn = document.querySelector('#startBtn');
 const container = document.querySelector('.container');
 const endScore = document.querySelector("#endScore");
+const timeCount = document.querySelector('.timeCount');
+const levelUp = document.querySelector('.levelUp');
+const levelDown = document.querySelector('.levelDown');
+
 
 const skill1 = document.querySelector('.skill1');
 const skill2 = document.querySelector('.skill2');
@@ -53,6 +57,10 @@ let skill2Level = 1;
 let skill3Level = 1;
 let skill4Level = 1;
 let skill5Level = 1;
+
+let gameStart = false;
+let time = 30;
+let levelBreak = [false];
 
 // Player
 class Player {
@@ -150,32 +158,33 @@ class Particle {
 let friction = 0.96;
 let bulletSpeed = 3;
 let bulletSize = 5;
-let bulletDamage = 10;
+let bulletDamage = 8;
 let bulletCount = 1;
-let enemyTime = 500;
+let enemyTime = 800;
 let enemySpeed = 1;
 let enemySize = 30;
 let particleSpeed = bulletSpeed * 1.5 + enemySpeed;
-let particleCount = 50;
+let particleCount = 10;
 let particleSize = 2;
 let playerX = canvas.width / 2;
 let playerY = canvas.height / 2;
 
 let score = 0;
-let gold = 0;
+let gold = 1000;
 let hitScore = 10;
 let killScore = 25;
 let hitGold = 10;
 let killGold = 25;
 let level = 1;
-let up1Gold = skill1Gold; 
-let up2Gold = skill2Gold; 
-let up3Gold = skill3Gold; 
-let up4Gold = skill4Gold; 
-let up5Gold = skill5Gold; 
+let maxLevel = 15;
+let up1Gold = skill1Gold;
+let up2Gold = skill2Gold;
+let up3Gold = skill3Gold;
+let up4Gold = skill4Gold;
+let up5Gold = skill5Gold;
+let timer = 1000;
 
-
-const skill1buff = 3;
+const skill1buff = 2;
 const skill2buff = 1;
 const skill3buff = 2;
 const skill4buff = 1;
@@ -201,7 +210,7 @@ let spawnEnemy;
 // spawnEnemies 
 function spawnEnemies() {
     spawnEnemy = window.setInterval(() => {
-        const radius = Math.random() * enemySize + 20;
+        const radius = Math.random() * (enemySize * level / 2) + (20 * level / 3);
         let x;
         let y;
         let color;
@@ -234,13 +243,12 @@ function spawnEnemies() {
             playerX - x
         )
         const velocity = {
-            x: Math.cos(angle),
-            y: Math.sin(angle)
+            x: (Math.cos(angle)),
+            y: (Math.sin(angle))
         }
 
-        enemies.push(new Enemy(x, y, radius, color, velocity))
-        // console.log(enemies);
-    }, enemyTime)
+        enemies.push(new Enemy(x, y, radius, color, velocity));
+    }, enemyTime - level * 45)
 }
 
 let animationId
@@ -273,6 +281,7 @@ function animate() {
 
     enemies.forEach((enemy, index) => {
         enemy.update();
+
         const distance = Math.hypot(player.x - enemy.x, player.y - enemy.y);
         //end game 
         if (distance - player.radius - enemy.radius < -1) {
@@ -280,20 +289,8 @@ function animate() {
             clearInterval(spawnEnemy);
             container.style.display = 'flex';
             endScore.innerHTML = score;
+            gameStart = false;
         }
-        // particles.forEach((particle, particleIndex)=>{
-        //     const distance = Math.hypot(particle.x - enemy.x, particle.y - enemy.y);
-        //     if(distance - particle.radius - enemy.radius < -1 ){
-        //         particles.splice(particleIndex,1);
-        //         if(enemy.raidus - 5 > 10){
-        //             gsap.to(enemy, {
-        //                 radius: enemy.radius - 5
-        //             })
-        //         }else{
-        //             enemies.splice(index,1);
-        //         }
-        //     }
-        // })
         projectiles.forEach((projectile, projectileIndex) => {
             const distance = Math.hypot(projectile.x - enemy.x, projectile.y - enemy.y);   //hypotenuse , the x and y distance
 
@@ -301,7 +298,7 @@ function animate() {
             if (distance - projectile.radius - enemy.radius < -3) {  //數字越大就越外面觸發
 
                 // create explosions
-                for (let i = 0; i < enemy.radius * 0.5; i++) {
+                for (let i = 0; i < particleCount + enemy.radius / 40; i++) {
                     particles.push(new Particle(projectile.x,
                         projectile.y,
                         Math.random() * particleSize + enemy.radius * 0.02 + 1,
@@ -317,7 +314,7 @@ function animate() {
                     // increase our score
                     score += hitScore;
                     scoreNumber.innerHTML = score;
-                    gold += hitGold;
+                    gold += hitGold + level *2;
                     goldNumber.innerHTML = gold;
 
                     gsap.to(enemy, {
@@ -325,7 +322,7 @@ function animate() {
                     })
                 }
                 else {
-                    for (let i = 0; i < enemy.radius * 1; i++) {
+                    for (let i = 0; i < particleCount + enemy.radius / 20; i++) {
                         particles.push(new Particle(enemy.x,
                             enemy.y,
                             Math.random() * particleSize * 0.1 + enemy.radius * 0.1 + 1,
@@ -338,7 +335,7 @@ function animate() {
                     // remove from scene altogether
                     score += killScore;
                     scoreNumber.innerHTML = score;
-                    gold += killGold;
+                    gold += killGold + level * 5;
                     goldNumber.innerHTML = gold;
                     // setTimeout(() => {
                     enemies.splice(index, 1);
@@ -346,17 +343,32 @@ function animate() {
                 }
 
             }
+
+            // particles.forEach((particle, particleIndex)=>{
+            //     const distance = Math.hypot(particle.x - enemy.x, particle.y - enemy.y);
+            //     if(distance - particle.radius - enemy.radius < -1 ){
+            //         particles.splice(particleIndex,1);
+            //         if(enemy.raidus - 5 > 10){
+            //             gsap.to(enemy, {
+            //                 radius: enemy.radius - 5
+            //             })
+            //         }else{
+            //             enemies.splice(index,1);
+            //         }
+            //     }
+            // })
         })
+
     })
-    
+
 }
+// skill up
 skill1.addEventListener("click", () => {
     if (gold >= skill1Gold) {
         gold -= skill1Gold;
         goldNumber.innerHTML = gold;
         up1Gold *= 1.1;
         skill1Gold += Math.floor(up1Gold);
-        console.log(up1Gold);
         skill1GD.innerHTML = skill1Gold;
         skill1Level++;
         skill1LV.innerHTML = skill1Level;
@@ -368,7 +380,7 @@ skill2.addEventListener("click", () => {
     if (gold >= skill2Gold) {
         gold -= skill2Gold;
         goldNumber.innerHTML = gold;
-        up2Gold *= 1.1
+        up2Gold *= 1.1;
         skill2Gold += Math.floor(up2Gold);
         skill2GD.innerHTML = skill2Gold;
         skill2Level++;
@@ -381,7 +393,7 @@ skill3.addEventListener("click", () => {
     if (gold >= skill3Gold) {
         gold -= skill3Gold;
         goldNumber.innerHTML = gold;
-        up3Gold *= 1.1
+        up3Gold *= 1.07;
         skill3Gold += Math.floor(up3Gold);
         skill3GD.innerHTML = skill3Gold;
         skill3Level++;
@@ -394,7 +406,7 @@ skill4.addEventListener("click", () => {
     if (gold >= skill4Gold) {
         gold -= skill4Gold;
         goldNumber.innerHTML = gold;
-        up4Gold *= 1.1
+        up4Gold *= 1.07;
         skill4Gold += Math.floor(up4Gold);
         skill4GD.innerHTML = skill4Gold;
         skill4Level++;
@@ -406,16 +418,16 @@ skill5.addEventListener("click", () => {
     if (gold >= skill5Gold) {
         gold -= skill5Gold;
         goldNumber.innerHTML = gold;
-        up5Gold *= 1.1
+        up5Gold *= 1.03;
         skill5Gold += Math.floor(up5Gold);
         skill5GD.innerHTML = skill5Gold;
         skill5Level++;
         skill5LV.innerHTML = skill5Level;
         hitGold += skill5buff;
-        killGold += skill5buff;
+        killGold += skill5buff * 2;
     };
 })
-
+// shot projectile
 window.addEventListener('click', (e) => {
     const angle = Math.atan2(
         e.clientY - playerY,
@@ -425,27 +437,110 @@ window.addEventListener('click', (e) => {
         x: Math.cos(angle),
         y: Math.sin(angle)
     }
-    // projectiles.push(
-    //     new Projectile(playerX, playerY,
-    //         bulletSize, 'white', velocity)
-    // )
     for (let i = 0; i < bulletCount; i++) {
         setTimeout(() => {
             projectiles.push(
                 new Projectile(playerX, playerY,
                     bulletSize, 'white', velocity)
             )
-        }, 250 * i )
+        }, 250 * i)
     }
 })
+// start game
 startBtn.addEventListener("click", () => {
     init();
     animate();
     spawnEnemies();
     container.style.display = 'none';
+    gameStart = true;
+    if (levelBreak[level - 1]) {
+        time = -1;
+        timeCount.innerHTML = time;
+        gameStart = false;
+    }else{
+        time = 30;
+        timeCount.innerHTML = time;
+        gameStart = true;
+    }
+})
+//adjust enemy level 
+levelUp.addEventListener('click', () => {
+    if (level == maxLevel || !levelBreak[level - 1]) return;
+    level++;
+    levelNumber.innerHTML = level;
+    if (!levelBreak[level]) {
+        time = 30;
+        timeCount.innerHTML = time;
+        cancelAnimationFrame(animationId);
+        clearInterval(spawnEnemy);
+        container.style.display = 'flex';
+        endScore.innerHTML = score;
+        gameStart = false;
+        levelUp.style.backgroundColor = '#fff7';
+        levelDown.style.backgroundColor = '#fff';
+
+    }else{
+        time = -1;
+        timeCount.innerHTML = time;
+        cancelAnimationFrame(animationId);
+        clearInterval(spawnEnemy);
+        container.style.display = 'flex';
+        endScore.innerHTML = score;
+        gameStart = false;
+
+    }
+})
+levelDown.addEventListener('click', () => {
+    levelUp.style.backgroundColor = '#fff';
+    
+    if (level == 1) {
+        levelDown.style.backgroundColor = '#fff7';
+        return;
+    };
+    level--;
+    levelNumber.innerHTML = level;
+    time = -1;
+    timeCount.innerHTML = time;
+    cancelAnimationFrame(animationId);
+    clearInterval(spawnEnemy);
+    container.style.display = 'flex';
+    endScore.innerHTML = score;
+    gameStart = false;
 })
 
-
-
-
+// timer
+let timeCountDown;
+timeCountDown = window.setInterval(() => {
+    if (gameStart) {
+        if (time > 0 && !levelBreak[level - 1]) {
+            time -= 1;
+            timeCount.innerHTML = time;
+        }
+        if (time == 0) {
+            cancelAnimationFrame(animationId);
+            clearInterval(spawnEnemy);
+            container.style.display = 'flex';
+            endScore.innerHTML = score;
+            gameStart = false;
+            levelBreak[level - 1] = true;
+        }
+        if (time == -1) {
+            gameStart = false;
+        }
+        
+        // if(level == 1){
+        //     levelDown.style.backgroundColor = '#fff7';
+        // }
+        // else {
+        //     levelDown.style.backgroundColor = '#fff';
+        // }
+        
+        if(levelBreak[level -1] == true){
+            levelUp.style.backgroundColor = '#fff';
+        }
+        else{
+            levelUp.style.backgroundColor = '#fff7';
+        }
+    }
+}, timer)
 

@@ -5,10 +5,13 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TowerDefenceGame</title>
+    <meta name="description" content="蛤！？扭伯說你是MVP哦？唉呀！冠豆才是MVP啦，太秀啦~~~冠豆！">
+    
+    <link rel="icon" href="towerdefensefavicon01.png">
+    <title>TowerDefenseGame</title>
     <style>
         * {
-            cursor: url(cursor04.cur), auto !important;
+            cursor: url(cursor05.cur), auto !important;
             box-sizing: border-box;
             font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 
@@ -106,6 +109,42 @@
         .level,
         .levelNumber {
             position: relative;
+            margin-right: 0;
+
+        }
+        .levelUp,.levelDown{
+            display: inline;
+            position: relative;
+            color: #4447;
+            background: #fff7;
+            border-radius: 20px;
+            padding: 0 5px;
+            transition: 0.3s;
+        }
+        .levelUp:hover,.levelDown:hover{
+            background: rgb(221, 221, 221);
+        }
+
+        .time,
+        .timeBox,
+        .timeCount {
+            z-index: 2;
+            color: #fff;
+            font-size: 30px;
+
+        }
+
+        .timeBox {
+            background: none;
+            position: absolute;
+            display: flex;
+            user-select: none;
+            right: 7%;
+        }
+
+        .time,
+        .timeCount {
+            position: relative;
             margin-right: 5px;
 
         }
@@ -126,6 +165,7 @@
             display: flex;
             text-align: center;
             flex-direction: column;
+            border-radius: 30px;
             padding: 40px;
             min-width: 40%;
 
@@ -210,8 +250,16 @@
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <div class="box">
         <div class="scoreBox"><span class="score">Score: </span><span class="scoreNumber">0</span></div>
-        <div class="goldBox"><span class="gold">Gold: </span><span class="goldNumber">0</span></div>
-        <div class="levelBox"><span class="level">Level: </span><span class="levelNumber">1</span></div>
+        <div class="goldBox"><span class="gold">Gold: </span><span class="goldNumber">1000</span></div>
+        <div class="levelBox"><span class="level">
+                <span class="levelDown">
+                    <</span>
+                        Level:
+                        <span class="levelNumber">1</span>
+                        <span class="levelUp">></span>
+                </span>
+        </div>
+        <div class="timeBox"><span class="time">Time: </span><span class="timeCount">30</span></div>
     </div>
     <div class="container">
         <div class="goBox">
@@ -224,19 +272,24 @@
         <div class="skill">
             <h1>Skill</h1>
             <ul>
-                <li class="skill1">Level: <span class="skill1Level">1 </span>BulletDamage + 3</span><span class="skillGoldBox">
+                <li class="skill1">Level: <span class="skill1Level">1 </span>BulletDamage + 2</span><span
+                        class="skillGoldBox">
                         <p>Gold : <span class="skill1Gold">100</span></p>
                     </span></span></li>
-                <li class="skill2">Level: <span class="skill2Level">1 </span>BulletSpeed + 1</span><span class="skillGoldBox">
+                <li class="skill2">Level: <span class="skill2Level">1 </span>BulletSpeed + 1</span><span
+                        class="skillGoldBox">
                         <p>Gold : <span class="skill2Gold">150</span></p>
                     </span></span></li>
-                <li class="skill3">Level: <span class="skill3Level">1 </span>BulletSize + 2</span><span class="skillGoldBox">
+                <li class="skill3">Level: <span class="skill3Level">1 </span>BulletSize + 2</span><span
+                        class="skillGoldBox">
                         <p>Gold : <span class="skill3Gold">700</span></p>
                     </span></span></li>
-                <li class="skill4">Level: <span class="skill4Level">1 </span>BulletCount + 1</span><span class="skillGoldBox">
+                <li class="skill4">Level: <span class="skill4Level">1 </span>BulletCount + 1</span><span
+                        class="skillGoldBox">
                         <p>Gold : <span class="skill4Gold">8000</span></p>
                     </span></span></li>
-                <li class="skill5">Level: <span class="skill5Level">1 </span>GetGold + 5</span><span class="skillGoldBox">
+                <li class="skill5">Level: <span class="skill5Level">1 </span>GetGold + 5</span><span
+                        class="skillGoldBox">
                         <p>Gold : <span class="skill5Gold">1000</span></p>
                     </span></span></li>
             </ul>
