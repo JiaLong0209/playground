@@ -44,9 +44,9 @@ let skill4GD = document.querySelector('.skill4Gold');
 let skill5GD = document.querySelector('.skill5Gold');
 
 let skill1Gold = 100;
-let skill2Gold = 100;
-let skill3Gold = 1000;
-let skill4Gold = 10000;
+let skill2Gold = 150;
+let skill3Gold = 700;
+let skill4Gold = 8000;
 let skill5Gold = 1000;
 let skill1Level = 1;
 let skill2Level = 1;
@@ -150,14 +150,14 @@ class Particle {
 let friction = 0.96;
 let bulletSpeed = 3;
 let bulletSize = 5;
-let bulletDamage = bulletSize * 3.5;
-let BulletCount = 1;
+let bulletDamage = 10;
+let bulletCount = 1;
 let enemyTime = 500;
 let enemySpeed = 1;
 let enemySize = 30;
 let particleSpeed = bulletSpeed * 1.5 + enemySpeed;
 let particleCount = 50;
-let particleSize = bulletSize / 3;
+let particleSize = 2;
 let playerX = canvas.width / 2;
 let playerY = canvas.height / 2;
 
@@ -165,13 +165,19 @@ let score = 0;
 let gold = 0;
 let hitScore = 10;
 let killScore = 25;
-let hitGold = 10;
+let hitGold = 100000;
 let killGold = 25;
 let level = 1;
+let up1Gold = skill1Gold; 
+let up2Gold = skill2Gold; 
+let up3Gold = skill3Gold; 
+let up4Gold = skill4Gold; 
+let up5Gold = skill5Gold; 
 
-const skill1buff = 5;
+
+const skill1buff = 3;
 const skill2buff = 1;
-const skill3buff = 1;
+const skill3buff = 2;
 const skill4buff = 1;
 const skill5buff = 5;
 
@@ -322,7 +328,7 @@ function animate() {
                     for (let i = 0; i < enemy.radius * 1; i++) {
                         particles.push(new Particle(enemy.x,
                             enemy.y,
-                            Math.random() * particleSize + enemy.radius * 0.08 + 1,
+                            Math.random() * particleSize * 0.1 + enemy.radius * 0.1 + 1,
                             enemy.color,
                             {
                                 x: (Math.random() - 0.5) * (Math.random() * particleSpeed) * 2,
@@ -342,8 +348,74 @@ function animate() {
             }
         })
     })
-
+    
 }
+skill1.addEventListener("click", () => {
+    if (gold >= skill1Gold) {
+        gold -= skill1Gold;
+        goldNumber.innerHTML = gold;
+        up1Gold *= 1.1;
+        skill1Gold += Math.floor(up1Gold);
+        console.log(up1Gold);
+        skill1GD.innerHTML = skill1Gold;
+        skill1Level++;
+        skill1LV.innerHTML = skill1Level;
+        bulletDamage += skill1buff;
+        particleSize += 0.1;
+    };
+})
+skill2.addEventListener("click", () => {
+    if (gold >= skill2Gold) {
+        gold -= skill2Gold;
+        goldNumber.innerHTML = gold;
+        up2Gold *= 1.1
+        skill2Gold += Math.floor(up2Gold);
+        skill2GD.innerHTML = skill2Gold;
+        skill2Level++;
+        skill2LV.innerHTML = skill2Level;
+        bulletSpeed += skill2buff;
+        particleSpeed += 0.8;
+    };
+})
+skill3.addEventListener("click", () => {
+    if (gold >= skill3Gold) {
+        gold -= skill3Gold;
+        goldNumber.innerHTML = gold;
+        up3Gold *= 1.1
+        skill3Gold += Math.floor(up3Gold);
+        skill3GD.innerHTML = skill3Gold;
+        skill3Level++;
+        skill3LV.innerHTML = skill3Level;
+        bulletSize += skill3buff;
+        particleSize += 0.2;
+    };
+})
+skill4.addEventListener("click", () => {
+    if (gold >= skill4Gold) {
+        gold -= skill4Gold;
+        goldNumber.innerHTML = gold;
+        up4Gold *= 1.1
+        skill4Gold += Math.floor(up4Gold);
+        skill4GD.innerHTML = skill4Gold;
+        skill4Level++;
+        skill4LV.innerHTML = skill4Level;
+        bulletCount += skill4buff;
+    };
+})
+skill5.addEventListener("click", () => {
+    if (gold >= skill5Gold) {
+        gold -= skill5Gold;
+        goldNumber.innerHTML = gold;
+        up5Gold *= 1.1
+        skill5Gold += Math.floor(up5Gold);
+        skill5GD.innerHTML = skill5Gold;
+        skill5Level++;
+        skill5LV.innerHTML = skill5Level;
+        hitGold += skill5buff;
+        killGold += skill5buff;
+    };
+})
+
 window.addEventListener('click', (e) => {
     const angle = Math.atan2(
         e.clientY - playerY,
@@ -353,66 +425,18 @@ window.addEventListener('click', (e) => {
         x: Math.cos(angle),
         y: Math.sin(angle)
     }
-    projectiles.push(
-        new Projectile(playerX, playerY,
-            bulletSize, 'white', velocity)
-    )
-})
-skill1.addEventListener("click", () => {
-    if (gold >= skill1Gold) {
-        gold -= skill1Gold;
-        goldNumber.innerHTML = gold;
-        skill1Gold += 100;
-        skill1GD.innerHTML = skill1Gold;
-        skill1Level++;
-        skill1LV.innerHTML = skill1Level;
-        bulletDamage += skill1buff;
-    };
-})
-skill2.addEventListener("click", () => {
-    if (gold >= skill2Gold) {
-        gold -= skill2Gold;
-        goldNumber.innerHTML = gold;
-        skill2Gold += 100;
-        skill2GD.innerHTML = skill2Gold;
-        skill2Level++;
-        skill2LV.innerHTML = skill2Level;
-        bulletSpeed += skill2buff;
-    };
-})
-skill3.addEventListener("click", () => {
-    if (gold >= skill3Gold) {
-        gold -= skill3Gold;
-        goldNumber.innerHTML = gold;
-        skill3Gold += 1000;
-        skill3GD.innerHTML = skill3Gold;
-        skill3Level++;
-        skill3LV.innerHTML = skill3Level;
-        bulletSize += skill3buff;
-    };
-})
-skill4.addEventListener("click", () => {
-    if (gold >= skill4Gold) {
-        gold -= skill4Gold;
-        goldNumber.innerHTML = gold;
-        skill4Gold += 10000;
-        skill4GD.innerHTML = skill4Gold;
-        skill4Level++;
-        skill4LV.innerHTML = skill4Level;
-        BulletCount += skill4buff;
-    };
-})
-skill5.addEventListener("click", () => {
-    if (gold >= skill5Gold) {
-        gold -= skill5Gold;
-        goldNumber.innerHTML = gold;
-        skill5Gold += 1000;
-        skill5GD.innerHTML = skill5Gold;
-        skill5Level++;
-        skill5LV.innerHTML = skill5Level;
-        hitGold += skill5buff;
-        killGold += skill5buff;
-    };
+    // projectiles.push(
+    //     new Projectile(playerX, playerY,
+    //         bulletSize, 'white', velocity)
+    // )
+    for (let i = 0; i < bulletCount; i++) {
+        setTimeout(() => {
+            projectiles.push(
+                new Projectile(playerX, playerY,
+                    bulletSize, 'white', velocity)
+            )
+        }, 250 * i )
+    }
 })
 startBtn.addEventListener("click", () => {
     init();
