@@ -25,6 +25,35 @@ const startBtn = document.querySelector('#startBtn');
 const container = document.querySelector('.container');
 const endScore = document.querySelector("#endScore");
 
+const skill1 = document.querySelector('.skill1');
+const skill2 = document.querySelector('.skill2');
+const skill3 = document.querySelector('.skill3');
+const skill4 = document.querySelector('.skill4');
+const skill5 = document.querySelector('.skill5');
+
+let skill1LV = document.querySelector('.skill1Level');
+let skill2LV = document.querySelector('.skill2Level');
+let skill3LV = document.querySelector('.skill3Level');
+let skill4LV = document.querySelector('.skill4Level');
+let skill5LV = document.querySelector('.skill5Level');
+
+let skill1GD = document.querySelector('.skill1Gold');
+let skill2GD = document.querySelector('.skill2Gold');
+let skill3GD = document.querySelector('.skill3Gold');
+let skill4GD = document.querySelector('.skill4Gold');
+let skill5GD = document.querySelector('.skill5Gold');
+
+let skill1Gold = 100;
+let skill2Gold = 100;
+let skill3Gold = 1000;
+let skill4Gold = 10000;
+let skill5Gold = 1000;
+let skill1Level = 1;
+let skill2Level = 1;
+let skill3Level = 1;
+let skill4Level = 1;
+let skill5Level = 1;
+
 // Player
 class Player {
     constructor(x, y, radius, color) {
@@ -119,13 +148,14 @@ class Particle {
     }
 }
 let friction = 0.96;
-let bulletSpeed = 10;
+let bulletSpeed = 3;
 let bulletSize = 5;
 let bulletDamage = bulletSize * 3.5;
-let enemyTime = 1000;
+let BulletCount = 1;
+let enemyTime = 500;
 let enemySpeed = 1;
 let enemySize = 30;
-let particleSpeed = 15;
+let particleSpeed = bulletSpeed * 1.5 + enemySpeed;
 let particleCount = 50;
 let particleSize = bulletSize / 3;
 let playerX = canvas.width / 2;
@@ -133,11 +163,17 @@ let playerY = canvas.height / 2;
 
 let score = 0;
 let gold = 0;
-let hitScore = 100;
-let killScore = 250;
+let hitScore = 10;
+let killScore = 25;
 let hitGold = 10;
 let killGold = 25;
 let level = 1;
+
+const skill1buff = 5;
+const skill2buff = 1;
+const skill3buff = 1;
+const skill4buff = 1;
+const skill5buff = 5;
 
 
 let enemies = [];
@@ -158,7 +194,7 @@ function init() {
 let spawnEnemy;
 // spawnEnemies 
 function spawnEnemies() {
-    spawnEnemy = setInterval(() => {
+    spawnEnemy = window.setInterval(() => {
         const radius = Math.random() * enemySize + 20;
         let x;
         let y;
@@ -308,7 +344,7 @@ function animate() {
     })
 
 }
-addEventListener('click', (e) => {
+window.addEventListener('click', (e) => {
     const angle = Math.atan2(
         e.clientY - playerY,
         e.clientX - playerX
@@ -321,6 +357,62 @@ addEventListener('click', (e) => {
         new Projectile(playerX, playerY,
             bulletSize, 'white', velocity)
     )
+})
+skill1.addEventListener("click", () => {
+    if (gold >= skill1Gold) {
+        gold -= skill1Gold;
+        goldNumber.innerHTML = gold;
+        skill1Gold += 100;
+        skill1GD.innerHTML = skill1Gold;
+        skill1Level++;
+        skill1LV.innerHTML = skill1Level;
+        bulletDamage += skill1buff;
+    };
+})
+skill2.addEventListener("click", () => {
+    if (gold >= skill2Gold) {
+        gold -= skill2Gold;
+        goldNumber.innerHTML = gold;
+        skill2Gold += 100;
+        skill2GD.innerHTML = skill2Gold;
+        skill2Level++;
+        skill2LV.innerHTML = skill2Level;
+        bulletSpeed += skill2buff;
+    };
+})
+skill3.addEventListener("click", () => {
+    if (gold >= skill3Gold) {
+        gold -= skill3Gold;
+        goldNumber.innerHTML = gold;
+        skill3Gold += 1000;
+        skill3GD.innerHTML = skill3Gold;
+        skill3Level++;
+        skill3LV.innerHTML = skill3Level;
+        bulletSize += skill3buff;
+    };
+})
+skill4.addEventListener("click", () => {
+    if (gold >= skill4Gold) {
+        gold -= skill4Gold;
+        goldNumber.innerHTML = gold;
+        skill4Gold += 10000;
+        skill4GD.innerHTML = skill4Gold;
+        skill4Level++;
+        skill4LV.innerHTML = skill4Level;
+        BulletCount += skill4buff;
+    };
+})
+skill5.addEventListener("click", () => {
+    if (gold >= skill5Gold) {
+        gold -= skill5Gold;
+        goldNumber.innerHTML = gold;
+        skill5Gold += 1000;
+        skill5GD.innerHTML = skill5Gold;
+        skill5Level++;
+        skill5LV.innerHTML = skill5Level;
+        hitGold += skill5buff;
+        killGold += skill5buff;
+    };
 })
 startBtn.addEventListener("click", () => {
     init();
