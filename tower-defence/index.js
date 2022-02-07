@@ -155,10 +155,10 @@ function init() {
     endScore.innerHTML = score;
 }
 
-
+let spawnEnemy;
 // spawnEnemies 
 function spawnEnemies() {
-    setInterval(() => {
+    spawnEnemy = setInterval(() => {
         const radius = Math.random() * enemySize + 20;
         let x;
         let y;
@@ -235,6 +235,7 @@ function animate() {
         //end game 
         if (distance - player.radius - enemy.radius < -1) {
             cancelAnimationFrame(animationId);
+            clearInterval(spawnEnemy);
             container.style.display = 'flex';
             endScore.innerHTML = score;
         }
