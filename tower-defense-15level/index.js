@@ -184,7 +184,7 @@ let up2Gold = skill2Gold;
 let up3Gold = skill3Gold;
 let up4Gold = skill4Gold;
 let up5Gold = skill5Gold;
-let timer = 10;
+let timer = 1000;
 
 const skill1buff = 2;
 const skill2buff = 1;
