@@ -50,7 +50,7 @@ let skill4GD = document.querySelector('.skill4Gold');
 let skill5GD = document.querySelector('.skill5Gold');
 
 let skill1Gold = 100;
-let skill2Gold = 150;
+let skill2Gold = 200;
 let skill3Gold = 700;
 let skill4Gold = 8000;
 let skill5Gold = 1000;
@@ -402,6 +402,7 @@ skill3.addEventListener("click", () => {
         skill3LV.innerHTML = skill3Level;
         bulletSize += skill3buff;
         particleSize += 0.2;
+        particleCount += 1;
     };
 })
 skill4.addEventListener("click", () => {
