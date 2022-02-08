@@ -27,6 +27,8 @@ const endScore = document.querySelector("#endScore");
 const timeCount = document.querySelector('.timeCount');
 const levelUp = document.querySelector('.levelUp');
 const levelDown = document.querySelector('.levelDown');
+const breakText = document.querySelector('#breakText');
+const lastLevel = document.querySelector('#lastLevel');
 
 
 const skill1 = document.querySelector('.skill1');
@@ -182,7 +184,7 @@ let up2Gold = skill2Gold;
 let up3Gold = skill3Gold;
 let up4Gold = skill4Gold;
 let up5Gold = skill5Gold;
-let timer = 1000;
+let timer = 10;
 
 const skill1buff = 2;
 const skill2buff = 1;
@@ -314,7 +316,7 @@ function animate() {
                     // increase our score
                     score += hitScore;
                     scoreNumber.innerHTML = score;
-                    gold += hitGold + level *2;
+                    gold += hitGold + level * 2;
                     goldNumber.innerHTML = gold;
 
                     gsap.to(enemy, {
@@ -457,7 +459,7 @@ startBtn.addEventListener("click", () => {
         time = -1;
         timeCount.innerHTML = time;
         gameStart = false;
-    }else{
+    } else {
         time = 30;
         timeCount.innerHTML = time;
         gameStart = true;
@@ -468,7 +470,47 @@ levelUp.addEventListener('click', () => {
     if (level == maxLevel || !levelBreak[level - 1]) return;
     level++;
     levelNumber.innerHTML = level;
-    if (!levelBreak[level]) {
+
+    if (level == maxLevel && !levelBreak[level - 1]) {
+        time = 30;
+        timeCount.innerHTML = time;
+        cancelAnimationFrame(animationId);
+        clearInterval(spawnEnemy);
+        container.style.display = 'flex';
+        endScore.innerHTML = score;
+        gameStart = false;
+        levelDown.style.backgroundColor = '#fff';
+        levelUp.style.backgroundColor = '#fff7';
+        lastLevel.style.display = 'inline';
+        breakText.style.display = 'none';
+    }
+    else if (level == maxLevel && levelBreak[level - 1]) {
+        time = -1;
+        timeCount.innerHTML = time;
+        cancelAnimationFrame(animationId);
+        clearInterval(spawnEnemy);
+        container.style.display = 'flex';
+        endScore.innerHTML = score;
+        gameStart = false;
+        lastLevel.style.display = 'inline';
+        levelUp.style.backgroundColor = '#fff7';
+        lastLevel.style.display = 'inline';
+        breakText.style.display = 'none';
+    }
+    else if (levelBreak[level - 1]) {
+
+        time = -1;
+        timeCount.innerHTML = time;
+        cancelAnimationFrame(animationId);
+        clearInterval(spawnEnemy);
+        container.style.display = 'flex';
+        endScore.innerHTML = score;
+        gameStart = false;
+        levelUp.style.backgroundColor = '#fff';
+        lastLevel.style.display = 'none';
+        breakText.style.display = 'inline';
+    }
+    else if (!levelBreak[level]) {
         time = 30;
         timeCount.innerHTML = time;
         cancelAnimationFrame(animationId);
@@ -478,21 +520,14 @@ levelUp.addEventListener('click', () => {
         gameStart = false;
         levelUp.style.backgroundColor = '#fff7';
         levelDown.style.backgroundColor = '#fff';
-
-    }else{
-        time = -1;
-        timeCount.innerHTML = time;
-        cancelAnimationFrame(animationId);
-        clearInterval(spawnEnemy);
-        container.style.display = 'flex';
-        endScore.innerHTML = score;
-        gameStart = false;
+        lastLevel.style.display = 'none';
+        breakText.style.display = 'none';
 
     }
 })
 levelDown.addEventListener('click', () => {
     levelUp.style.backgroundColor = '#fff';
-    
+
     if (level == 1) {
         levelDown.style.backgroundColor = '#fff7';
         return;
@@ -505,7 +540,12 @@ levelDown.addEventListener('click', () => {
     clearInterval(spawnEnemy);
     container.style.display = 'flex';
     endScore.innerHTML = score;
+    breakText.style.display = 'inline';
     gameStart = false;
+    lastLevel.style.display = 'none';
+
+
+
 })
 
 // timer
@@ -516,7 +556,18 @@ timeCountDown = window.setInterval(() => {
             time -= 1;
             timeCount.innerHTML = time;
         }
-        if (time == 0) {
+        if(level == maxLevel && time == 0){
+            cancelAnimationFrame(animationId);
+            clearInterval(spawnEnemy);
+            container.style.display = 'flex';
+            endScore.innerHTML = score;
+            gameStart = false;
+            levelBreak[level - 1] = true;
+            lastLevel.innerHTML = 'This is the last level !! Thanks for playing !!!';
+            gold += 9999999999;
+            goldNumber.innerHTML = gold;
+        }
+        else if (time == 0) {
             cancelAnimationFrame(animationId);
             clearInterval(spawnEnemy);
             container.style.display = 'flex';
@@ -527,19 +578,21 @@ timeCountDown = window.setInterval(() => {
         if (time == -1) {
             gameStart = false;
         }
-        
         // if(level == 1){
         //     levelDown.style.backgroundColor = '#fff7';
         // }
         // else {
         //     levelDown.style.backgroundColor = '#fff';
         // }
-        
-        if(levelBreak[level -1] == true){
+
+        // light up levelUp btn
+        if (levelBreak[level - 1] == true && level != maxLevel) {
             levelUp.style.backgroundColor = '#fff';
+            breakText.style.display = 'inline';
         }
-        else{
+        else {
             levelUp.style.backgroundColor = '#fff7';
+            breakText.style.display = 'none';
         }
     }
 }, timer)
