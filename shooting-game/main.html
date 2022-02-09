@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Hello!! Welcome to my first shooting game, this game is reference from the HTML5 Game Tutorial on YouTube.">
+    <link rel="stylesheet" href="main.css">
+    <link rel="icon" href="STGfavicon01.png">
+    <title>ShootingGame</title>
+</head>
+
+<body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"
+        integrity="sha512-H6cPm97FAsgIKmlBA4s774vqoN24V5gSQL4yBTDOY2su2DeXZVhQPxFK4P6GPdnZqM9fg1G3cMv5wD7e6cFLZQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <div class="box">
+        <div class="scoreBox"><span class="score">Score: </span><span class="scoreNumber">0</span></div>
+        <div class="goldBox"><span class="gold">Gold: </span><span class="goldNumber">1000</span></div>
+        <div class="lifeBox"><span class="life">Life: </span><span class="lifeNumber">3</span></div>
+        <div class="introBox"><span class="intro">?</span></div>
+        <div class="levelBox"><span class="level">
+                <span class="levelDown">
+                    < </span>
+                        Level:
+                        <span class="levelNumber">1</span>
+                        <span class="levelUp">></span>
+                </span>
+        </div>
+        <div class="timeBox"><span class="time">Time: </span><span class="timeCount">30</span></div>
+    </div>
+    <div class="container">
+        <div class="goBox">
+            <h2 class="breakText" id="breakText">You can go to the next level !!</h2>
+            <h2 class="breakText" id="lastLevel">This is the last level !!</h2>
+            <h1 id="endScore">0</h1>
+            <p>Points</p>
+            <div class="start">
+                <button id="startBtn">Start Game</button>
+            </div>
+        </div>
+        <div class="skill">
+            <h1>Skill</h1>
+            <ul>
+                <li class="skill1">Level: <span class="skill1Level">1 </span>BulletDamage + 2</span><span
+                        class="skillGoldBox">
+                        <p>Gold : <span class="skill1Gold">100</span></p>
+                    </span></span></li>
+                <li class="skill2">Level: <span class="skill2Level">1 </span>BulletSpeed + 1</span><span
+                        class="skillGoldBox">
+                        <p>Gold : <span class="skill2Gold">200</span></p>
+                    </span></span></li>
+                <li class="skill3">Level: <span class="skill3Level">1 </span>BulletSize + 2</span><span
+                        class="skillGoldBox">
+                        <p>Gold : <span class="skill3Gold">700</span></p>
+                    </span></span></li>
+                <li class="skill4">Level: <span class="skill4Level">1 </span> BulletCount + 1</span><span
+                        class="skillGoldBox">
+                        <p>Gold : <span class="skill4Gold">8000</span></p>
+                    </span></span></li>
+                <li class="skill5">Level: <span class="skill5Level">1 </span> GetGold + 5</span><span
+                        class="skillGoldBox">
+                        <p>Gold : <span class="skill5Gold">1000</span></p>
+                    </span></span></li>
+                <li class="skill6">Level: <span class="skill6Level">1 </span> Life + 1</span><span class="skillGoldBox">
+                        <p>Gold : <span class="skill6Gold">100</span></p>
+                    </span></span></li>
+            </ul>
+            <div class="resetBox">
+                <h1 class="resetBtn">Reset Skill</h1>
+            </div>
+        </div>
+    </div>
+    <div class="placeContainer">
+
+        <div class="placeBox">
+
+            <div class="closeBtn">X</div>
+            <h1>Game Introduction</h1>
+            <div class="dash"></div>
+            <div class="scrollBox">
+                <div class="scroll">
+                    <p>Hello!! Welcome to my first shooting game, this game is reference from the HTML5 Game Tutorial on
+                        YouTube,the URL is <a href="https://youtu.be/eI9idPTT0c4 "
+                            target="blank">https://youtu.be/eI9idPTT0c4</a> When you click the start button,you can
+                        move youself by pressing 'A' 'W' 'D' 'S', you can also click and shoot bullets,and when your bullet
+                        hits or kills the enemy, you will get the golds, these golds can be used to upgrade the skills, and
+                        Reset Skill button can reset your skill,and keeps your previous golds . There are 15 levels in this
+                        game,your goal is survive to 30 seconds, when time's up, you can go to the next level, although you
+                        hava broken the level, you also can enter the previous levels, these previous level can not be
+                        countdown.When you break the last level, you will get the reward. This is my game introducion, hope you have fun. By the way,this game can not be saved, so if you press 'F5', your data will be gone,and if you want to look code which I wrote, you can press 'Ctrl + U'.
+                    </p>
+                    <h2>
+                        Game Update Log
+                    </h2>
+                    <div class="versionBox">
+                        <div class="version">
+                            Version 1.3
+                            <span class="date">
+                                2022/02/09
+                            </span>
+                        </div>
+                        <ul class="update">
+                            <li>added player move</li>
+                            <li>added life system</li>
+                            <li>added new skill</li>
+                            <li>added Game Introduction</li>
+                            <li>added scroll</li>
+                            <li>fixed UI bug</li>
+                            <li>adjusted UI</li>
+                            <li>changed URL</li>
+                        </ul>
+
+                        <div class="version">
+                            Version 1.2
+                            <span class="date">
+                                2022/02/08
+                            </span>
+                        </div>
+                        <ul class="update">
+                            <li>added last level clearance reward</li>
+                            <li>added clear level remind </li>
+                            <li>fixed level UI bug</li>
+                        </ul>
+
+                        <div class="version">
+                            Version 1.1
+                            <span class="date">
+                                2022/02/08
+                            </span>
+                        </div>
+                        <ul class="update">
+                            <li>added skill reset system</li>
+                        </ul>
+
+                        <div class="version">
+                            Version 1.0
+                            <span class="date">
+                                2022/02/08
+                            </span>
+                        </div>
+                        <ul class="update">
+                            <li>added level system</li>
+                            <li>changed cursor</li>
+                        </ul>
+
+                        <div class="version">
+                            Version 0.9
+                            <span class="date">
+                                2022/02/07
+                            </span>
+                        </div>
+                        <ul class="update">
+                            <li>added skill system</li>
+                        </ul>
+
+                        <div class="version">
+                            Version 0.8
+                            <span class="date">
+                                2022/02/06
+                            </span>
+                        </div>
+                        <ul class="update">
+                            <li>added score system</li>
+                            <li>added gold system</li>
+                            <li>added start button</li>
+                            <li>added cursor</li>
+                            <li>adjusted particle attribute</li>
+
+                        </ul>
+
+                        <div class="version">
+                            Version 0.7
+                            <span class="date">
+                                2022/02/06
+                            </span>
+                        </div>
+                        <ul class="update">
+                            <li>added collision particle system</li>
+                            <li>adjusted enemy attribute</li>
+                            <li>adjusted bullet attribute</li>
+                        </ul>
+
+                        <div class="version">
+                            Version 0.6
+                            <span class="date">
+                                2022/02/05
+                            </span>
+                        </div>
+                        <ul class="update">
+                            <li>added enemy system</li>
+                            <li>added collision system</li>
+                            <li>adjusted bullet remove</li>
+                        </ul>
+
+                        <div class="version">
+                            Version 0.5
+                            <span class="date">
+                                2022/02/04
+                            </span>
+                        </div>
+                        <ul class="update">
+                            <li>added player</li>
+                            <li>added shoot system</li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+    </div>
+    </div>
+    <canvas></canvas>
+    <script src="main.js"></script>
+</body>
+
+</html>

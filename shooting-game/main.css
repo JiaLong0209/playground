@@ -1,0 +1,566 @@
+* {
+    cursor: url(image/cursor07.cur), auto !important;
+    box-sizing: border-box;
+    font-family: sans-serif;
+    list-style-type: '*';
+    list-style-position: inside;
+}
+
+/* 捲軸底色 */
+*::-webkit-scrollbar-track {
+    background-color: #ffffff;
+    box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.2);
+
+}
+
+/* 捲軸寬度 */
+*::-webkit-scrollbar {
+    width: 10px;
+}
+
+/* 捲軸本體顏色 */
+*::-webkit-scrollbar-thumb {
+    background-color: #a7a7a7;
+}
+
+.skill ul::-webkit-scrollbar-track {
+    background-color: #e6e6e6;
+    box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.2);
+}
+
+.skill ul::-webkit-scrollbar {
+    width: 6px;
+}
+
+.skill ul::-webkit-scrollbar-thumb {
+    background-color: #6e6e6e;
+    border-radius: 3px;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    background: rgb(0, 0, 0);
+    list-style: none;
+}
+
+/* canvas{
+    background: hsl(4, 79%, 30%);
+} */
+.box {
+    position: absolute;
+    width: 100%;
+    height: 100vh;
+    background: none;
+    display: flex;
+    justify-content: center;
+}
+
+.score,
+.scoreBox,
+.scoreNumber {
+    z-index: 2;
+    color: #fff;
+    font-size: 30px;
+    font-family: sans-serif;
+
+}
+
+.scoreBox {
+    background: none;
+    position: absolute;
+    left: 2%;
+    display: flex;
+    user-select: none;
+}
+
+.score {
+    position: relative;
+    margin-right: 5px;
+}
+
+.scoreNumber {
+    position: relative;
+}
+
+.gold,
+.goldBox,
+.goldNumber {
+    z-index: 2;
+    color: #fff;
+    font-size: 30px;
+    font-family: sans-serif;
+
+}
+
+.goldBox {
+    background: none;
+    position: absolute;
+    left: 2%;
+    top: 6%;
+    display: flex;
+    user-select: none;
+}
+
+.gold,
+.goldNumber {
+    position: relative;
+    margin-right: 5px;
+
+}
+
+.life,
+.lifeBox,
+.lifeNumber {
+    z-index: 2;
+    color: #fff;
+    font-size: 30px;
+    font-family: sans-serif;
+
+}
+
+.lifeBox {
+    background: none;
+    position: absolute;
+    left: 2%;
+    top: 12%;
+    display: flex;
+    user-select: none;
+}
+
+.life,
+.lifeNumber {
+    position: relative;
+    margin-right: 5px;
+
+}
+
+
+.intro,
+.introBox,
+.introNumber {
+    z-index: 2;
+    color: rgb(216, 216, 216);
+    font-size: 30px;
+    font-family: sans-serif;
+
+}
+
+.introBox {
+    background: none;
+    position: absolute;
+    background: rgb(82, 82, 82);
+    text-align: center;
+    width: 30px;
+    right: 2%;
+    top: 0.5%;
+    display: flex;
+    justify-content: center;
+    user-select: none;
+    box-shadow:1px 1px 3px #666;
+}
+.introBox:hover{
+    filter:brightness(1.2);
+}
+
+.level,
+.levelBox,
+.levelNumber {
+    z-index: 2;
+    color: #fff;
+    font-size: 30px;
+
+}
+
+.levelBox {
+    background: none;
+    position: absolute;
+    display: flex;
+    user-select: none;
+}
+
+.level,
+.levelNumber {
+    position: relative;
+    margin-right: 0;
+
+}
+
+.levelUp,
+.levelDown {
+    display: inline-block;
+    position: relative;
+    color: #4447;
+    text-align: center;
+    background: #fff7;
+    border-radius: 20px;
+    width: 1.2em;
+    transition: 0.3s;
+}
+
+.levelUp:hover,
+.levelDown:hover {
+    background: rgb(221, 221, 221);
+}
+
+.time,
+.timeBox,
+.timeCount {
+    z-index: 2;
+    color: #fff;
+    font-size: 30px;
+
+}
+
+.timeBox {
+    background: none;
+    position: absolute;
+    display: flex;
+    user-select: none;
+    right: 7%;
+}
+
+.time,
+.timeCount {
+    position: relative;
+    margin-right: 5px;
+
+}
+
+.container {
+    width: 100%;
+    height: 100vh;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    user-select: none;
+
+}
+
+.goBox {
+    background: rgb(236, 236, 236);
+    display: flex;
+    text-align: center;
+    flex-direction: column;
+    border-radius: 30px;
+    padding: 40px;
+    min-width: 40%;
+    max-width: 48%;
+
+}
+
+.goBox .breakText {
+    display: none;
+    font-family: sans-serif;
+    font-size: 18px;
+    line-height: none;
+    margin-top: -10px;
+    margin-bottom: 20px;
+}
+
+.goBox h1 {
+    font-size: 40px;
+    font-weight: 600;
+    height: 30px;
+    line-height: none;
+    margin-top: -5px;
+}
+
+.goBox p {
+    color: #444;
+    margin-top: -15px;
+}
+
+.goBox button {
+    background: rgb(51, 198, 235);
+    color: #fff;
+    margin-top: 0px;
+    outline: none;
+    border: none;
+    font-size: 15px;
+    width: 100%;
+    height: 3em;
+    border-radius: 30px;
+    transition: 0.3s;
+}
+
+.goBox button:hover {
+    background: rgb(145, 114, 255);
+}
+
+.skill {
+    position: absolute;
+    width: 25%;
+    right: 0%;
+    background: rgba(255, 254, 254, 0.8);
+    padding-bottom: 15px;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    backdrop-filter: blur(3px);
+    padding-left: 5px;
+}
+
+.skill h1 {
+    text-align: center;
+    color: rgb(27, 27, 27);
+    line-height: 0.5em;
+}
+
+.skill .resetBox {
+    position: relative;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.skill .resetBtn {
+    position: relative;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    padding: 5px 0px;
+    margin: auto;
+    border: 2px solid rgb(141, 50, 50);
+    width: 50%;
+    font-size: 25px;
+    text-align: center;
+    background: rgb(252, 234, 234);
+    line-height: 1em;
+    transition: 0.1s;
+    border-radius: 30px;
+    font-weight: 600;
+}
+
+.skill .resetBtn:hover {
+    background: rgb(130, 255, 126);
+}
+
+.skill .resetBtn:active {
+    background: rgb(152, 190, 138);
+}
+
+.skill ul {
+    overflow-y: auto;
+    height: 60vh;
+    text-align: center;
+    list-style: none;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.8);
+    padding: 0;
+}
+
+.skill li {
+    display: flex;
+    flex-wrap: wrap;
+    transition: 0.1s;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 5px;
+    font-family: sans-serif;
+    border-bottom: 1.2px solid rgb(128, 156, 4);
+}
+
+.skill li:nth-child(1) {
+    border-top: 1.2px solid rgb(128, 156, 4);
+}
+
+.skill li:hover {
+    background: rgb(255, 179, 128, 0.8);
+}
+
+.skillGoldBox {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    font-size: 1em;
+    line-height: 0.5em;
+
+}
+
+.placeContainer {
+    position: absolute;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    position: fixed;
+    z-index: 2;
+    background: rgba(0, 0, 0, 0.3);
+}
+
+.placeContainer .placeBox {
+    position: relative;
+    width: 60%;
+    z-index: 3;
+    top: 15%;
+    height: 70%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+    background: rgb(255, 255, 228);
+    border-radius: 20px;
+    box-shadow: 5px 5px 3px #3335;
+
+}
+
+.placeBox h1 {
+    position: relative;
+    margin-bottom: 10px;
+    font-size: 30px;
+    color: #234;
+    letter-spacing: 2px;
+}
+
+.placeBox .scrollBox {
+    position: relative;
+    overflow-y: auto;
+    height: 80%;
+}
+
+.placeBox .scroll {
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.placeBox p {
+    position: relative;
+    font-size: 17px;
+    padding: 0px 13px;
+    display: flex;
+    text-align: center;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    /* overflow-y: auto; */
+}
+
+.placeBox h2 {
+    position: relative;
+    width: 90%;
+    font-size: 25px;
+    padding-bottom: 10px;
+    margin: 5px 0px;
+}
+
+.placeBox .versionBox {
+    width: 80%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.placeBox .version {
+    display: flex;
+    justify-content: space-around;
+    position: relative;
+    width: 100%;
+    font-size: 20px;
+    margin: 5px 0px -5px 0px;
+    padding-top: 15px;
+    border-top: 2px dashed #342;
+}
+
+.placeBox .date {
+    width: 30%;
+    font-size: 20px;
+}
+
+.placeBox .update {
+    width: 100%;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    left: -5%;
+}
+
+.placeBox .closeBtn {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 10%;
+    z-index: 4;
+    height: 30px;
+    top: 0%;
+    right: 0%;
+    background: rgb(255, 145, 145);
+    color: #fff;
+    border-top-right-radius: 20px;
+    border-bottom-left-radius: 10px;
+}
+
+.placeBox .closeBtn:hover {
+    background: rgb(255, 68, 68);
+}
+
+.dash {
+    width: 100%;
+    height: 2px;
+    background: rgb(78, 72, 60);
+}
+
+.dash2 {
+    display: flex;
+    left: 5%;
+    width: 90%;
+    height: 0px;
+    background: none;
+    border-bottom: 1.5px dashed #342;
+}
+
+@media screen and (max-width:770px) {
+    .skill {
+        font-size: 12px;
+    }
+
+    .skill .resetBtn {
+        font-size: 15px;
+    }
+
+    .scoreBox,
+    .levelBox,
+    .timeBox,
+    .introBox {
+        top: 3%;
+    }
+
+    .goldBox {
+        top: 7%;
+    }
+
+    .lifeBox {
+        top: 11%;
+    }
+
+    .box span {
+        font-size: 20px;
+    }
+    .introBox {
+        width: 20px;
+    }
+    .placeBox h1{
+        font-size: 23px;
+    }
+    .placeBox h2{
+        font-size: 20px;
+    }
+    .placeBox p{
+        font-size: 13px;
+    }
+    .versionBox .version,.versionBox .date{
+        font-size: 17px;
+    }
+    .versionBox .update{
+        font-size: 13px;
+    }
+    .goBox .breakText {
+        font-size: 10px;
+    }
+
+}

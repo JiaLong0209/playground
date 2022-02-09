@@ -15,21 +15,27 @@
 // Level system     v
 // Skill system     v
 // Skill reset      v
+// Player move      v 
+// Bullet move with player  v (playerX player.x)
+// Enemy information
 // Skill level up click effects;    
 // Show damage
 // Weapon system
 // Add different enemy 
+// Add tower
 
 
 const canvas = document.querySelector('canvas');
 const c = canvas.getContext('2d');  //ctx api
 
 canvas.width = innerWidth;
-canvas.height = innerHeight - 4;
+canvas.height = innerHeight - 4; //avoid scroll
 
 const levelNumber = document.querySelector('.levelNumber')
 const scoreNumber = document.querySelector('.scoreNumber');
 const goldNumber = document.querySelector('.goldNumber');
+const lifeNumber = document.querySelector('.lifeNumber')
+
 const startBtn = document.querySelector('#startBtn');
 const container = document.querySelector('.container');
 const endScore = document.querySelector("#endScore");
@@ -39,42 +45,65 @@ const levelDown = document.querySelector('.levelDown');
 const breakText = document.querySelector('#breakText');
 const lastLevel = document.querySelector('#lastLevel');
 const skillReset = document.querySelector('.resetBtn');
+const closeBtn = document.querySelector('.closeBtn');
+const introBox = document.querySelector('.introBox');
+const placeContainer = document.querySelector('.placeContainer');
 
 const skill1 = document.querySelector('.skill1');
 const skill2 = document.querySelector('.skill2');
 const skill3 = document.querySelector('.skill3');
 const skill4 = document.querySelector('.skill4');
 const skill5 = document.querySelector('.skill5');
+const skill6 = document.querySelector('.skill6');
 
 let skill1LV = document.querySelector('.skill1Level');
 let skill2LV = document.querySelector('.skill2Level');
 let skill3LV = document.querySelector('.skill3Level');
 let skill4LV = document.querySelector('.skill4Level');
 let skill5LV = document.querySelector('.skill5Level');
+let skill6LV = document.querySelector('.skill6Level');
 
 let skill1GD = document.querySelector('.skill1Gold');
 let skill2GD = document.querySelector('.skill2Gold');
 let skill3GD = document.querySelector('.skill3Gold');
 let skill4GD = document.querySelector('.skill4Gold');
 let skill5GD = document.querySelector('.skill5Gold');
+let skill6GD = document.querySelector('.skill6Gold');
 
 let skill1Gold = 100;
 let skill2Gold = 200;
 let skill3Gold = 700;
 let skill4Gold = 8000;
 let skill5Gold = 1000;
+let skill6Gold = 100;
 
 let skill1GoldReset = 100;
 let skill2GoldReset = 200;
 let skill3GoldReset = 700;
 let skill4GoldReset = 8000;
 let skill5GoldReset = 1000;
+let skill6GoldReset = 100;
+
+let up1Gold = skill1Gold;
+let up2Gold = skill2Gold;
+let up3Gold = skill3Gold;
+let up4Gold = skill4Gold;
+let up5Gold = skill5Gold;
+let up6Gold = skill6Gold;
 
 let skill1Level = 1;
 let skill2Level = 1;
 let skill3Level = 1;
 let skill4Level = 1;
 let skill5Level = 1;
+let skill6Level = 1;
+
+let skill1buff = 2;
+let skill2buff = 1;
+let skill3buff = 2;
+let skill4buff = 1;
+let skill5buff = 5;
+let skill6buff = 1;
 
 let gameStart = false;
 let time = 30;
@@ -94,6 +123,12 @@ class Player {
         c.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
         c.fillStyle = this.color;
         c.fill();
+    }
+    update() {
+        this.draw();
+        this.x += playerSpeedX;
+        this.y += playerSpeedY;
+
     }
 }
 // Projectile
@@ -186,6 +221,13 @@ let particleCount = 10;
 let particleSize = 2;
 let playerX = canvas.width / 2;
 let playerY = canvas.height / 2;
+let playerSpeed = 3;
+let playerSpeedX = 0;
+let playerSpeedY = 0;
+
+let life = 3;
+let relife = 3;
+let timer = 1000;
 
 let score = 0;
 let gold = 1000;
@@ -195,19 +237,6 @@ let hitGold = 10;
 let killGold = 25;
 let level = 1;
 let maxLevel = 15;
-let up1Gold = skill1Gold;
-let up2Gold = skill2Gold;
-let up3Gold = skill3Gold;
-let up4Gold = skill4Gold;
-let up5Gold = skill5Gold;
-let timer = 1000;
-
-const skill1buff = 2;
-const skill2buff = 1;
-const skill3buff = 2;
-const skill4buff = 1;
-const skill5buff = 5;
-
 
 let enemies = [];
 let projectiles = [];
@@ -275,6 +304,9 @@ function animate() {
     c.fillStyle = "rgba(0,0,0,0.2)"
     c.fillRect(0, 0, canvas.width, canvas.height);
     player.draw();
+    player.update();
+
+
     particles.forEach((particle, index) => {
         if (particle.alpha <= 0) {
             particles.splice(index, 1);
@@ -300,14 +332,38 @@ function animate() {
     enemies.forEach((enemy, index) => {
         enemy.update();
 
-        const distance = Math.hypot(player.x - enemy.x, player.y - enemy.y);
+        if (enemy.x + enemy.radius < 0 ||
+            enemy.x - enemy.radius > canvas.width ||
+            enemy.y + enemy.radius < 0 ||
+            enemy.y - enemy.radius > canvas.height) {
+            enemies.splice(index, 1);
+            console.log(enemies);
+        }
+
         //end game 
+        const distance = Math.hypot(player.x - enemy.x, player.y - enemy.y);
         if (distance - player.radius - enemy.radius < -1) {
-            cancelAnimationFrame(animationId);
-            clearInterval(spawnEnemy);
-            container.style.display = 'flex';
-            endScore.innerHTML = score;
-            gameStart = false;
+            enemies.splice(index, 1);
+            life -= 1 * level;
+            lifeNumber.innerHTML = life;
+            console.log(life);
+            for (let i = 0; i < particleCount + enemy.radius / 20; i++) {
+                particles.push(new Particle(enemy.x,
+                    enemy.y,
+                    Math.random() * particleSize * 0.1 + enemy.radius * 0.1 + 1,
+                    enemy.color,
+                    {
+                        x: (Math.random() - 0.5) * (Math.random() * particleSpeed) * 2,
+                        y: (Math.random() - 0.5) * (Math.random() * particleSpeed) * 2
+                    }))
+            };
+            if (life <= 0) {
+                cancelAnimationFrame(animationId);
+                clearInterval(spawnEnemy);
+                container.style.display = 'flex';
+                endScore.innerHTML = score;
+                gameStart = false;
+            }
         }
         projectiles.forEach((projectile, projectileIndex) => {
             const distance = Math.hypot(projectile.x - enemy.x, projectile.y - enemy.y);   //hypotenuse , the x and y distance
@@ -362,19 +418,6 @@ function animate() {
 
             }
 
-            // particles.forEach((particle, particleIndex)=>{
-            //     const distance = Math.hypot(particle.x - enemy.x, particle.y - enemy.y);
-            //     if(distance - particle.radius - enemy.radius < -1 ){
-            //         particles.splice(particleIndex,1);
-            //         if(enemy.raidus - 5 > 10){
-            //             gsap.to(enemy, {
-            //                 radius: enemy.radius - 5
-            //             })
-            //         }else{
-            //             enemies.splice(index,1);
-            //         }
-            //     }
-            // })
         })
 
     })
@@ -451,6 +494,21 @@ skill5.addEventListener("click", () => {
         killGold += skill5buff * 2;
     };
 })
+skill6.addEventListener("click", () => {
+    if (gold >= skill6Gold) {
+        gold -= skill6Gold;
+        goldNumber.innerHTML = gold;
+        skillTotalGold += skill6Gold;
+        up6Gold *= 1.05;
+        skill6Gold += Math.floor(up6Gold);
+        skill6GD.innerHTML = skill6Gold;
+        skill6Level++;
+        skill6LV.innerHTML = skill6Level;
+        life++;
+        relife = life;
+        lifeNumber.innerHTML = life;
+    };
+})
 // skill reset
 skillReset.addEventListener('click', () => {
     gold += skillTotalGold;
@@ -499,34 +557,46 @@ skillReset.addEventListener('click', () => {
     skill5GD.innerHTML = skill5Gold;
     skill5Level = 1;
     skill5LV.innerHTML = skill5Level;
+    // skill 6
+    life -= (skill6Level - 1) * skill6buff;
+    relife -= (skill6Level - 1) * skill6buff;
+    lifeNumber.innerHTML = life;
+    skill6Gold = skill6GoldReset;
+    skill6GD.innerHTML = skill6Gold;
+    skill6Level = 1;
+    skill6LV.innerHTML = skill6Level;
 })
 
 
 
-// shot projectile
-window.addEventListener('click', (e) => {
-    const angle = Math.atan2(
-        e.clientY - playerY,
-        e.clientX - playerX
+// shoot projectile
+window.addEventListener('click', shootFn);
+function shootFn(e) {
+    console.log('shoot')
+    let angle = Math.atan2(
+        e.clientY - player.y,
+        e.clientX - player.x
     )
-    const velocity = {
+    let velocity = {
         x: Math.cos(angle),
         y: Math.sin(angle)
     }
     for (let i = 0; i < bulletCount; i++) {
         setTimeout(() => {
             projectiles.push(
-                new Projectile(playerX, playerY,
+                new Projectile(player.x, player.y,
                     bulletSize, 'white', velocity)
             )
         }, 250 * i)
     }
-})
+}
 // start game
 startBtn.addEventListener("click", () => {
     init();
     animate();
     spawnEnemies();
+    life = relife;
+    lifeNumber.innerHTML = life;
     container.style.display = 'none';
     gameStart = true;
     if (levelBreak[level - 1]) {
@@ -581,6 +651,7 @@ levelUp.addEventListener('click', () => {
         endScore.innerHTML = score;
         gameStart = false;
         levelUp.style.backgroundColor = '#fff';
+        levelDown.style.backgroundColor = '#fff';
         lastLevel.style.display = 'none';
         breakText.style.display = 'inline';
     }
@@ -618,9 +689,53 @@ levelDown.addEventListener('click', () => {
     gameStart = false;
     lastLevel.style.display = 'none';
 
-
-
 })
+
+//close and open game introduction
+closeBtn.addEventListener('click', () => {
+    placeContainer.style.display = 'none';
+})
+
+introBox.addEventListener('click', () => {
+    placeContainer.style.display = 'flex';
+})
+
+
+// player move
+window.addEventListener('keydown', keydownFn);
+window.addEventListener('keyup', keyupFn);
+// A = 65 ,D = 68 ,S = 83 ,W = 87  
+function keydownFn(e) {
+    switch (e.keyCode) {
+        case 65:
+            console.log(player.x);
+            if (player.x - player.radius < 0) return;
+            playerSpeedX = -1 * playerSpeed;
+
+            break;
+        case 68:
+            console.log(player.x);
+            if (player.x + player.radius > canvas.width) return;
+            playerSpeedX = 1 * playerSpeed;
+            break;
+        case 83:
+            playerSpeedY = 1 * playerSpeed;
+            if (player.y + player.radius > canvas.height) return;
+            break;
+        case 87:
+            playerSpeedY = -1 * playerSpeed;
+            if (player.y - player.radius < 0) return;
+            break;
+    }
+}
+function keyupFn(e) {
+    playerSpeedX = 0;
+    playerSpeedY = 0;
+}
+
+
+
+
 
 // timer
 let timeCountDown;
@@ -638,6 +753,7 @@ timeCountDown = window.setInterval(() => {
             gameStart = false;
             levelBreak[level - 1] = true;
             lastLevel.innerHTML = 'This is the last level !! Thanks for playing !!!';
+            // Clearance reward;
             gold += 9999999999;
             goldNumber.innerHTML = gold;
         }
@@ -652,14 +768,6 @@ timeCountDown = window.setInterval(() => {
         if (time == -1) {
             gameStart = false;
         }
-        // if(level == 1){
-        //     levelDown.style.backgroundColor = '#fff7';
-        // }
-        // else {
-        //     levelDown.style.backgroundColor = '#fff';
-        // }
-
-        // light up levelUp btn
         if (levelBreak[level - 1] == true && level != maxLevel) {
             levelUp.style.backgroundColor = '#fff';
             breakText.style.display = 'inline';
