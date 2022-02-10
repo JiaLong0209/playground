@@ -15,12 +15,15 @@
 // Level system     v
 // Skill system     v
 // Skill reset      v
-// Player move      v 
+// Player move      v (= and ==)
 // Bullet move with player  v (playerX player.x)
+// Add Player Speed skill 
+// Close particle effects
+// Show damage
 // Enemy information
 // Skill level up click effects;    
-// Show damage
 // Weapon system
+// Add unique skill
 // Add different enemy 
 // Add tower
 
@@ -167,6 +170,7 @@ class Enemy {
 
     draw() {
         c.beginPath();
+        if (this.radius < 0) return; //avoid enemy with negative radius causing collapses
         c.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
         c.fillStyle = this.color;
         c.fill();
@@ -228,6 +232,8 @@ let playerSpeedY = 0;
 let life = 3;
 let relife = 3;
 let timer = 1000;
+let clearTime = 300;
+let shrinkTime = 20;
 
 let score = 0;
 let gold = 1000;
@@ -346,7 +352,6 @@ function animate() {
             enemies.splice(index, 1);
             life -= 1 * level;
             lifeNumber.innerHTML = life;
-            console.log(life);
             for (let i = 0; i < particleCount + enemy.radius / 20; i++) {
                 particles.push(new Particle(enemy.x,
                     enemy.y,
@@ -363,6 +368,7 @@ function animate() {
                 container.style.display = 'flex';
                 endScore.innerHTML = score;
                 gameStart = false;
+                life = relife;
             }
         }
         projectiles.forEach((projectile, projectileIndex) => {
@@ -383,6 +389,8 @@ function animate() {
                         }))
                 };
                 projectiles.splice(projectileIndex, 1);
+
+                let enemyShrink;
                 if (enemy.radius - bulletDamage > 10) {
 
                     // increase our score
@@ -390,12 +398,21 @@ function animate() {
                     scoreNumber.innerHTML = score;
                     gold += hitGold + level * 2;
                     goldNumber.innerHTML = gold;
-
-                    gsap.to(enemy, {
-                        radius: enemy.radius - bulletDamage
-                    })
+                    //shrink animation
+                    enemyShrink = setInterval(() => {
+                        enemy.radius -= bulletDamage / (clearTime / shrinkTime);
+                        console.log('shrink');
+                    }, shrinkTime);
+                    setTimeout(() => {
+                        clearInterval(enemyShrink);
+                        console.log('clear');
+                    }, clearTime);
+                    // gsap.to(enemy, {
+                    //     radius: enemy.radius - bulletDamage
+                    // })
                 }
-                else {
+                else if (enemy.radius - bulletDamage < 10) {
+                    clearInterval(enemyShrink);
                     for (let i = 0; i < particleCount + enemy.radius / 20; i++) {
                         particles.push(new Particle(enemy.x,
                             enemy.y,
@@ -505,8 +522,8 @@ skill6.addEventListener("click", () => {
         skill6Level++;
         skill6LV.innerHTML = skill6Level;
         life++;
-        relife = life;
-        lifeNumber.innerHTML = life;
+        relife++;
+        lifeNumber.innerHTML = relife;
     };
 })
 // skill reset
@@ -611,6 +628,8 @@ startBtn.addEventListener("click", () => {
 })
 //adjust enemy level 
 levelUp.addEventListener('click', () => {
+    life = relife;
+    lifeNumber.innerHTML = life;
     if (level == maxLevel || !levelBreak[level - 1]) return;
     level++;
     levelNumber.innerHTML = level;
@@ -671,6 +690,8 @@ levelUp.addEventListener('click', () => {
     }
 })
 levelDown.addEventListener('click', () => {
+    life = relife;
+    lifeNumber.innerHTML = life;
     levelUp.style.backgroundColor = '#fff';
 
     if (level == 1) {
@@ -706,31 +727,51 @@ window.addEventListener('keydown', keydownFn);
 window.addEventListener('keyup', keyupFn);
 // A = 65 ,D = 68 ,S = 83 ,W = 87  
 function keydownFn(e) {
+
     switch (e.keyCode) {
         case 65:
-            console.log(player.x);
             if (player.x - player.radius < 0) return;
             playerSpeedX = -1 * playerSpeed;
 
             break;
         case 68:
-            console.log(player.x);
             if (player.x + player.radius > canvas.width) return;
             playerSpeedX = 1 * playerSpeed;
             break;
         case 83:
-            playerSpeedY = 1 * playerSpeed;
             if (player.y + player.radius > canvas.height) return;
+            playerSpeedY = 1 * playerSpeed;
             break;
         case 87:
-            playerSpeedY = -1 * playerSpeed;
             if (player.y - player.radius < 0) return;
+            playerSpeedY = -1 * playerSpeed;
             break;
     }
 }
 function keyupFn(e) {
-    playerSpeedX = 0;
-    playerSpeedY = 0;
+
+    switch (e.keyCode) {
+        case 65:
+            if (playerSpeedX == 1 * playerSpeed) return;
+            playerSpeedX = 0;
+            break;
+
+        case 68:
+            if (playerSpeedX == -1 * playerSpeed) return;
+            playerSpeedX = 0;
+            break;
+
+        case 83:
+            if (playerSpeedY == -1 * playerSpeed) return;
+            playerSpeedY = 0;
+            break;
+
+        case 87:
+            if (playerSpeedY == 1 * playerSpeed) return;
+            playerSpeedY = 0;
+            break;
+    }
+
 }
 
 
