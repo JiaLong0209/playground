@@ -17,15 +17,15 @@
 // Skill reset      v
 // Player move      v (= and ==)
 // Bullet move with player  v (playerX player.x)
-// Add Player Speed skill 
-// Close particle effects
-// Show damage
-// Enemy information
+// Add physical collision effects 
 // Skill level up click effects;    
+// Add setting button
+// Add Player Speed skill 
+// Enemy information
+// Show damage
 // Weapon system
 // Add unique skill
 // Add different enemy 
-// Add tower
 
 
 const canvas = document.querySelector('canvas');
@@ -170,7 +170,7 @@ class Enemy {
 
     draw() {
         c.beginPath();
-        if (this.radius < 0) return; //avoid enemy with negative radius causing collapses
+        if (this.radius < 2) return; //avoid enemy with negative radius causing collapses
         c.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
         c.fillStyle = this.color;
         c.fill();
@@ -312,7 +312,6 @@ function animate() {
     player.draw();
     player.update();
 
-
     particles.forEach((particle, index) => {
         if (particle.alpha <= 0) {
             particles.splice(index, 1);
@@ -399,17 +398,16 @@ function animate() {
                     gold += hitGold + level * 2;
                     goldNumber.innerHTML = gold;
                     //shrink animation
-                    enemyShrink = setInterval(() => {
-                        enemy.radius -= bulletDamage / (clearTime / shrinkTime);
-                        console.log('shrink');
-                    }, shrinkTime);
-                    setTimeout(() => {
-                        clearInterval(enemyShrink);
-                        console.log('clear');
-                    }, clearTime);
-                    // gsap.to(enemy, {
-                    //     radius: enemy.radius - bulletDamage
-                    // })
+                    // enemyShrink = setInterval(() => {
+                    //     enemy.radius -= bulletDamage / (clearTime / shrinkTime);
+
+                    // }, shrinkTime);
+                    // setTimeout(() => {
+                    //     clearInterval(enemyShrink);
+                    // }, clearTime);
+                    gsap.to(enemy, {
+                        radius: enemy.radius - bulletDamage
+                    })
                 }
                 else if (enemy.radius - bulletDamage < 10) {
                     clearInterval(enemyShrink);
@@ -584,8 +582,6 @@ skillReset.addEventListener('click', () => {
     skill6LV.innerHTML = skill6Level;
 })
 
-
-
 // shoot projectile
 window.addEventListener('click', shootFn);
 function shootFn(e) {
@@ -709,18 +705,15 @@ levelDown.addEventListener('click', () => {
     breakText.style.display = 'inline';
     gameStart = false;
     lastLevel.style.display = 'none';
-
 })
 
 //close and open game introduction
 closeBtn.addEventListener('click', () => {
     placeContainer.style.display = 'none';
 })
-
 introBox.addEventListener('click', () => {
     placeContainer.style.display = 'flex';
 })
-
 
 // player move
 window.addEventListener('keydown', keydownFn);
@@ -773,10 +766,6 @@ function keyupFn(e) {
     }
 
 }
-
-
-
-
 
 // timer
 let timeCountDown;
