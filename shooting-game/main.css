@@ -56,7 +56,7 @@ body {
     padding: 0;
     list-style: none;
     background: rgb(0, 0, 0);
-    list-style: none;
+    overflow: hidden;
 }
 
 /* canvas{
@@ -495,6 +495,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    text-align: start;
     left: -5%;
 }
 
@@ -531,6 +532,58 @@ body {
     height: 0px;
     background: none;
     border-bottom: 1.5px dashed #342;
+}
+
+.skillLevelUp{  
+    min-width: 4.5em;
+    overflow: hidden;
+    position: absolute;
+    color: hsl(0, 0%, 100%);
+    font-style:normal;
+    font-weight: 100;
+    font-size: 15px;
+    padding: 2px;
+    border-radius: 3px;
+    z-index: 3;
+    user-select: none;
+    transform: translate(-45%,-150%);
+    animation: levelUpAn 0.7s ease-in-out .05s 1;
+    /* background: linear-gradient(180deg,rgb(104, 161, 236) 7%,rgb(42, 27, 124) 93% ,rgb(86, 83, 230)); */
+}
+.showDamage{  
+    min-width: 1em;
+    overflow: hidden;
+    position: absolute;
+    color: rgb(255, 77, 77);
+
+    text-shadow: 1px 1px 0.5px rgb(0, 0, 0);
+    font-style:normal;
+    font-family: 'Balsamiq Sans', cursive;
+    font-weight: 600;
+    padding: 0px;
+    border-radius: 3px;
+    z-index: 3;
+    user-select: none;
+    transform: translate(0%,0%);
+    animation: showDamageAn 0.5s ease-in 0.05s 1;
+    /* background: linear-gradient(180deg,rgb(104, 161, 236) 7%,rgb(42, 27, 124) 93% ,rgb(86, 83, 230)); */
+
+}
+@keyframes levelUpAn {
+    0%{
+        transform: translate(-45%,-150%);
+    }
+    100%{
+        transform: translate(-45%,-500%);
+    }
+}
+@keyframes showDamageAn {
+    0%{
+        transform: translate(0%,0%);
+    }
+    100%{
+        transform: translate(0%,-300%);
+    }
 }
 
 @media screen and (max-width:770px) {

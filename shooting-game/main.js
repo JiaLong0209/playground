@@ -16,13 +16,13 @@
 // Skill system     v
 // Skill reset      v
 // Player move      v (= and ==)
-// Bullet move with player  v (playerX player.x)
+// Bullet move with player   v (playerX player.x)
+// Skill level up click effects;   v
+// Show damage      v
 // Add physical collision effects 
-// Skill level up click effects;    
 // Add setting button
 // Add Player Speed skill 
 // Enemy information
-// Show damage
 // Weapon system
 // Add unique skill
 // Add different enemy 
@@ -37,8 +37,9 @@ canvas.height = innerHeight - 4; //avoid scroll
 const levelNumber = document.querySelector('.levelNumber')
 const scoreNumber = document.querySelector('.scoreNumber');
 const goldNumber = document.querySelector('.goldNumber');
-const lifeNumber = document.querySelector('.lifeNumber')
+const lifeNumber = document.querySelector('.lifeNumber');
 
+const body = document.querySelector('body');
 const startBtn = document.querySelector('#startBtn');
 const container = document.querySelector('.container');
 const endScore = document.querySelector("#endScore");
@@ -52,61 +53,34 @@ const closeBtn = document.querySelector('.closeBtn');
 const introBox = document.querySelector('.introBox');
 const placeContainer = document.querySelector('.placeContainer');
 
-const skill1 = document.querySelector('.skill1');
-const skill2 = document.querySelector('.skill2');
-const skill3 = document.querySelector('.skill3');
-const skill4 = document.querySelector('.skill4');
-const skill5 = document.querySelector('.skill5');
-const skill6 = document.querySelector('.skill6');
+const skills = [0, document.querySelector('.skill1'),
+    document.querySelector('.skill2'),
+    document.querySelector('.skill3'),
+    document.querySelector('.skill4'),
+    document.querySelector('.skill5'),
+    document.querySelector('.skill6')]
 
-let skill1LV = document.querySelector('.skill1Level');
-let skill2LV = document.querySelector('.skill2Level');
-let skill3LV = document.querySelector('.skill3Level');
-let skill4LV = document.querySelector('.skill4Level');
-let skill5LV = document.querySelector('.skill5Level');
-let skill6LV = document.querySelector('.skill6Level');
+let skillLVs = [0, document.querySelector('.skill1Level'),
+    document.querySelector('.skill2Level'),
+    document.querySelector('.skill3Level'),
+    document.querySelector('.skill4Level'),
+    document.querySelector('.skill5Level'),
+    document.querySelector('.skill6Level')];
 
-let skill1GD = document.querySelector('.skill1Gold');
-let skill2GD = document.querySelector('.skill2Gold');
-let skill3GD = document.querySelector('.skill3Gold');
-let skill4GD = document.querySelector('.skill4Gold');
-let skill5GD = document.querySelector('.skill5Gold');
-let skill6GD = document.querySelector('.skill6Gold');
+let skillGDs = [0, document.querySelector('.skill1Gold'),
+    document.querySelector('.skill2Gold'),
+    document.querySelector('.skill3Gold'),
+    document.querySelector('.skill4Gold'),
+    document.querySelector('.skill5Gold'),
+    document.querySelector('.skill6Gold')];
 
-let skill1Gold = 100;
-let skill2Gold = 200;
-let skill3Gold = 700;
-let skill4Gold = 8000;
-let skill5Gold = 1000;
-let skill6Gold = 100;
-
-let skill1GoldReset = 100;
-let skill2GoldReset = 200;
-let skill3GoldReset = 700;
-let skill4GoldReset = 8000;
-let skill5GoldReset = 1000;
-let skill6GoldReset = 100;
-
-let up1Gold = skill1Gold;
-let up2Gold = skill2Gold;
-let up3Gold = skill3Gold;
-let up4Gold = skill4Gold;
-let up5Gold = skill5Gold;
-let up6Gold = skill6Gold;
-
-let skill1Level = 1;
-let skill2Level = 1;
-let skill3Level = 1;
-let skill4Level = 1;
-let skill5Level = 1;
-let skill6Level = 1;
-
-let skill1buff = 2;
-let skill2buff = 1;
-let skill3buff = 2;
-let skill4buff = 1;
-let skill5buff = 5;
-let skill6buff = 1;
+let skillGolds = [0, 100, 200, 700, 8000, 1000, 100];
+let skillGoldResets = [0, 100, 200, 700, 8000, 1000, 100];
+let upGolds = [0, skillGolds[1], skillGolds[2], skillGolds[3], skillGolds[4], skillGolds[5], skillGolds[6]];
+let upGoldMultiples = [0, 1.08, 1.1, 1.1, 1.07, 1.03, 1.03];
+let skillLevels = [0, 1, 1, 1, 1, 1, 1];
+let skillBuffs = [0, 2, 1, 2, 1, 5, 1];
+let skillTotal = 6;
 
 let gameStart = false;
 let time = 30;
@@ -212,17 +186,19 @@ class Particle {
         this.alpha -= 0.01;
     }
 }
-let friction = 0.96;
 let bulletSpeed = 3;
 let bulletSize = 5;
 let bulletDamage = 8;
 let bulletCount = 1;
+
 let enemyTime = 800;
 let enemySpeed = 1;
 let enemySize = 30;
+
 let particleSpeed = bulletSpeed * 1.5 + enemySpeed;
 let particleCount = 10;
 let particleSize = 2;
+
 let playerX = canvas.width / 2;
 let playerY = canvas.height / 2;
 let playerSpeed = 3;
@@ -234,6 +210,8 @@ let relife = 3;
 let timer = 1000;
 let clearTime = 300;
 let shrinkTime = 20;
+let levelUpTime = 700;
+let showDamageTime = 500;
 
 let score = 0;
 let gold = 1000;
@@ -241,19 +219,21 @@ let hitScore = 10;
 let killScore = 25;
 let hitGold = 10;
 let killGold = 25;
+let friction = 0.96;
 let level = 1;
 let maxLevel = 15;
 
 let enemies = [];
 let projectiles = [];
 let particles = [];
-let player = new Player(playerX, playerY, 20, '#09f9f9');
+let playerSize = 20;
+let player = new Player(playerX, playerY, playerSize, '#09f9f9');
 
 function init() {
     enemies = [];
     projectiles = [];
     particles = [];
-    player = new Player(playerX, playerY, 20, '#09f9f9');
+    player = new Player(playerX, playerY, playerSize, '#09f9f9');
     score = 0;
     scoreNumber.innerHTML = score;
     endScore.innerHTML = score;
@@ -342,7 +322,6 @@ function animate() {
             enemy.y + enemy.radius < 0 ||
             enemy.y - enemy.radius > canvas.height) {
             enemies.splice(index, 1);
-            console.log(enemies);
         }
 
         //end game 
@@ -351,6 +330,17 @@ function animate() {
             enemies.splice(index, 1);
             life -= 1 * level;
             lifeNumber.innerHTML = life;
+            let showDamageElement = document.createElement('i');
+            let showDamageText = document.createTextNode(`-999999999`);
+            showDamageElement.appendChild(showDamageText);
+            showDamageElement.classList.add('showDamage');
+            showDamageElement.style.left = enemy.x + 'px';
+            showDamageElement.style.top = enemy.y + 'px';
+            showDamageElement.style.fontSize = 10 + bulletDamage / 4 + 'px';
+            body.appendChild(showDamageElement);
+            setTimeout(() => {
+                body.removeChild(showDamageElement);
+            }, showDamageTime)
             for (let i = 0; i < particleCount + enemy.radius / 20; i++) {
                 particles.push(new Particle(enemy.x,
                     enemy.y,
@@ -375,6 +365,19 @@ function animate() {
 
             //  when projectile touch enemy
             if (distance - projectile.radius - enemy.radius < -3) {  //數字越大就越外面觸發
+
+                // show bullet Damage 
+                    let showDamageElement = document.createElement('i');
+                    let showDamageText = document.createTextNode(`-${bulletDamage}`);
+                    showDamageElement.appendChild(showDamageText);
+                    showDamageElement.classList.add('showDamage');
+                    showDamageElement.style.left = projectile.x + 'px';
+                    showDamageElement.style.top = projectile.y + 'px';
+                    showDamageElement.style.fontSize = 10 + bulletDamage / 4 + 'px';
+                    body.appendChild(showDamageElement);
+                    setTimeout(() => {
+                        body.removeChild(showDamageElement);
+                    }, showDamageTime)
 
                 // create explosions
                 for (let i = 0; i < particleCount + enemy.radius / 40; i++) {
@@ -439,89 +442,155 @@ function animate() {
 
 }
 // skill up
-skill1.addEventListener("click", () => {
-    if (gold >= skill1Gold) {
-        gold -= skill1Gold;
+skills[1].addEventListener("click", (e) => {
+    if (gold >= skillGolds[1]) {
+        gold -= skillGolds[1];
         goldNumber.innerHTML = gold;
-        skillTotalGold += skill1Gold;
-        up1Gold *= 1.1;
-        skill1Gold += Math.floor(up1Gold);
-        skill1GD.innerHTML = skill1Gold;
-        skill1Level++;
-        skill1LV.innerHTML = skill1Level;
-        bulletDamage += skill1buff;
+        skillTotalGold += skillGolds[1];
+        upGolds[1] *= upGoldMultiples[1];
+        skillGolds[1] += Math.floor(upGolds[1]);
+        skillGDs[1].innerHTML = skillGolds[1];
+        skillLevels[1]++;
+        skillLVs[1].innerHTML = skillLevels[1];
+        bulletDamage += skillBuffs[1];
         particleSize += 0.1;
+        let levelUpElement = document.createElement('i');
+        let levelUpText = document.createTextNode(' Level + 1');
+        levelUpElement.appendChild(levelUpText);
+        levelUpElement.classList.add('skillLevelUp');
+        levelUpElement.style.left = e.clientX + 'px';
+        levelUpElement.style.top = e.clientY + 'px';
+        levelUpElement.style.backgroundColor = `hsl(${Math.random() * 360}, ${Math.random() * 50 + 20 + '%'}, ${Math.random() * 40 + 20 +'%'},0.9)`;
+        body.appendChild(levelUpElement);
+        setTimeout(() => {
+            body.removeChild(levelUpElement);
+        }, levelUpTime)
     };
 })
-skill2.addEventListener("click", () => {
-    if (gold >= skill2Gold) {
-        gold -= skill2Gold;
+skills[2].addEventListener("click", (e) => {
+    if (gold >= skillGolds[2]) {
+        gold -= skillGolds[2];
         goldNumber.innerHTML = gold;
-        skillTotalGold += skill2Gold;
-        up2Gold *= 1.1;
-        skill2Gold += Math.floor(up2Gold);
-        skill2GD.innerHTML = skill2Gold;
-        skill2Level++;
-        skill2LV.innerHTML = skill2Level;
-        bulletSpeed += skill2buff;
+        skillTotalGold += skillGolds[2];
+        upGolds[2] *= upGoldMultiples[2];
+        skillGolds[2] += Math.floor(upGolds[2]);
+        skillGDs[2].innerHTML = skillGolds[2];
+        skillLevels[2]++;
+        skillLVs[2].innerHTML = skillLevels[2];
+        bulletSpeed += skillBuffs[2];
         particleSpeed += 0.8;
+        let levelUpElement = document.createElement('i');
+        let levelUpText = document.createTextNode(' Level + 1');
+        levelUpElement.appendChild(levelUpText);
+        levelUpElement.classList.add('skillLevelUp');
+        levelUpElement.style.left = e.clientX + 'px';
+        levelUpElement.style.top = e.clientY + 'px';
+        levelUpElement.style.backgroundColor = `hsl(${Math.random() * 360}, ${Math.random() * 50 + 20 + '%'}, ${Math.random() * 70 + '%'},0.9)`;
+        body.appendChild(levelUpElement);
+        setTimeout(() => {
+            body.removeChild(levelUpElement);
+        }, levelUpTime)
     };
 })
-skill3.addEventListener("click", () => {
-    if (gold >= skill3Gold) {
-        gold -= skill3Gold;
+skills[3].addEventListener("click", (e) => {
+    if (gold >= skillGolds[3]) {
+        gold -= skillGolds[3];
         goldNumber.innerHTML = gold;
-        skillTotalGold += skill3Gold;
-        up3Gold *= 1.07;
-        skill3Gold += Math.floor(up3Gold);
-        skill3GD.innerHTML = skill3Gold;
-        skill3Level++;
-        skill3LV.innerHTML = skill3Level;
-        bulletSize += skill3buff;
+        skillTotalGold += skillGolds[3];
+        upGolds[3] *= upGoldMultiples[3];
+        skillGolds[3] += Math.floor(upGolds[3]);
+        skillGDs[3].innerHTML = skillGolds[3];
+        skillLevels[3]++;
+        skillLVs[3].innerHTML = skillLevels[3];
+        bulletSize += skillBuffs[3];
         particleSize += 0.2;
         particleCount += 1;
+        let levelUpElement = document.createElement('i');
+        let levelUpText = document.createTextNode(' Level + 1');
+        levelUpElement.appendChild(levelUpText);
+        levelUpElement.classList.add('skillLevelUp');
+        levelUpElement.style.left = e.clientX + 'px';
+        levelUpElement.style.top = e.clientY + 'px';
+        levelUpElement.style.backgroundColor = `hsl(${Math.random() * 360}, ${Math.random() * 50 + 20 + '%'}, ${Math.random() * 70 + '%'},0.9)`;
+        body.appendChild(levelUpElement);
+        setTimeout(() => {
+            body.removeChild(levelUpElement);
+        }, levelUpTime)
     };
 })
-skill4.addEventListener("click", () => {
-    if (gold >= skill4Gold) {
-        gold -= skill4Gold;
+skills[4].addEventListener("click", (e) => {
+    if (gold >= skillGolds[4]) {
+        gold -= skillGolds[4];
         goldNumber.innerHTML = gold;
-        skillTotalGold += skill4Gold;
-        up4Gold *= 1.07;
-        skill4Gold += Math.floor(up4Gold);
-        skill4GD.innerHTML = skill4Gold;
-        skill4Level++;
-        skill4LV.innerHTML = skill4Level;
-        bulletCount += skill4buff;
+        skillTotalGold += skillGolds[4];
+        upGolds[4] *= upGoldMultiples[4];
+        skillGolds[4] += Math.floor(upGolds[4]);
+        skillGDs[4].innerHTML = skillGolds[4];
+        skillLevels[4]++;
+        skillLVs[4].innerHTML = skillLevels[4];
+        bulletCount += skillBuffs[4];
+        let levelUpElement = document.createElement('i');
+        let levelUpText = document.createTextNode(' Level + 1');
+        levelUpElement.appendChild(levelUpText);
+        levelUpElement.classList.add('skillLevelUp');
+        levelUpElement.style.left = e.clientX + 'px';
+        levelUpElement.style.top = e.clientY + 'px';
+        levelUpElement.style.backgroundColor = `hsl(${Math.random() * 360}, ${Math.random() * 50 + 20 + '%'}, ${Math.random() * 70 + '%'},0.9)`;
+        body.appendChild(levelUpElement);
+        setTimeout(() => {
+            body.removeChild(levelUpElement);
+        }, levelUpTime)
     };
 })
-skill5.addEventListener("click", () => {
-    if (gold >= skill5Gold) {
-        gold -= skill5Gold;
+skills[5].addEventListener("click", (e) => {
+    if (gold >= skillGolds[5]) {
+        gold -= skillGolds[5];
         goldNumber.innerHTML = gold;
-        skillTotalGold += skill5Gold;
-        up5Gold *= 1.03;
-        skill5Gold += Math.floor(up5Gold);
-        skill5GD.innerHTML = skill5Gold;
-        skill5Level++;
-        skill5LV.innerHTML = skill5Level;
-        hitGold += skill5buff;
-        killGold += skill5buff * 2;
+        skillTotalGold += skillGolds[5];
+        upGolds[5] *= upGoldMultiples[5];
+        skillGolds[5] += Math.floor(upGolds[5]);
+        skillGDs[5].innerHTML = skillGolds[5];
+        skillLevels[5]++;
+        skillLVs[5].innerHTML = skillLevels[5];
+        hitGold += skillBuffs[5];
+        killGold += skillBuffs[5];
+        let levelUpElement = document.createElement('i');
+        let levelUpText = document.createTextNode(' Level + 1');
+        levelUpElement.appendChild(levelUpText);
+        levelUpElement.classList.add('skillLevelUp');
+        levelUpElement.style.left = e.clientX + 'px';
+        levelUpElement.style.top = e.clientY + 'px';
+        levelUpElement.style.backgroundColor = `hsl(${Math.random() * 360}, ${Math.random() * 50 + 20 + '%'}, ${Math.random() * 70 + '%'},0.9)`;
+        body.appendChild(levelUpElement);
+        setTimeout(() => {
+            body.removeChild(levelUpElement);
+        }, levelUpTime)
     };
 })
-skill6.addEventListener("click", () => {
-    if (gold >= skill6Gold) {
-        gold -= skill6Gold;
+skills[6].addEventListener("click", (e) => {
+    if (gold >= skillGolds[6]) {
+        gold -= skillGolds[6];
         goldNumber.innerHTML = gold;
-        skillTotalGold += skill6Gold;
-        up6Gold *= 1.05;
-        skill6Gold += Math.floor(up6Gold);
-        skill6GD.innerHTML = skill6Gold;
-        skill6Level++;
-        skill6LV.innerHTML = skill6Level;
-        life++;
-        relife++;
+        skillTotalGold += skillGolds[6];
+        upGolds[6] *= upGoldMultiples[6];
+        skillGolds[6] += Math.floor(upGolds[6]);
+        skillGDs[6].innerHTML = skillGolds[6];
+        skillLevels[6]++;
+        skillLVs[6].innerHTML = skillLevels[6];
+        life += skillBuffs[6];
+        relife += skillBuffs[6];
         lifeNumber.innerHTML = relife;
+        let levelUpElement = document.createElement('i');
+        let levelUpText = document.createTextNode(' Level + 1');
+        levelUpElement.appendChild(levelUpText);
+        levelUpElement.classList.add('skillLevelUp');
+        levelUpElement.style.left = e.clientX + 'px';
+        levelUpElement.style.top = e.clientY + 'px';
+        levelUpElement.style.backgroundColor = `hsl(${Math.random() * 360}, ${Math.random() * 50 + 20 + '%'}, ${Math.random() * 70 + '%'},0.9)`;
+        body.appendChild(levelUpElement);
+        setTimeout(() => {
+            body.removeChild(levelUpElement);
+        }, levelUpTime)
     };
 })
 // skill reset
@@ -531,61 +600,41 @@ skillReset.addEventListener('click', () => {
     skillTotalGold = 0;
 
     // skill 1 
-    bulletDamage -= (skill1Level - 1) * skill1buff;
-    particleSize -= (skill1Level - 1) * 0.1;
-
-    skill1Gold = skill1GoldReset;
-    skill1GD.innerHTML = skill1Gold;
-    skill1Level = 1;
-    skill1LV.innerHTML = skill1Level;
+    bulletDamage -= (skillLevels[1] - 1) * skillBuffs[1];
+    particleSize -= (skillLevels[1] - 1) * 0.1;
 
     // skill 2
-    bulletSpeed -= (skill2Level - 1) * skill2buff;
-    particleSpeed -= (skill2Level - 1) * 0.8;
-
-    skill2Gold = skill2GoldReset;
-    skill2GD.innerHTML = skill2Gold;
-    skill2Level = 1;
-    skill2LV.innerHTML = skill2Level;
+    bulletSpeed -= (skillLevels[2] - 1) * skillBuffs[2];
+    particleSpeed -= (skillLevels[2] - 1) * 0.8;
 
     // skill 3
-    bulletSize -= (skill3Level - 1) * skill3buff;
-    particleSize -= (skill3Level - 1) * 0.2;
-    particleCount -= (skill3Level - 1) * 1;
-
-    skill3Gold = skill3GoldReset;
-    skill3GD.innerHTML = skill3Gold;
-    skill3Level = 1;
-    skill3LV.innerHTML = skill3Level;
+    bulletSize -= (skillLevels[3] - 1) * skillBuffs[3];
+    particleSize -= (skillLevels[3] - 1) * 0.2;
+    particleCount -= (skillLevels[3] - 1) * 1;
 
     // skill 4
-    bulletCount -= (skill4Level - 1) * skill4buff;
-    skill4Gold = skill4GoldReset;
-    skill4GD.innerHTML = skill4Gold;
-    skill4Level = 1;
-    skill4LV.innerHTML = skill4Level;
+    bulletCount -= (skillLevels[4] - 1) * skillBuffs[4];
 
     // skill 5
-    hitGold -= (skill5Level - 1) * skill5buff;
-    killGold -= (skill5Level - 1) * skill5buff * 2;
-    skill5Gold = skill5GoldReset;
-    skill5GD.innerHTML = skill5Gold;
-    skill5Level = 1;
-    skill5LV.innerHTML = skill5Level;
+    hitGold -= (skillLevels[5] - 1) * skillBuffs[5];
+    killGold -= (skillLevels[5] - 1) * skillBuffs[5] * 2;
+
     // skill 6
-    life -= (skill6Level - 1) * skill6buff;
-    relife -= (skill6Level - 1) * skill6buff;
+    life -= (skillLevels[6] - 1) * skillBuffs[6];
+    relife -= (skillLevels[6] - 1) * skillBuffs[6];
     lifeNumber.innerHTML = life;
-    skill6Gold = skill6GoldReset;
-    skill6GD.innerHTML = skill6Gold;
-    skill6Level = 1;
-    skill6LV.innerHTML = skill6Level;
+
+    for (let i = 1; i <= skillTotal; i++) {
+        skillGolds[i] = skillGoldResets[i];
+        skillGDs[i].innerHTML = skillGolds[i];
+        skillLevels[i] = 1;
+        skillLVs[i].innerHTML = skillLevels[i];
+    }
 })
 
 // shoot projectile
 window.addEventListener('click', shootFn);
 function shootFn(e) {
-    console.log('shoot')
     let angle = Math.atan2(
         e.clientY - player.y,
         e.clientX - player.x
@@ -719,25 +768,58 @@ introBox.addEventListener('click', () => {
 window.addEventListener('keydown', keydownFn);
 window.addEventListener('keyup', keyupFn);
 // A = 65 ,D = 68 ,S = 83 ,W = 87  
+// left = 37 right = 39 up = 38 down = 40
+let left = false;
+let right = false;
+let up = false;
+let down = false;
 function keydownFn(e) {
 
     switch (e.keyCode) {
-        case 65:
+        case 65: //A
             if (player.x - player.radius < 0) return;
             playerSpeedX = -1 * playerSpeed;
+            left = true;
 
             break;
-        case 68:
+        case 68: //D
             if (player.x + player.radius > canvas.width) return;
             playerSpeedX = 1 * playerSpeed;
+            right = true;
             break;
-        case 83:
+
+        case 83: //S
             if (player.y + player.radius > canvas.height) return;
             playerSpeedY = 1 * playerSpeed;
+            down = true;
             break;
-        case 87:
+        case 87: //W
             if (player.y - player.radius < 0) return;
             playerSpeedY = -1 * playerSpeed;
+            up = true;
+            break;
+
+        case 37: //left
+            if (player.x - player.radius < 0) return;
+            playerSpeedX = -1 * playerSpeed;
+            left = true;
+
+            break;
+        case 39: //right
+            if (player.x + player.radius > canvas.width) return;
+            playerSpeedX = 1 * playerSpeed;
+            right = true;
+            break;
+
+        case 40: //down
+            if (player.y + player.radius > canvas.height) return;
+            playerSpeedY = 1 * playerSpeed;
+            down = true;
+            break;
+        case 38: //up
+            if (player.y - player.radius < 0) return;
+            playerSpeedY = -1 * playerSpeed;
+            up = true;
             break;
     }
 }
@@ -745,22 +827,68 @@ function keyupFn(e) {
 
     switch (e.keyCode) {
         case 65:
-            if (playerSpeedX == 1 * playerSpeed) return;
+            left = false;
+            if (right) {
+                playerSpeedX = 1 * playerSpeed;
+                return;
+            };
             playerSpeedX = 0;
             break;
-
         case 68:
-            if (playerSpeedX == -1 * playerSpeed) return;
+            right = false;
+            if (left) {
+                playerSpeedX = -1 * playerSpeed;
+                return;
+            };
             playerSpeedX = 0;
             break;
-
         case 83:
-            if (playerSpeedY == -1 * playerSpeed) return;
+            down = false;
+            if (up) {
+                playerSpeedY = -1 * playerSpeed;
+                return;
+            };
+            playerSpeedY = 0;
+            break;
+        case 87:
+            up = false;
+            if (down) {
+                playerSpeedY = 1 * playerSpeed;
+                return;
+            };
             playerSpeedY = 0;
             break;
 
-        case 87:
-            if (playerSpeedY == 1 * playerSpeed) return;
+        case 37:
+            left = false;
+            if (right) {
+                playerSpeedX = 1 * playerSpeed;
+                return;
+            };
+            playerSpeedX = 0;
+            break;
+        case 39:
+            right = false;
+            if (left) {
+                playerSpeedX = -1 * playerSpeed;
+                return;
+            };
+            playerSpeedX = 0;
+            break;
+        case 40:
+            down = false;
+            if (up) {
+                playerSpeedY = -1 * playerSpeed;
+                return;
+            };
+            playerSpeedY = 0;
+            break;
+        case 38:
+            up = false;
+            if (down) {
+                playerSpeedY = 1 * playerSpeed;
+                return;
+            };
             playerSpeedY = 0;
             break;
     }
