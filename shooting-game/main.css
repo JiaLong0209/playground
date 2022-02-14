@@ -167,7 +167,7 @@ body {
     background: rgb(82, 82, 82);
     text-align: center;
     width: 30px;
-    right: 2%;
+    right: 7%;
     top: 0.5%;
     display: flex;
     justify-content: center;
@@ -178,6 +178,26 @@ body {
     filter:brightness(1.2);
 }
 
+.settingimg {
+    background: none;
+    position: absolute;
+    z-index: 1;
+    text-align: center;
+    /* background: rgb(58, 58, 58);
+    box-shadow:1px 1px 3px #666; */
+    width: 35px;
+    right: 2%;
+    top: 0.5%;
+    display: flex;
+    justify-content: center;
+    user-select: none;
+}
+.settingimg img:hover{
+    filter: brightness(1.4);
+}
+.settingimg img{
+    width: 100%;
+}
 .level,
 .levelBox,
 .levelNumber {
@@ -232,7 +252,7 @@ body {
     position: absolute;
     display: flex;
     user-select: none;
-    right: 7%;
+    right: 12%;
 }
 
 .time,
@@ -394,6 +414,64 @@ body {
 
 }
 
+
+.settingContainer {
+    position: absolute;
+    width: 100%;
+    height: 100vh;
+    display: none;
+    justify-content: center;
+    position: fixed;
+    z-index: 2;
+    background: rgba(0, 0, 0, 0.3);
+}
+
+.settingContainer .settingBox {
+    position: relative;
+    width: 60%;
+    z-index: 3;
+    top: 15%;
+    height: 70%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+    background: rgb(51, 51, 51);
+    border-radius: 20px;
+    box-shadow: 5px 5px 3px #3335;
+
+}
+
+.settingBox h1 {
+    position: relative;
+    margin-bottom: 10px;
+    font-size: 30px;
+    color: #ddd;
+    letter-spacing: 2px;
+}
+.settingBox span{
+    font-size: 20px;
+    color: #ddd;
+}
+.settingBox ul{
+    position: relative;
+    width: 60%;
+    padding-left: 0px;
+}
+.settingBox li {
+    list-style: none;
+    display: flex;
+    justify-content:space-between;
+}
+.settingBox .check{
+    display: inline-block;
+    position: relative;
+    width: 1.1em;
+    height: 1.1em;
+    border: 1px solid #fff;
+    background: rgba(255, 255, 255, 0);
+}
+
 .placeContainer {
     position: absolute;
     width: 100%;
@@ -501,7 +579,7 @@ body {
     left: -5%;
 }
 
-.placeBox .closeBtn {
+.closeBtn {
     position: absolute;
     display: flex;
     justify-content: center;
@@ -511,13 +589,14 @@ body {
     height: 30px;
     top: 0%;
     right: 0%;
+    user-select: none;
     background: rgb(255, 145, 145);
     color: #fff;
     border-top-right-radius: 20px;
     border-bottom-left-radius: 10px;
 }
 
-.placeBox .closeBtn:hover {
+.closeBtn:hover {
     background: rgb(255, 68, 68);
 }
 
@@ -623,6 +702,23 @@ body {
     .introBox {
         width: 20px;
     }
+    .settingimg {
+        min-width: 23px;
+        top: 3%;
+    }
+    .settingBox h1 {
+        font-size: 23px;
+    }
+    .settingBox span {
+        font-size: 14px;
+    }
+    .settingBox li{
+        margin-bottom: 3px;
+    }
+    .settingBox .check{
+        min-width: 1.1em;
+    }
+    
     .placeBox h1{
         font-size: 23px;
     }

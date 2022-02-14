@@ -24,6 +24,7 @@
         <div class="goldBox"><span class="gold">Gold: </span><span class="goldNumber">1000</span></div>
         <div class="lifeBox"><span class="life">Life: </span><span class="lifeNumber">3</span></div>
         <div class="introBox"><span class="intro">?</span></div>
+        <div class="settingimg"><img  src="image/setting-icon02.png"></div>
         <div class="levelBox"><span class="level">
                 <span class="levelDown">
                     < </span>
@@ -54,7 +55,11 @@
                     </span></span></li>
 
                 <li class="skill2">Level: <span class="skill2Level">0 </span>BulletSpeed + 1</span><span class="skillGoldBox">
-                        <p>Gold : <span class="skill2Gold">200</span></p>
+                        <p>Gold : <span class="skill2Gold">300</span></p>
+                    </span></span></li>
+
+                <li class="skill9">Level: <span class="skill9Level">0 </span>BulletRepulsion + 1</span><span class="skillGoldBox">
+                        <p>Gold : <span class="skill9Gold">100</span></p>
                     </span></span></li>
 
                 <li class="skill3">Level: <span class="skill3Level">0 </span>BulletSize + 1</span><span class="skillGoldBox">
@@ -87,11 +92,23 @@
             </div>
         </div>
     </div>
+    <div class="settingContainer">
+        <div class="settingBox">
+            <div class="closeBtn" id="settingCloseBtn">X</div>
+            <h1>Setting</h1>
+            <ul>
+                <li><span>Particle Effects</span><div class="check" id="check1"></div></li>
+                <li><span>Show Damage</span><div class="check" id="check2"></div></li>
+                <li><span>Show afterimage</span><div class="check" id="check3"></div></li>
+                <li><span>Show skill levelup animation</span><div class="check" id="check4"></div></li>
+            </ul>
+        </div>
+    </div>
     <div class="placeContainer">
 
         <div class="placeBox">
 
-            <div class="closeBtn">X</div>
+            <div class="closeBtn" id="introCloseBtn">X</div>
             <h1>Game Introduction</h1>
             <div class="dash"></div>
             <div class="scrollBox">
@@ -106,6 +123,19 @@
                     <div class="versionBox">
 
                         <div class="version">
+                            Version 1.31
+                            <span class="date">
+                                2022/02/14
+                            </span>
+                        </div>
+                        <ul class="update">
+                            <li>added bullet physics collision system</li>
+                            <li>added 1 new skill</li>
+                            <li>added setting button</li>
+                            <li>fixed skill golds bug</li>
+                        </ul>
+
+                        <div class="version">
                             Version 1.3
                             <span class="date">
                                 2022/02/13
@@ -113,6 +143,7 @@
                         </div>
                         <ul class="update">
                             <li>added critical strike system</li>
+                            <li>added 2 new skills</li>
                             <li>added random damage buff</li>
                             <li>fixed skill level UI bug</li>
                             <li>optimized the code (1070 lines reduced to 860 lines)</li>
@@ -155,7 +186,7 @@
                         <ul class="update">
                             <li>added life system</li>
                             <li>added player move</li>
-                            <li>added new skill</li>
+                            <li>added 1 new skill</li>
                             <li>added Game Introduction</li>
                             <li>added Game Update Log</li>
                             <li>added scroll</li>

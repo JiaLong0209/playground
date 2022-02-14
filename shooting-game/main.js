@@ -18,10 +18,10 @@
 // Player move      v (= and ==)
 // Bullet move with player   v (playerX player.x)
 // Skill level up click effects;   v
-// Show damage      v
-// Add random damage
+// Add random damage   v
+// Show damage  v
+// Add setting button   v
 // Add physical collision effects 
-// Add setting button
 // Add Player Speed skill 
 // Enemy information
 // Weapon system
@@ -49,18 +49,36 @@ const levelDown = document.querySelector('.levelDown');
 const breakText = document.querySelector('#breakText');
 const lastLevel = document.querySelector('#lastLevel');
 const skillReset = document.querySelector('.resetBtn');
-const closeBtn = document.querySelector('.closeBtn');
+
+const closeBtn = document.querySelector('#introCloseBtn');
 const introBox = document.querySelector('.introBox');
 const placeContainer = document.querySelector('.placeContainer');
 
-const skills = [document.querySelector('.skill1'),
+const settingCloseBtn = document.querySelector('#settingCloseBtn');
+const settingimg = document.querySelector('.settingimg');
+const settingContainer = document.querySelector('.settingContainer');
+
+const settingChecks = [
+document.querySelector('#check1'),
+document.querySelector('#check2'),
+document.querySelector('#check3'),
+document.querySelector('#check4')];
+
+let isCheck = [true,true,true,true];
+let isParticleEffect = true;
+let isShowDamage = true;
+let isShowAfterimage = true;
+
+const skills = [
+document.querySelector('.skill1'),
 document.querySelector('.skill2'),
 document.querySelector('.skill3'),
 document.querySelector('.skill4'),
 document.querySelector('.skill5'),
 document.querySelector('.skill6'),
 document.querySelector('.skill7'),
-document.querySelector('.skill8')];
+document.querySelector('.skill8'),
+document.querySelector('.skill9')];
 
 let skillLVs = [0, document.querySelector('.skill1Level'),
     document.querySelector('.skill2Level'),
@@ -69,7 +87,8 @@ let skillLVs = [0, document.querySelector('.skill1Level'),
     document.querySelector('.skill5Level'),
     document.querySelector('.skill6Level'),
     document.querySelector('.skill7Level'),
-    document.querySelector('.skill8Level')];
+    document.querySelector('.skill8Level'),
+    document.querySelector('.skill9Level')];
 
 let skillGDs = [0, document.querySelector('.skill1Gold'),
     document.querySelector('.skill2Gold'),
@@ -78,16 +97,17 @@ let skillGDs = [0, document.querySelector('.skill1Gold'),
     document.querySelector('.skill5Gold'),
     document.querySelector('.skill6Gold'),
     document.querySelector('.skill7Gold'),
-    document.querySelector('.skill8Gold')];
+    document.querySelector('.skill8Gold'),
+    document.querySelector('.skill9Gold')];
 
-let skillGolds = [0, 100, 200, 400, 8000, 1000, 100, 1000, 500];
-let skillGoldResets = [0, 100, 200, 400, 8000, 1000, 100, 1000, 500];
-let upGolds = [0, skillGolds[1], skillGolds[2], skillGolds[3], skillGolds[4], skillGolds[5], skillGolds[6], skillGolds[7], skillGolds[8]];
-let upGoldMultiples = [0, 1.07, 1.1, 1.1, 1.07, 1.03, 1.03, 1.2, 1.1];
-let skillLevels = [0, 0, 0, 0, 0, 0, 0, 0, 0];
-let skillBuffs = [0, 2, 1, 1, 1, 5, 1, 0.05, 0.1];
-let skillMaxLevels = [0, -1, 100, 100, 100, -1, -1, 19, -1]
-let skillTotal = 8;
+let skillGolds = [0, 100, 300, 400, 8000, 1000, 100, 1000, 500, 100];
+let skillGoldResets = [0, 100, 300, 400, 8000, 1000, 100, 1000, 500, 100];
+let upGolds = [0, skillGolds[1], skillGolds[2], skillGolds[3], skillGolds[4], skillGolds[5], skillGolds[6], skillGolds[7], skillGolds[8], skillGolds[9]];
+let upGoldMultiples = [0, 1.07, 1.1, 1.1, 1.07, 1.02, 1.03, 1.25, 1.15, 1.05];
+let skillLevels = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+let skillBuffs = [0, 2, 1, 1, 1, 5, 1, 0.05, 0.1, 0.1];
+let skillMaxLevels = [0, -1, 50, 100, 100, -1, -1, 19, -1, 100]
+let skillTotal = 9;
 let gameStart = false;
 let time = 30;
 let levelBreak = [false];
@@ -136,12 +156,13 @@ class Projectile {
 }
 // Enemy
 class Enemy {
-    constructor(x, y, radius, color, velocity) {
+    constructor(x, y, radius, color, velocity, repulsion) {
         this.x = x;
         this.y = y;
         this.radius = radius;
         this.color = color;
         this.velocity = velocity;
+        this.repulsion = repulsion;
     }
     draw() {
         c.beginPath();
@@ -154,6 +175,8 @@ class Enemy {
         this.draw();
         this.x += this.velocity.x * enemySpeed;
         this.y += this.velocity.y * enemySpeed;
+        this.x += this.repulsion.x * bulletRepulsion;
+        this.y += this.repulsion.y * bulletRepulsion;
     }
 }
 // the touch particle
@@ -188,6 +211,8 @@ let bulletSpeed = 3;
 let bulletSize = 5;
 let bulletDamage = 8;
 let bulletCount = 1;
+let bulletRepulsion = 1;
+let repulsionTime = 100;
 let criticalRate = 0.05;
 let criticalDamage = 1.5;
 
@@ -220,6 +245,7 @@ let killScore = 25;
 let hitGold = 10;
 let killGold = 25;
 let friction = 0.96;
+
 let level = 1;
 let maxLevel = 15;
 let stage = 1;
@@ -231,6 +257,8 @@ if (developerMode) {
     bulletSize = 5;
     bulletDamage = 8;
     bulletCount = 1;
+    bulletRepulsion = 1;
+    repulsionTime = 100;
     criticalRate = 0.1;
     criticalDamage = 2;
     level = 3;
@@ -241,6 +269,7 @@ if (developerMode) {
 let enemies = [];
 let projectiles = [];
 let particles = [];
+
 let playerSize = 20;
 let player = new Player(playerX, playerY, playerSize, '#09f9f9');
 
@@ -285,22 +314,30 @@ function spawnEnemies() {
                 color = `hsl(${Math.random() * 360}, 58%, 58%)`
             }
         }
-        const angle = Math.atan2(
+        let angle = Math.atan2(
             playerY - y,
             playerX - x
         )
-        const velocity = {
+        let velocity = {
             x: (Math.cos(angle)),
             y: (Math.sin(angle))
         }
-        enemies.push(new Enemy(x, y, radius, color, velocity));
+        let repulsion = {
+            x: 0,
+            y: 0
+        };
+        enemies.push(new Enemy(x, y, radius, color, velocity, repulsion));
     }, enemyTime - level * 45)
 }
 
 let animationId
 function animate() {
     animationId = requestAnimationFrame(animate);
+    if(isCheck[2]){
     c.fillStyle = "rgba(0,0,0,0.2)"
+    }else{
+    c.fillStyle = "rgba(0,0,0,1)"
+    }
     c.fillRect(0, 0, canvas.width, canvas.height);
     player.draw();
     player.update();
@@ -353,6 +390,7 @@ function animate() {
                 body.removeChild(showDamageElement);
             }, showDamageTime)
             for (let i = 0; i < particleCount + enemy.radius / 20; i++) {
+                if (!isCheck[0]) continue;
                 particles.push(new Particle(enemy.x,
                     enemy.y,
                     Math.random() * particleSize * 0.1 + enemy.radius * 0.1 + 1,
@@ -380,7 +418,6 @@ function animate() {
                 let isCritical;
                 // When critical
                 if (Math.random() < criticalRate) {
-                    console.log('critical');
                     finalDamage *= criticalDamage;
                     finalDamage = Math.floor(finalDamage);
                     isCritical = true;
@@ -388,17 +425,19 @@ function animate() {
                 else {
                     isCritical = false;
                 }
-                console.log(finalDamage);
                 // show bullet Damage 
                 let showDamageElement = document.createElement('i');
                 let showDamageText = document.createTextNode(`-${finalDamage}`);
                 showDamageElement.appendChild(showDamageText);
+                //if show damage
+                if(isCheck[1]){
                 if (isCritical) {
                     showDamageElement.classList.add('showCriticalDamage');
                     showDamageElement.style.fontSize = 15 + bulletDamage / 4 + 'px';
                 } else {
                     showDamageElement.classList.add('showDamage');
                     showDamageElement.style.fontSize = 15 + bulletDamage / 8 + 'px';
+                }
                 }
                 showDamageElement.style.left = projectile.x + 'px';
                 showDamageElement.style.top = projectile.y + 'px';
@@ -409,6 +448,7 @@ function animate() {
 
                 // create explosions
                 for (let i = 0; i < particleCount + enemy.radius / 40; i++) {
+                    if (!isCheck[0]) continue;
                     particles.push(new Particle(projectile.x,
                         projectile.y,
                         Math.random() * particleSize + enemy.radius * 0.02 + 1,
@@ -422,12 +462,26 @@ function animate() {
 
                 let enemyShrink;
                 if (enemy.radius - finalDamage > 10) {
-
+                    let angle = Math.atan2 (enemy.y - projectile.y,
+                                            enemy.x - projectile.x);
+                    let repulsionX = Math.cos(angle);
+                    let repulsionY = Math.sin(angle);
+                    enemy.repulsion = {
+                        x: repulsionX,
+                        y: repulsionY 
+                    }
+                    setTimeout(()=>{
+                        enemy.repulsion = {
+                            x: 0,
+                            y: 0
+                        }
+                    },repulsionTime);
                     // increase our score
                     score += hitScore;
                     scoreNumber.innerHTML = score;
                     gold += hitGold + level * 2;
                     goldNumber.innerHTML = gold;
+
                     //shrink animation
                     // enemyShrink = setInterval(() => {
                     //     enemy.radius -= bulletDamage / (clearTime / shrinkTime);
@@ -436,6 +490,7 @@ function animate() {
                     // setTimeout(() => {
                     //     clearInterval(enemyShrink);
                     // }, clearTime);
+
                     gsap.to(enemy, {
                         radius: enemy.radius - finalDamage
                     })
@@ -443,6 +498,7 @@ function animate() {
                 else if (enemy.radius - finalDamage < 10) {
                     clearInterval(enemyShrink);
                     for (let i = 0; i < particleCount + enemy.radius / 20; i++) {
+                        if (!isCheck[0]) continue;
                         particles.push(new Particle(enemy.x,
                             enemy.y,
                             Math.random() * particleSize * 0.1 + enemy.radius * 0.1 + 1,
@@ -467,6 +523,7 @@ function animate() {
 }
 // skill up
 function levelUpAnFn(e) {
+    if(isCheck[3]){
     let levelUpElement = document.createElement('i');
     let levelUpText = document.createTextNode(' Level + 1');
     levelUpElement.appendChild(levelUpText);
@@ -479,6 +536,7 @@ function levelUpAnFn(e) {
         body.removeChild(levelUpElement);
     }, levelUpTime)
 }
+}
 function skillLevelUpFn(i) {
     if (skillLevels[i] == skillMaxLevels[i]) return;
     if (gold >= skillGolds[i]) {
@@ -490,40 +548,43 @@ function skillLevelUpFn(i) {
         skillGDs[i].innerHTML = skillGolds[i];
         skillLevels[i]++;
         skillLVs[i].innerHTML = skillLevels[i];
-        
-    switch (i) {
-        case 1://skill 1
-            bulletDamage += skillBuffs[i];
-            particleSize += 0.1;
-            break;
-        case 2:
-            bulletSpeed += skillBuffs[i];
-            particleSpeed += 0.8;
-            break;
-        case 3:
-            bulletSize += skillBuffs[i];
-            particleSize += 0.2;
-            particleCount += 1;
-            break;
-        case 4:
-            bulletCount += skillBuffs[i];
-            break;
-        case 5:
-            hitGold += skillBuffs[i];
-            killGold += skillBuffs[i];
-            break;
-        case 6:
-            life += skillBuffs[i];
-            relife += skillBuffs[i];
-            lifeNumber.innerHTML = relife;
-            break;
-        case 7:
-            criticalRate += skillBuffs[i];
-            break;
-        case 8:
-            criticalDamage += skillBuffs[i];
-            break;
-    }
+
+        switch (i) {
+            case 1://skill 1
+                bulletDamage += skillBuffs[i];
+                particleSize += 0.1;
+                break;
+            case 2:
+                bulletSpeed += skillBuffs[i];
+                particleSpeed += 0.8;
+                break;
+            case 3:
+                bulletSize += skillBuffs[i];
+                particleSize += 0.2;
+                particleCount += 1;
+                break;
+            case 4:
+                bulletCount += skillBuffs[i];
+                break;
+            case 5:
+                hitGold += skillBuffs[i];
+                killGold += skillBuffs[i];
+                break;
+            case 6:
+                life += skillBuffs[i];
+                relife += skillBuffs[i];
+                lifeNumber.innerHTML = relife;
+                break;
+            case 7:
+                criticalRate += skillBuffs[i];
+                break;
+            case 8:
+                criticalDamage += skillBuffs[i];
+                break;
+            case 9:
+                bulletRepulsion += skillBuffs[i];
+                break;
+        }
     }
     if (skillLevels[i] == skillMaxLevels[i]) {
         skillGDs[i].innerHTML = 'Max Level';
@@ -575,9 +636,13 @@ skillReset.addEventListener('click', () => {
     // skill 8
     criticalDamage -= (skillLevels[8]) * skillBuffs[8];
 
+    // skill 9
+    bulletRepulsion -= (skillLevels[9]) * skillBuffs[9];
+
     for (let i = 1; i <= skillTotal; i++) {
         skillGolds[i] = skillGoldResets[i];
         skillGDs[i].innerHTML = skillGolds[i];
+        upGolds[i] = skillGolds[i];
         skillLevels[i] = 0;
         skillLVs[i].innerHTML = skillLevels[i];
     }
@@ -691,6 +756,29 @@ closeBtn.addEventListener('click', () => {
 introBox.addEventListener('click', () => {
     placeContainer.style.display = 'flex';
 })
+//close and open setting
+settingCloseBtn.addEventListener('click', () => {
+    settingContainer.style.display = 'none';
+})
+settingimg.addEventListener('click', () => {
+    settingContainer.style.display = 'flex';
+})
+//setting check 
+settingChecks.forEach(function(item,i){
+    item.addEventListener('click',()=>{
+        CheckFn(i);
+    })
+})
+
+function CheckFn(i){
+    if(isCheck[i] == true){
+        isCheck[i] = false;
+        settingChecks[i].style.backgroundColor = '#fff';
+    }else{
+        isCheck[i] = true;
+        settingChecks[i].style.backgroundColor = '#fff0';
+    }
+}
 
 // player move
 window.addEventListener('keydown', keydownFn);
