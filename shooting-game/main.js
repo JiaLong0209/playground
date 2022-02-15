@@ -21,12 +21,13 @@
 // Add random damage   v
 // Show damage  v
 // Add setting button   v
-// Add physical collision effects 
-// Add Player Speed skill 
+// Add physical collision effects  v (atan2,angle)
+// Add DEV mode     v (HTML little mistake ,one less </div>)
+// Add Player Speed skill    
+// Add different enemy 
 // Enemy information
 // Weapon system
 // Add unique skill
-// Add different enemy 
 
 const canvas = document.querySelector('canvas');
 const c = canvas.getContext('2d');  //ctx api
@@ -56,7 +57,29 @@ const placeContainer = document.querySelector('.placeContainer');
 
 const settingCloseBtn = document.querySelector('#settingCloseBtn');
 const settingimg = document.querySelector('.settingimg');
-const settingContainer = document.querySelector('.settingContainer');
+const settingContainer = document.querySelector('#settingContainer');
+
+const devBtn = document.querySelector('#devBtn')
+const devPassword = document.querySelector('#devPassword')
+const devText = document.querySelector('#devText')
+const devSettingContainer = document.querySelector('#devSettingContainer');
+const devCloseBtn = document.querySelector('#devCloseBtn');
+
+const devDatas = [
+    document.querySelector('#devData1'),
+    document.querySelector('#devData2'),
+    document.querySelector('#devData3'),
+    document.querySelector('#devData4'),
+    document.querySelector('#devData5'),
+    document.querySelector('#devData6'),
+    document.querySelector('#devData7'),
+    document.querySelector('#devData8'),
+    document.querySelector('#devData9'),
+    document.querySelector('#devData10'),
+    document.querySelector('#devData11'),
+    document.querySelector('#devData12'),
+]
+
 
 const settingChecks = [
 document.querySelector('#check1'),
@@ -217,6 +240,7 @@ let criticalRate = 0.05;
 let criticalDamage = 1.5;
 
 let enemyTime = 800;
+let enemyTimeReduce = 36.5;
 let enemySpeed = 1;
 let enemySize = 30;
 
@@ -250,8 +274,8 @@ let level = 1;
 let maxLevel = 15;
 let stage = 1;
 
-let developerMode = false;
-if (developerMode) {
+let devMode = false;
+if (devMode) {
     gold = 1000000000000;
     bulletSpeed = 5;
     bulletSize = 5;
@@ -327,7 +351,7 @@ function spawnEnemies() {
             y: 0
         };
         enemies.push(new Enemy(x, y, radius, color, velocity, repulsion));
-    }, enemyTime - level * 45)
+    }, enemyTime - level * enemyTimeReduce)
 }
 
 let animationId
@@ -779,6 +803,120 @@ function CheckFn(i){
         settingChecks[i].style.backgroundColor = '#fff0';
     }
 }
+// dev mode
+devBtn.addEventListener('click',()=>{
+    if(devPassword.value == '1234'){
+        devMode = true;
+        devText.style.display = "inline";
+    }else{
+        devMode = false;
+        devPassword.value = '';
+        devText.style.display = "none";
+    }
+    
+})
+// open and close dev setting
+devText.addEventListener('click',()=>{
+    devSettingContainer.style.display = 'flex';
+    devDatas.forEach(function(item,i){
+        switch (i+1){
+            case 1:
+                devDatas[i].value = bulletDamage;
+                break;
+            case 2:
+                devDatas[i].value = bulletSpeed;
+                break;
+            case 3:
+                devDatas[i].value = bulletRepulsion;
+                break;
+            case 4:
+                devDatas[i].value = bulletSize;
+                break;
+            case 5:
+                devDatas[i].value = bulletCount;
+                break;
+            case 6:
+                devDatas[i].value = criticalRate;
+                break;
+            case 7:
+                devDatas[i].value = criticalDamage;
+                break;
+            case 8:
+                devDatas[i].value = hitGold;
+                break;
+            case 9:
+                devDatas[i].value = gold;
+                break;
+            case 10:
+                devDatas[i].value = life;
+                break;
+            case 11:
+                devDatas[i].value = level;
+                break;
+            case 12:
+                devDatas[i].value = maxLevel;
+                break;
+        }
+    })
+})
+devCloseBtn.addEventListener('click',()=>{
+    devSettingContainer.style.display = 'none';
+})
+
+//dev save btn
+devSaveBtn.addEventListener('click',()=>{
+    devDatas.forEach(function(item,i){
+        switch (i+1){
+            case 1:
+                bulletDamage = Math.round(devDatas[i].value);
+                break;
+            case 2:
+                bulletSpeed = Math.round(devDatas[i].value);
+                break;
+            case 3:
+                bulletRepulsion = Math.round(devDatas[i].value);
+                break;
+            case 4:
+                bulletSize = Math.round(devDatas[i].value);
+                break;
+            case 5:
+                bulletCount = Math.round(devDatas[i].value);
+                break;
+            case 6:
+                criticalRate = Math.round(devDatas[i].value);
+                break;
+            case 7:
+                criticalDamage = Math.round(devDatas[i].value);
+                break;
+            case 8:
+                hitGold = Math.round(devDatas[i].value);
+                killGold = Math.round(devDatas[i].value)*2;
+                break;
+            case 9:
+                gold = Math.round(devDatas[i].value);
+                goldNumber.innerHTML = gold;
+                break;
+            case 10:
+                life = Math.round(devDatas[i].value);
+                relife = Math.round(devDatas[i].value);
+                lifeNumber.innerHTML = life;
+                break;
+            case 11:
+                level = Math.round(devDatas[i].value);
+                break;
+            case 12:
+                maxLevel = Math.round(devDatas[i].value);
+                levelBreak=[];
+                for(let i = 0;i < maxLevel ;i++){
+                    levelBreak.push(true);
+                }
+                break;
+        }
+    })
+})
+
+
+
 
 // player move
 window.addEventListener('keydown', keydownFn);

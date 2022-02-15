@@ -429,7 +429,7 @@ body {
 .settingContainer .settingBox {
     position: relative;
     width: 60%;
-    z-index: 3;
+    z-index: 2;
     top: 15%;
     height: 70%;
     display: flex;
@@ -444,7 +444,7 @@ body {
 
 .settingBox h1 {
     position: relative;
-    margin-bottom: 10px;
+    margin-bottom: 3px;
     font-size: 30px;
     color: #ddd;
     letter-spacing: 2px;
@@ -454,7 +454,9 @@ body {
     color: #ddd;
 }
 .settingBox ul{
+    overflow-y: auto;
     position: relative;
+    max-height: 40%;
     width: 60%;
     padding-left: 0px;
 }
@@ -471,7 +473,91 @@ body {
     border: 1px solid #fff;
     background: rgba(255, 255, 255, 0);
 }
+.devModeBox{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    position: relative;
+    width: 60%;
+    justify-content: center;
+    align-items: center;
 
+}
+.devModeBox p{
+    font-size: 20px;
+    color: #ddd;
+    margin: 0;
+    line-height: 30px;
+    margin-bottom: 10px;
+}
+.devModeBox input[type='password']{
+    background: rgb(228, 228, 228);
+    height: 2em;
+    width: 30%;
+    outline: none;
+    margin-bottom: 10px;
+    border: 2px solid rgb(0, 0, 0);
+}
+.devModeBox input[type='button']{
+    background: rgb(27, 27, 27);
+    height: 2em;
+    width: 4em;
+    transition: 0.3s;
+    margin-bottom: 10px;
+    outline: none;
+    color: rgb(204, 204, 204);
+    border: 2px solid rgb(0, 0, 0);
+}
+.devModeBox input[type='button']:hover{
+    background: rgb(202, 202, 202);
+    color: #333;
+}
+.devModeBox .devText{
+    display: none;
+    background: rgb(151, 5, 5);
+    border: 1.5px solid rgb(233, 233, 233);
+    padding: 3px;
+    color: #f1f1f1;
+    font-size: 15px;
+    transition: 0.2s;
+}
+.devModeBox .devText:hover{
+    background: rgb(39, 39, 39);
+}
+#devSettingContainer{
+    display: none;
+    z-index: 2;
+}
+#devSettingContainer ul li input[type='text']{
+    outline: none;
+}
+#devSettingContainer .settingBox ul{
+    padding-right: 5px;
+    overflow-y: auto;
+    max-height: 60%;
+}
+#devSettingContainer .settingBox ul li{
+    margin-bottom: 3px;
+}
+#devSettingContainer .settingBox{
+    z-index: 2;
+}
+#devSaveBtn {
+    position: absolute;
+    bottom: 10%;
+    font-size: 20px;
+    background: rgb(32, 32, 32);
+    color: rgb(233, 233, 233);
+    border: 1.5px solid rgb(148, 239, 245);
+    transition: 0.3s;
+}
+#devSaveBtn:hover{
+    background: #ccc;
+    color: #333;
+}
+#devSavaBtn:active{
+    transform: scale(1.1);
+}
 .placeContainer {
     position: absolute;
     width: 100%;
@@ -479,7 +565,7 @@ body {
     display: flex;
     justify-content: center;
     position: fixed;
-    z-index: 2;
+    z-index: 4;
     background: rgba(0, 0, 0, 0.3);
 }
 

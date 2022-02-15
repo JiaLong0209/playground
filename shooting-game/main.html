@@ -92,22 +92,27 @@
             </div>
         </div>
     </div>
-    <div class="settingContainer">
-        <div class="settingBox">
-            <div class="closeBtn" id="settingCloseBtn">X</div>
-            <h1>Setting</h1>
-            <ul>
-                <li><span>Particle Effects</span><div class="check" id="check1"></div></li>
-                <li><span>Show Damage</span><div class="check" id="check2"></div></li>
-                <li><span>Show afterimage</span><div class="check" id="check3"></div></li>
-                <li><span>Show skill levelup animation</span><div class="check" id="check4"></div></li>
-            </ul>
+    <div class="settingContainer" id="settingContainer">
+            <div class="settingBox">
+                <div class="closeBtn" id="settingCloseBtn">X</div>
+                <h1>Setting</h1>
+                <ul>
+                    <li><span>Particle Effects</span><div class="check" id="check1"></div></li>
+                    <li><span>Show Damage</span><div class="check" id="check2"></div></li>
+                    <li><span>Show afterimage</span><div class="check" id="check3"></div></li>
+                    <li><span>Show skill levelup animation</span><div class="check" id="check4"></div></li>
+                </ul>
+                <h1>DEV Mode</h1>
+                <div class="devModeBox">
+                    <p>DEV password:</p>
+                    <input type="password" id="devPassword">
+                    <input type="button" id="devBtn" value="Login">
+                    <div class="devText" id="devText">DEV Setting</div>
+                </div>
+            </div>
         </div>
-    </div>
     <div class="placeContainer">
-
         <div class="placeBox">
-
             <div class="closeBtn" id="introCloseBtn">X</div>
             <h1>Game Introduction</h1>
             <div class="dash"></div>
@@ -115,13 +120,23 @@
                 <div class="scroll">
                     <p>Hello!! Welcome to my first shooting game, this game is reference from the HTML5 Game Tutorial on
                         YouTube,the URL is <a href="https://youtu.be/eI9idPTT0c4 "
-                            target="blank">https://youtu.be/eI9idPTT0c4</a></p><p> When you click the start button,you can move youself by pressing 'A' 'W' 'D' 'S', you can also click and shoot bullets,and when your bullet hits or kills the enemy, you will get the golds, these golds can be used to upgrade the skills, and Reset Skill button can reset your skill,and keeps your previous golds . There are 15 levels in this game,your goal is survive to 30 seconds, when time's up, you can go to the next level, although you hava broken the level, you also can enter the previous levels, these previous level can not be countdown.When you break the last level, you will get the reward. By the way,this game can not be saved, so if you press 'F5', your data will be gone,and if you want to look code which I wrote, you can press 'Ctrl + U' or go to my Github:<a href="https://github.com/JiaLong0209/playground/tree/main/shooting-game">https://github.com/JiaLong0209/playground/tree/main/shooting-game</a> This is my game introducion, hope you have fun.
+                            target="blank">https://youtu.be/eI9idPTT0c4</a></p><p> When you click the start button,you can move youself by pressing 'A' 'W' 'D' 'S', you can also click and shoot bullets,and when your bullet hits or kills the enemy, you will get the golds, these golds can be used to upgrade the skills, and Reset Skill button can reset your skill,and keeps your previous golds . There are 20 levels in this game,your goal is survive to 30 seconds, when time's up, you can go to the next level, although you hava broken the level, you also can enter the previous levels, these previous level can not be countdown.When you break the last level, you will get the reward. By the way,this game can not be saved, so if you press 'F5', your data will be gone,and if you want to look code which I wrote, you can press 'Ctrl + U' or go to my Github:<a href="https://github.com/JiaLong0209/playground/tree/main/shooting-game">https://github.com/JiaLong0209/playground/tree/main/shooting-game</a> This is my game introducion, hope you have fun.
                     </p>
                     <h2>
                         Game Update Log
                     </h2>
                     <div class="versionBox">
 
+                        <div class="version">
+                            Version 1.32
+                            <span class="date">
+                                2022/02/15
+                            </span>
+                        </div>
+                        <ul class="update">
+                            <li>added Developer mode</li>
+                            <li>increased to 20 levels</li>
+                        </ul>
                         <div class="version">
                             Version 1.31
                             <span class="date">
@@ -289,9 +304,29 @@
                         </ul>
                     </div>
                 </div>
-
             </div>
-
+        </div>
+    </div>
+    
+    <div class="settingContainer" id='devSettingContainer'>
+        <div class="settingBox">
+            <div class="closeBtn" id="devCloseBtn">X</div>
+            <h1>DEV Setting</h1>
+            <ul>
+                <li><span>BulletDamage:</span><input type="text" id="devData1" value=""></li>
+                <li><span>BulletSpeed:</span><input type="text" id="devData2" value=""></li>
+                <li><span>BulletRepulsion:</span><input type="text" id="devData3" value=""></li>
+                <li><span>BulletSize:</span><input type="text" id="devData4" value=""></li>
+                <li><span>BulletCount:</span><input type="text" id="devData5" value=""></li>
+                <li><span>CriticalRate:</span><input type="text" id="devData6" value=""></li>
+                <li><span>CriticalDamage:</span><input type="text" id="devData7" value=""></li>
+                <li><span>GetGold:</span><input type="text" id="devData8" value=""></li>
+                <li><span>Golds</span><input type="text" id="devData9" value=""></li>
+                <li><span>Lifes:</span><input type="text" id="devData10" value=""></li>
+                <li><span>Level:</span><input type="text" id="devData11" value=""></li>
+                <li><span>MaxLevel:</span><input type="text" id="devData12" value=""></li>
+            </ul>
+            <input type="button" id="devSaveBtn" value="Save">
         </div>
     </div>
     </div>
