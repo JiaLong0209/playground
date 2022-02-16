@@ -539,6 +539,9 @@ body {
 #devSettingContainer .settingBox ul li{
     margin-bottom: 3px;
 }
+#devSettingContainer .settingBox li input{
+    max-width: 50%;
+}
 #devSettingContainer .settingBox{
     z-index: 2;
 }
@@ -611,6 +614,7 @@ body {
 .placeBox p {
     position: relative;
     font-size: 17px;
+    width: 100%;
     padding: 0px 13px;
     display: flex;
     text-align: left;
@@ -789,7 +793,7 @@ body {
         width: 20px;
     }
     .settingimg {
-        min-width: 23px;
+        width: 23px;
         top: 3%;
     }
     .settingBox h1 {

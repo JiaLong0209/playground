@@ -23,7 +23,7 @@
 // Add setting button   v
 // Add physical collision effects  v (atan2,angle)
 // Add DEV mode     v (HTML little mistake ,one less </div>)
-// Add Player Speed skill    
+// Add Player Speed skill    v
 // Add different enemy 
 // Enemy information
 // Weapon system
@@ -49,6 +49,7 @@ const levelUp = document.querySelector('.levelUp');
 const levelDown = document.querySelector('.levelDown');
 const breakText = document.querySelector('#breakText');
 const lastLevel = document.querySelector('#lastLevel');
+const lastLevel2 = document.querySelector('#lastLevel2');
 const skillReset = document.querySelector('.resetBtn');
 
 const closeBtn = document.querySelector('#introCloseBtn');
@@ -78,30 +79,32 @@ const devDatas = [
     document.querySelector('#devData10'),
     document.querySelector('#devData11'),
     document.querySelector('#devData12'),
+    document.querySelector('#devData13'),
 ]
 
 
 const settingChecks = [
-document.querySelector('#check1'),
-document.querySelector('#check2'),
-document.querySelector('#check3'),
-document.querySelector('#check4')];
+    document.querySelector('#check1'),
+    document.querySelector('#check2'),
+    document.querySelector('#check3'),
+    document.querySelector('#check4')];
 
-let isCheck = [true,true,true,true];
+let isCheck = [true, true, true, true];
 let isParticleEffect = true;
 let isShowDamage = true;
 let isShowAfterimage = true;
 
 const skills = [
-document.querySelector('.skill1'),
-document.querySelector('.skill2'),
-document.querySelector('.skill3'),
-document.querySelector('.skill4'),
-document.querySelector('.skill5'),
-document.querySelector('.skill6'),
-document.querySelector('.skill7'),
-document.querySelector('.skill8'),
-document.querySelector('.skill9')];
+    document.querySelector('.skill1'),
+    document.querySelector('.skill2'),
+    document.querySelector('.skill3'),
+    document.querySelector('.skill4'),
+    document.querySelector('.skill5'),
+    document.querySelector('.skill6'),
+    document.querySelector('.skill7'),
+    document.querySelector('.skill8'),
+    document.querySelector('.skill9'),
+    document.querySelector('.skill10')];
 
 let skillLVs = [0, document.querySelector('.skill1Level'),
     document.querySelector('.skill2Level'),
@@ -111,7 +114,8 @@ let skillLVs = [0, document.querySelector('.skill1Level'),
     document.querySelector('.skill6Level'),
     document.querySelector('.skill7Level'),
     document.querySelector('.skill8Level'),
-    document.querySelector('.skill9Level')];
+    document.querySelector('.skill9Level'),
+    document.querySelector('.skill10Level')];
 
 let skillGDs = [0, document.querySelector('.skill1Gold'),
     document.querySelector('.skill2Gold'),
@@ -121,19 +125,18 @@ let skillGDs = [0, document.querySelector('.skill1Gold'),
     document.querySelector('.skill6Gold'),
     document.querySelector('.skill7Gold'),
     document.querySelector('.skill8Gold'),
-    document.querySelector('.skill9Gold')];
+    document.querySelector('.skill9Gold'),
+    document.querySelector('.skill10Gold')];
 
-let skillGolds = [0, 100, 300, 400, 8000, 1000, 100, 1000, 500, 100];
-let skillGoldResets = [0, 100, 300, 400, 8000, 1000, 100, 1000, 500, 100];
-let upGolds = [0, skillGolds[1], skillGolds[2], skillGolds[3], skillGolds[4], skillGolds[5], skillGolds[6], skillGolds[7], skillGolds[8], skillGolds[9]];
-let upGoldMultiples = [0, 1.07, 1.1, 1.1, 1.07, 1.02, 1.03, 1.25, 1.15, 1.05];
-let skillLevels = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-let skillBuffs = [0, 2, 1, 1, 1, 5, 1, 0.05, 0.1, 0.1];
-let skillMaxLevels = [0, -1, 50, 100, 100, -1, -1, 19, -1, 100]
-let skillTotal = 9;
+let skillGolds = [0, 100, 300, 400, 8000, 1000, 100, 1000, 500, 100, 2000];
+let skillGoldResets = [0, 100, 300, 400, 8000, 1000, 100, 1000, 500, 150, 2000];
+let upGolds = [0, skillGolds[1], skillGolds[2], skillGolds[3], skillGolds[4], skillGolds[5], skillGolds[6], skillGolds[7], skillGolds[8], skillGolds[9], skillGolds[10]];
+let upGoldMultiples = [0, 1.07, 1.1, 1.1, 1.07, 1.02, 1.03, 1.25, 1.15, 1.1, 1.2];
+let skillLevels = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+let skillBuffs = [0, 2, 1, 1, 1, 5, 1, 0.05, 0.1, 0.1, 0.5];
+let skillMaxLevels = [0, -1, 50, 100, 100, -1, -1, 19, -1, 40, 10]
+let skillTotal = 10;
 let gameStart = false;
-let time = 30;
-let levelBreak = [false];
 let skillTotalGold = 0;
 // Player
 class Player {
@@ -250,7 +253,7 @@ let particleSize = 2;
 
 let playerX = canvas.width / 2;
 let playerY = canvas.height / 2;
-let playerSpeed = 3;
+let playerSpeed = 2;
 let playerSpeedX = 0;
 let playerSpeedY = 0;
 
@@ -261,6 +264,7 @@ let clearTime = 300;
 let shrinkTime = 20;
 let levelUpTime = 700;
 let showDamageTime = 500;
+let time = 30;
 
 let score = 0;
 let gold = 1000;
@@ -270,9 +274,12 @@ let hitGold = 10;
 let killGold = 25;
 let friction = 0.96;
 
+let levelBreak = [false];
 let level = 1;
-let maxLevel = 15;
+let maxLevel = 40;
 let stage = 1;
+let stageLevels = [20, 40];
+let stageLevel = level;
 
 let devMode = false;
 if (devMode) {
@@ -310,7 +317,16 @@ let spawnEnemy;
 // spawnEnemies 
 function spawnEnemies() {
     spawnEnemy = window.setInterval(() => {
-        const radius = Math.random() * (enemySize * level / 2) + (20 * level / 3);
+        let radius;
+        let stageLevel = level;
+        if (level > stageLevels[0]) {
+            stageLevel = level - stageLevels[0];
+        }
+        if (level <= stageLevels[0]) {
+            radius = Math.random() * (enemySize * level / 2) + (20 * stageLevel / 3);
+        } else {
+            radius = Math.random() * (enemySize / 3 * stageLevel) + (30 * (stageLevel / 4))
+        }
         let x;
         let y;
         let color;
@@ -322,22 +338,33 @@ function spawnEnemies() {
             x = Math.random() * canvas.width;
             y = Math.random() < 0.5 ? 0 - radius : canvas.height + radius;
         }
-        if (Math.random() < 0.5) {
+        //random color
+        if (level <= stageLevels[0]) {
             if (Math.random() < 0.5) {
-                color = "hsl(4, 79%, 30%)"
+                if (Math.random() < 0.5) {
+                    color = "hsl(4, 79%, 30%)"
+                }
+                else {
+                    color = "hsl(271, 34%, 35%)"
+                }
             }
             else {
-                color = "hsl(271, 34%, 35%)"
+                if (Math.random() < 0.2) {
+                    color = "hsl(71, 100%, 69%)"
+                }
+                else {
+                    color = `hsl(${Math.random() * 360}, 58%, 58%)`
+                }
             }
-        }
-        else {
-            if (Math.random() < 0.2) {
-                color = "hsl(71, 100%, 69%)"
+        } else {
+            if (Math.random() < 0.5) {
+                color = `rgba(${Math.random() * 180 + 80},${Math.random() * 150 + 100},200,${Math.random() * 0.1 + 0.8})`
             }
             else {
-                color = `hsl(${Math.random() * 360}, 58%, 58%)`
+                color = `rgba(${Math.random() * 100 + 30},${Math.random() * 200},105,${Math.random() * 0.1 + 0.8})`
             }
         }
+
         let angle = Math.atan2(
             playerY - y,
             playerX - x
@@ -350,17 +377,24 @@ function spawnEnemies() {
             x: 0,
             y: 0
         };
+
+        if (level <= stageLevels[0]) {
+            enemySpeed = 1;
+        } else {
+            enemySpeed = 1.5;
+        }
         enemies.push(new Enemy(x, y, radius, color, velocity, repulsion));
-    }, enemyTime - level * enemyTimeReduce)
+    }, enemyTime - stageLevel * enemyTimeReduce)
+
 }
 
 let animationId
 function animate() {
     animationId = requestAnimationFrame(animate);
-    if(isCheck[2]){
-    c.fillStyle = "rgba(0,0,0,0.2)"
-    }else{
-    c.fillStyle = "rgba(0,0,0,1)"
+    if (isCheck[2]) {
+        c.fillStyle = "rgba(0,0,0,0.2)"
+    } else {
+        c.fillStyle = "rgba(0,0,0,1)"
     }
     c.fillRect(0, 0, canvas.width, canvas.height);
     player.draw();
@@ -454,14 +488,14 @@ function animate() {
                 let showDamageText = document.createTextNode(`-${finalDamage}`);
                 showDamageElement.appendChild(showDamageText);
                 //if show damage
-                if(isCheck[1]){
-                if (isCritical) {
-                    showDamageElement.classList.add('showCriticalDamage');
-                    showDamageElement.style.fontSize = 15 + bulletDamage / 4 + 'px';
-                } else {
-                    showDamageElement.classList.add('showDamage');
-                    showDamageElement.style.fontSize = 15 + bulletDamage / 8 + 'px';
-                }
+                if (isCheck[1]) {
+                    if (isCritical) {
+                        showDamageElement.classList.add('showCriticalDamage');
+                        showDamageElement.style.fontSize = 15 + bulletDamage / 4 + 'px';
+                    } else {
+                        showDamageElement.classList.add('showDamage');
+                        showDamageElement.style.fontSize = 15 + bulletDamage / 8 + 'px';
+                    }
                 }
                 showDamageElement.style.left = projectile.x + 'px';
                 showDamageElement.style.top = projectile.y + 'px';
@@ -485,21 +519,27 @@ function animate() {
                 projectiles.splice(projectileIndex, 1);
 
                 let enemyShrink;
-                if (enemy.radius - finalDamage > 10) {
-                    let angle = Math.atan2 (enemy.y - projectile.y,
-                                            enemy.x - projectile.x);
+                let hitDamage
+                if (level <= stageLevels[0]) {
+                    hitDamage = finalDamage;
+                } else {
+                    hitDamage = finalDamage / 12;
+                }
+                if (enemy.radius - hitDamage > 10) {
+                    let angle = Math.atan2(enemy.y - projectile.y,
+                        enemy.x - projectile.x);
                     let repulsionX = Math.cos(angle);
                     let repulsionY = Math.sin(angle);
                     enemy.repulsion = {
                         x: repulsionX,
-                        y: repulsionY 
+                        y: repulsionY
                     }
-                    setTimeout(()=>{
+                    setTimeout(() => {
                         enemy.repulsion = {
                             x: 0,
                             y: 0
                         }
-                    },repulsionTime);
+                    }, repulsionTime);
                     // increase our score
                     score += hitScore;
                     scoreNumber.innerHTML = score;
@@ -514,12 +554,11 @@ function animate() {
                     // setTimeout(() => {
                     //     clearInterval(enemyShrink);
                     // }, clearTime);
-
                     gsap.to(enemy, {
-                        radius: enemy.radius - finalDamage
+                        radius: enemy.radius - hitDamage
                     })
                 }
-                else if (enemy.radius - finalDamage < 10) {
+                else if (enemy.radius - hitDamage < 10) {
                     clearInterval(enemyShrink);
                     for (let i = 0; i < particleCount + enemy.radius / 20; i++) {
                         if (!isCheck[0]) continue;
@@ -547,19 +586,19 @@ function animate() {
 }
 // skill up
 function levelUpAnFn(e) {
-    if(isCheck[3]){
-    let levelUpElement = document.createElement('i');
-    let levelUpText = document.createTextNode(' Level + 1');
-    levelUpElement.appendChild(levelUpText);
-    levelUpElement.classList.add('skillLevelUp');
-    levelUpElement.style.left = e.clientX + 'px';
-    levelUpElement.style.top = e.clientY + 'px';
-    levelUpElement.style.backgroundColor = `hsl(${Math.random() * 360}, ${Math.random() * 50 + 20 + '%'}, ${Math.random() * 40 + 20 + '%'},0.9)`;
-    body.appendChild(levelUpElement);
-    setTimeout(() => {
-        body.removeChild(levelUpElement);
-    }, levelUpTime)
-}
+    if (isCheck[3]) {
+        let levelUpElement = document.createElement('i');
+        let levelUpText = document.createTextNode(' Level + 1');
+        levelUpElement.appendChild(levelUpText);
+        levelUpElement.classList.add('skillLevelUp');
+        levelUpElement.style.left = e.clientX + 'px';
+        levelUpElement.style.top = e.clientY + 'px';
+        levelUpElement.style.backgroundColor = `hsl(${Math.random() * 360}, ${Math.random() * 50 + 20 + '%'}, ${Math.random() * 40 + 20 + '%'},0.9)`;
+        body.appendChild(levelUpElement);
+        setTimeout(() => {
+            body.removeChild(levelUpElement);
+        }, levelUpTime)
+    }
 }
 function skillLevelUpFn(i) {
     if (skillLevels[i] == skillMaxLevels[i]) return;
@@ -608,6 +647,9 @@ function skillLevelUpFn(i) {
             case 9:
                 bulletRepulsion += skillBuffs[i];
                 break;
+            case 10:
+                playerSpeed += skillBuffs[i];
+                break;
         }
     }
     if (skillLevels[i] == skillMaxLevels[i]) {
@@ -620,6 +662,7 @@ skills.forEach(function (item, i) {
     item.addEventListener('click', (e) => {
         skillLevelUpFn(i + 1); //index 0 is skill 1
         if (gold < skillGolds[i + 1]) return;
+
         levelUpAnFn(e);
     })
 })
@@ -663,6 +706,8 @@ skillReset.addEventListener('click', () => {
     // skill 9
     bulletRepulsion -= (skillLevels[9]) * skillBuffs[9];
 
+    // skill 10
+    playerSpeed -= (skillLevels[10]) * skillBuffs[10];
     for (let i = 1; i <= skillTotal; i++) {
         skillGolds[i] = skillGoldResets[i];
         skillGDs[i].innerHTML = skillGolds[i];
@@ -723,25 +768,45 @@ levelUp.addEventListener('click', () => {
     container.style.display = 'flex';
     endScore.innerHTML = score;
     gameStart = false;
-    if (level == maxLevel && !levelBreak[level - 1]) {
+    if (level > stageLevels[0]) {
+        stageLevel = level - stageLevels[0];
+    } else {
+        stageLevel = level;
+    }
+    if (level == stageLevels[1] && !levelBreak[level - 1]) {
+        time = 30;
+        levelUp.style.backgroundColor = '#fff7';
+        levelDown.style.backgroundColor = '#fff';
+        lastLevel2.style.display = 'inline';
+        breakText.style.display = 'none';
+    }
+    else if (level == stageLevels[1] && levelBreak[level - 1]) {
+        time = -1;
+        levelUp.style.backgroundColor = '#fff7';
+        levelDown.style.backgroundColor = '#fff';
+        lastLevel2.style.display = 'inline';
+        breakText.style.display = 'none';
+    }
+    else if (level == stageLevels[0] && !levelBreak[level - 1]) {
         time = 30;
         levelUp.style.backgroundColor = '#fff7';
         levelDown.style.backgroundColor = '#fff';
         lastLevel.style.display = 'inline';
         breakText.style.display = 'none';
     }
-    else if (level == maxLevel && levelBreak[level - 1]) {
+    else if (level == stageLevels[0] && levelBreak[level - 1]) {
         time = -1;
-        levelUp.style.backgroundColor = '#fff7';
+        levelUp.style.backgroundColor = '#fff';
         levelDown.style.backgroundColor = '#fff';
         lastLevel.style.display = 'inline';
-        breakText.style.display = 'none';
+        breakText.style.display = 'inline';
     }
     else if (levelBreak[level - 1]) {
         time = -1;
         levelUp.style.backgroundColor = '#fff';
         levelDown.style.backgroundColor = '#fff';
         lastLevel.style.display = 'none';
+        lastLevel2.style.display = 'none';
         breakText.style.display = 'inline';
     }
     else if (!levelBreak[level]) {
@@ -749,6 +814,7 @@ levelUp.addEventListener('click', () => {
         levelUp.style.backgroundColor = '#fff7';
         levelDown.style.backgroundColor = '#fff';
         lastLevel.style.display = 'none';
+        lastLevel2.style.display = 'none';
         breakText.style.display = 'none';
     }
 })
@@ -763,6 +829,11 @@ levelDown.addEventListener('click', () => {
     };
     level--;
     levelNumber.innerHTML = level;
+    if (level > stageLevels[0]) {
+        stageLevel = level - stageLevels[0];
+    } else {
+        stageLevel = level;
+    }
     time = -1;
     timeCount.innerHTML = time;
     cancelAnimationFrame(animationId);
@@ -771,7 +842,12 @@ levelDown.addEventListener('click', () => {
     endScore.innerHTML = score;
     breakText.style.display = 'inline';
     gameStart = false;
-    lastLevel.style.display = 'none';
+    if (level == stageLevels[0]) {
+        lastLevel.style.display = 'inline';
+    } else {
+        lastLevel.style.display = 'none';
+    }
+    lastLevel2.style.display = 'none';
 })
 //close and open game introduction
 closeBtn.addEventListener('click', () => {
@@ -788,38 +864,38 @@ settingimg.addEventListener('click', () => {
     settingContainer.style.display = 'flex';
 })
 //setting check 
-settingChecks.forEach(function(item,i){
-    item.addEventListener('click',()=>{
+settingChecks.forEach(function (item, i) {
+    item.addEventListener('click', () => {
         CheckFn(i);
     })
 })
 
-function CheckFn(i){
-    if(isCheck[i] == true){
+function CheckFn(i) {
+    if (isCheck[i] == true) {
         isCheck[i] = false;
         settingChecks[i].style.backgroundColor = '#fff';
-    }else{
+    } else {
         isCheck[i] = true;
         settingChecks[i].style.backgroundColor = '#fff0';
     }
 }
 // dev mode
-devBtn.addEventListener('click',()=>{
-    if(devPassword.value == '1234'){
+devBtn.addEventListener('click', () => {
+    if (devPassword.value == '1234') {
         devMode = true;
         devText.style.display = "inline";
-    }else{
+    } else {
         devMode = false;
         devPassword.value = '';
         devText.style.display = "none";
     }
-    
+
 })
 // open and close dev setting
-devText.addEventListener('click',()=>{
+devText.addEventListener('click', () => {
     devSettingContainer.style.display = 'flex';
-    devDatas.forEach(function(item,i){
-        switch (i+1){
+    devDatas.forEach(function (item, i) {
+        switch (i + 1) {
             case 1:
                 devDatas[i].value = bulletDamage;
                 break;
@@ -856,17 +932,20 @@ devText.addEventListener('click',()=>{
             case 12:
                 devDatas[i].value = maxLevel;
                 break;
+            case 13:
+                devDatas[i].value = playerSpeed;
+                break;
         }
     })
 })
-devCloseBtn.addEventListener('click',()=>{
+devCloseBtn.addEventListener('click', () => {
     devSettingContainer.style.display = 'none';
 })
 
 //dev save btn
-devSaveBtn.addEventListener('click',()=>{
-    devDatas.forEach(function(item,i){
-        switch (i+1){
+devSaveBtn.addEventListener('click', () => {
+    devDatas.forEach(function (item, i) {
+        switch (i + 1) {
             case 1:
                 bulletDamage = Math.round(devDatas[i].value);
                 break;
@@ -890,7 +969,7 @@ devSaveBtn.addEventListener('click',()=>{
                 break;
             case 8:
                 hitGold = Math.round(devDatas[i].value);
-                killGold = Math.round(devDatas[i].value)*2;
+                killGold = Math.round(devDatas[i].value) * 2;
                 break;
             case 9:
                 gold = Math.round(devDatas[i].value);
@@ -903,13 +982,17 @@ devSaveBtn.addEventListener('click',()=>{
                 break;
             case 11:
                 level = Math.round(devDatas[i].value);
+                levelNumber.innerHTML = level;
                 break;
             case 12:
                 maxLevel = Math.round(devDatas[i].value);
-                levelBreak=[];
-                for(let i = 0;i < maxLevel ;i++){
+                levelBreak = [];
+                for (let i = 0; i < maxLevel - 1; i++) {
                     levelBreak.push(true);
                 }
+                break;
+            case 13:
+                playerSpeed = Math.round(devDatas[i].value);
                 break;
         }
     })
@@ -1053,16 +1136,33 @@ timeCountDown = window.setInterval(() => {
             time -= 1;
             timeCount.innerHTML = time;
         }
-        if (level == maxLevel && time == 0) {
+        if (level == stageLevels[1] && time == 0) {
             cancelAnimationFrame(animationId);
             clearInterval(spawnEnemy);
             container.style.display = 'flex';
             endScore.innerHTML = score;
             gameStart = false;
             levelBreak[level - 1] = true;
-            lastLevel.innerHTML = 'This is the last level !! Thanks for playing !!!';
+            lastLevel2.innerHTML = 'Congratulations! You break the last level of stage 2,we reward you with 5000000 golds!Looking forward to the next stage,to be continued...';
             // Clearance reward;
-            gold += 9999999999;
+            gold += 5000000;
+            hitGold += 250;
+            killGold += 500;
+            goldNumber.innerHTML = gold;
+        }
+        else if (level == stageLevels[0] && time == 0) {
+            cancelAnimationFrame(animationId);
+            clearInterval(spawnEnemy);
+            container.style.display = 'flex';
+            endScore.innerHTML = score;
+            gameStart = false;
+            levelBreak[level - 1] = true;
+            lastLevel.innerHTML = 'Wow~! You break the last level of stage 1,we reward you with 500000 golds!There will be more stronger enemies waiting for you later~';
+            // Clearance reward;
+            gold += 500000;
+            hitGold += 75;
+            killGold += 200;
+            levelUp.style.backgroundColor = '#fff';
             goldNumber.innerHTML = gold;
         }
         else if (time == 0) {
@@ -1071,16 +1171,16 @@ timeCountDown = window.setInterval(() => {
             container.style.display = 'flex';
             endScore.innerHTML = score;
             gameStart = false;
+            levelUp.style.backgroundColor = '#fff';
             levelBreak[level - 1] = true;
         }
         if (time == -1) {
             gameStart = false;
         }
-        if (levelBreak[level - 1] == true && level != maxLevel) {
+        if (levelBreak[level - 1] == true && level != stageLevels[0]) {
             levelUp.style.backgroundColor = '#fff';
             breakText.style.display = 'inline';
-        }
-        else {
+        }else if (levelBreak[level - 1] == true && level == stageLevels[1]) {
             levelUp.style.backgroundColor = '#fff7';
             breakText.style.display = 'none';
         }
