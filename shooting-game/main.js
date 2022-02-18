@@ -24,7 +24,7 @@
 // Add physical collision effects  v (atan2,angle)
 // Add DEV mode     v (HTML little mistake ,one less </div>)
 // Add Player Speed skill    v
-// Add different enemy 
+// Add different enemy    v
 // Enemy information
 // Weapon system
 // Add unique skill
@@ -434,7 +434,7 @@ function animate() {
         const distance = Math.hypot(player.x - enemy.x, player.y - enemy.y);
         if (distance - player.radius - enemy.radius < -1) {
             enemies.splice(index, 1);
-            life -= 1 * level;
+            life -= Math.floor((1 * level)/2);
             lifeNumber.innerHTML = life;
             let showDamageElement = document.createElement('i');
             let showDamageText = document.createTextNode(`-999999999`);
