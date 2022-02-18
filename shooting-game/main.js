@@ -50,6 +50,7 @@ const levelDown = document.querySelector('.levelDown');
 const breakText = document.querySelector('#breakText');
 const lastLevel = document.querySelector('#lastLevel');
 const lastLevel2 = document.querySelector('#lastLevel2');
+const lastLevel3 = document.querySelector('#lastLevel3');
 const skillReset = document.querySelector('.resetBtn');
 
 const closeBtn = document.querySelector('#introCloseBtn');
@@ -117,6 +118,7 @@ let skillLVs = [0, document.querySelector('.skill1Level'),
     document.querySelector('.skill9Level'),
     document.querySelector('.skill10Level')];
 
+
 let skillGDs = [0, document.querySelector('.skill1Gold'),
     document.querySelector('.skill2Gold'),
     document.querySelector('.skill3Gold'),
@@ -131,7 +133,7 @@ let skillGDs = [0, document.querySelector('.skill1Gold'),
 let skillGolds = [0, 100, 300, 400, 8000, 1000, 100, 1000, 500, 100, 2000];
 let skillGoldResets = [0, 100, 300, 400, 8000, 1000, 100, 1000, 500, 150, 2000];
 let upGolds = [0, skillGolds[1], skillGolds[2], skillGolds[3], skillGolds[4], skillGolds[5], skillGolds[6], skillGolds[7], skillGolds[8], skillGolds[9], skillGolds[10]];
-let upGoldMultiples = [0, 1.07, 1.1, 1.1, 1.07, 1.02, 1.03, 1.25, 1.15, 1.1, 1.2];
+let upGoldMultiples = [0, 1.07, 1.1, 1.1, 1.07, 1.01, 1.03, 1.25, 1.15, 1.1, 1.2];
 let skillLevels = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 let skillBuffs = [0, 2, 1, 1, 1, 5, 1, 0.05, 0.1, 0.1, 0.5];
 let skillMaxLevels = [0, -1, 50, 100, 100, -1, -1, 19, -1, 40, 10]
@@ -276,9 +278,9 @@ let friction = 0.96;
 
 let levelBreak = [false];
 let level = 1;
-let maxLevel = 40;
+let maxLevel = 60;
 let stage = 1;
-let stageLevels = [20, 40];
+let stageLevels = [20, 40, 60];
 let stageLevel = level;
 
 let devMode = false;
@@ -286,16 +288,16 @@ if (devMode) {
     gold = 1000000000000;
     bulletSpeed = 5;
     bulletSize = 5;
-    bulletDamage = 8;
+    bulletDamage = 200;
     bulletCount = 1;
     bulletRepulsion = 1;
     repulsionTime = 100;
-    criticalRate = 0.1;
-    criticalDamage = 2;
-    level = 3;
+    criticalRate = 1.1;
+    criticalDamage = 5;
+    level = 1;
     timer = 10;
     life = 10000;
-    levelBreak = [true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true];
+    // levelBreak = [true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true];
 }
 let enemies = [];
 let projectiles = [];
@@ -319,12 +321,28 @@ function spawnEnemies() {
     spawnEnemy = window.setInterval(() => {
         let radius;
         let stageLevel = level;
-        if (level > stageLevels[0]) {
+        
+        if (level <= stageLevels[0]) {
+            stageLevel = level;
+        } 
+        else if(level > stageLevels[0] && level <= stageLevels[1]) {
             stageLevel = level - stageLevels[0];
         }
+        else if(level > stageLevels[1] && level <= stageLevels[2]){
+            stageLevel = level - stageLevels[1];
+        }
+
+        
         if (level <= stageLevels[0]) {
+            stageLevel = level;
             radius = Math.random() * (enemySize * level / 2) + (20 * stageLevel / 3);
-        } else {
+        } 
+        else if(level > stageLevels[0] && level <= stageLevels[1]) {
+            stageLevel = level - stageLevels[0];
+            radius = Math.random() * (enemySize / 3 * stageLevel) + (30 * (stageLevel / 4))
+        }
+        else if(level > stageLevels[1] && level <= stageLevels[2]){
+            stageLevel = level - stageLevels[1];
             radius = Math.random() * (enemySize / 3 * stageLevel) + (30 * (stageLevel / 4))
         }
         let x;
@@ -356,12 +374,21 @@ function spawnEnemies() {
                     color = `hsl(${Math.random() * 360}, 58%, 58%)`
                 }
             }
-        } else {
+        }
+        else if( level > stageLevels[0] && level <= stageLevels[1]){
             if (Math.random() < 0.5) {
                 color = `rgba(${Math.random() * 180 + 80},${Math.random() * 150 + 100},200,${Math.random() * 0.1 + 0.8})`
             }
             else {
                 color = `rgba(${Math.random() * 100 + 30},${Math.random() * 200},105,${Math.random() * 0.1 + 0.8})`
+            }
+        }
+        else if( level > stageLevels[1] && level <= stageLevels[2]){
+            if (Math.random() < 0.5) {
+                color = `rgba(${Math.random() * 100 + 200},${Math.random() * 120 },${Math.random() * 150 },${Math.random() * 0.1 + 0.8})`
+            }
+            else{
+                color = `rgba(${Math.random() * 100 + 150},${Math.random() * 150 },${Math.random() * 80 },${Math.random() * 0.1 + 0.8})`
             }
         }
 
@@ -380,8 +407,12 @@ function spawnEnemies() {
 
         if (level <= stageLevels[0]) {
             enemySpeed = 1;
-        } else {
+        } 
+        else if(level > stageLevels[0] && level <= stageLevels[1]){
             enemySpeed = 1.5;
+        }
+        else if(level > stageLevels[1] && level <= stageLevels[2]){
+            enemySpeed = 2;
         }
         enemies.push(new Enemy(x, y, radius, color, velocity, repulsion));
     }, enemyTime - stageLevel * enemyTimeReduce)
@@ -442,7 +473,7 @@ function animate() {
             showDamageElement.classList.add('showDamage');
             showDamageElement.style.left = enemy.x + 'px';
             showDamageElement.style.top = enemy.y + 'px';
-            showDamageElement.style.fontSize = 10 + bulletDamage / 4 + 'px';
+            showDamageElement.style.fontSize = 22 + bulletDamage / 20 + 'px';
             body.appendChild(showDamageElement);
             setTimeout(() => {
                 body.removeChild(showDamageElement);
@@ -491,10 +522,10 @@ function animate() {
                 if (isCheck[1]) {
                     if (isCritical) {
                         showDamageElement.classList.add('showCriticalDamage');
-                        showDamageElement.style.fontSize = 15 + bulletDamage / 4 + 'px';
+                        showDamageElement.style.fontSize = 22 + bulletDamage / 12 + 'px';
                     } else {
                         showDamageElement.classList.add('showDamage');
-                        showDamageElement.style.fontSize = 15 + bulletDamage / 8 + 'px';
+                        showDamageElement.style.fontSize = 22 + bulletDamage / 24 + 'px';
                     }
                 }
                 showDamageElement.style.left = projectile.x + 'px';
@@ -522,8 +553,11 @@ function animate() {
                 let hitDamage
                 if (level <= stageLevels[0]) {
                     hitDamage = finalDamage;
-                } else {
+                } 
+                else if(level > stageLevels[0] && level <= stageLevels[1]) {
                     hitDamage = finalDamage / 12;
+                }else if(level > stageLevels[1] && level <= stageLevels[2]){
+                    hitDamage = finalDamage / 60;
                 }
                 if (enemy.radius - hitDamage > 10) {
                     let angle = Math.atan2(enemy.y - projectile.y,
@@ -543,8 +577,18 @@ function animate() {
                     // increase our score
                     score += hitScore;
                     scoreNumber.innerHTML = score;
-                    gold += hitGold + level * 2;
-                    goldNumber.innerHTML = gold;
+                    if(level <= stageLevels[0]){
+                        gold += hitGold + level * 2;
+                        goldNumber.innerHTML = gold;
+                    }
+                    else if(level > stageLevels[0] && level <= stageLevels[1]){
+                        gold += hitGold + level * 4;
+                        goldNumber.innerHTML = gold;
+                    }
+                    else if(level > stageLevels[1] && level <= stageLevels[2]){
+                        gold += hitGold + level * 10;
+                        goldNumber.innerHTML = gold;
+                    }
 
                     //shrink animation
                     // enemyShrink = setInterval(() => {
@@ -574,8 +618,19 @@ function animate() {
                     // remove from scene altogether
                     score += killScore;
                     scoreNumber.innerHTML = score;
-                    gold += killGold + level * 5;
-                    goldNumber.innerHTML = gold;
+                    
+                    if(level <= stageLevels[0]){
+                        gold += hitGold + level * 5;
+                        goldNumber.innerHTML = gold;
+                    }
+                    else if(level > stageLevels[0] && level <= stageLevels[1]){
+                        gold += hitGold + level * 10;
+                        goldNumber.innerHTML = gold;
+                    }
+                    else if(level > stageLevels[1] && level <= stageLevels[2]){
+                        gold += hitGold + level * 25;
+                        goldNumber.innerHTML = gold;
+                    }
                     // setTimeout(() => {
                     enemies.splice(index, 1);
                     // }, 0)
@@ -768,12 +823,82 @@ levelUp.addEventListener('click', () => {
     container.style.display = 'flex';
     endScore.innerHTML = score;
     gameStart = false;
-    if (level > stageLevels[0]) {
-        stageLevel = level - stageLevels[0];
-    } else {
+    if (level <= stageLevels[0]) {
         stageLevel = level;
+    } 
+    else if(level > stageLevels[0] && level <= stageLevels[1]) {
+        stageLevel = level - stageLevels[0];
     }
-    if (level == stageLevels[1] && !levelBreak[level - 1]) {
+    else if(level > stageLevels[1] && level <= stageLevels[2]){
+        stageLevel = level - stageLevels[1];
+    }
+    // switch(levelBreak[level -1]){
+    //     case true:
+    //         time = -1;
+    //         levelDown.style.backgroundColor = '#fff';
+    //         if(level == stageLevels[2]){         
+    //             levelUp.style.backgroundColor = '#fff7';
+    //             lastLevel3.style.display = 'inline';
+    //             breakText.style.display = 'none';
+    //         }
+    //         else if(level == stageLevels[1]){
+    //             levelUp.style.backgroundColor = '#fff';
+    //             lastLevel2.style.display = 'inline';
+    //             breakText.style.display = 'inline';
+    //         }
+    //         else if(level == stageLevels[0]){
+    //             levelUp.style.backgroundColor = '#fff';
+    //             lastLevel.style.display = 'inline';
+    //             breakText.style.display = 'inline';
+    //         }
+    //         else{
+    //             levelUp.style.backgroundColor = '#fff';
+    //             lastLevel.style.display = 'none';
+    //             lastLevel2.style.display = 'none';
+    //             lastLevel3.style.display = 'none';
+    //             breakText.style.display = 'inline';
+    //         }
+    //         break;
+        
+    //     case false: 
+    //         time = 30;
+    //         levelUp.style.backgroundColor = '#fff7';
+    //         levelDown.style.backgroundColor = '#fff';
+
+    //         if(level == stageLevels[2]){
+    //             lastLevel2.style.display = 'inline';
+    //             breakText.style.display = 'none';
+    //         }
+    //         else if(level == stageLevels[1]){
+    //             lastLevel2.style.display = 'inline';
+    //             breakText.style.display = 'none';
+    //         }
+    //         else if(level == stageLevels[0]){          
+    //             lastLevel.style.display = 'inline';
+    //             breakText.style.display = 'none';
+    //         }
+    //         else {
+    //             lastLevel.style.display = 'none';
+    //             lastLevel2.style.display = 'none';
+    //             breakText.style.display = 'none';
+    //         }
+    //         break;
+    // }
+    if (level == stageLevels[2] && !levelBreak[level - 1]) {
+        time = 30;
+        levelUp.style.backgroundColor = '#fff7';
+        levelDown.style.backgroundColor = '#fff';
+        lastLevel3.style.display = 'inline';
+        breakText.style.display = 'none';
+    }
+    else if (level == stageLevels[2] && levelBreak[level - 1]) {
+        time = -1;
+        levelUp.style.backgroundColor = '#fff7';
+        levelDown.style.backgroundColor = '#fff';
+        lastLevel3.style.display = 'inline';
+        breakText.style.display = 'none';
+    }
+    else if (level == stageLevels[1] && !levelBreak[level - 1]) {
         time = 30;
         levelUp.style.backgroundColor = '#fff7';
         levelDown.style.backgroundColor = '#fff';
@@ -828,11 +953,14 @@ levelDown.addEventListener('click', () => {
         return;
     };
     level--;
-    levelNumber.innerHTML = level;
-    if (level > stageLevels[0]) {
-        stageLevel = level - stageLevels[0];
-    } else {
+    levelNumber.innerHTML = level; if (level <= stageLevels[0]) {
         stageLevel = level;
+    } 
+    else if(level > stageLevels[0] && level <= stageLevels[1]) {
+        stageLevel = level - stageLevels[0];
+    }
+    else if(level > stageLevels[1] && level <= stageLevels[2]){
+        stageLevel = level - stageLevels[1];
     }
     time = -1;
     timeCount.innerHTML = time;
@@ -1136,18 +1264,32 @@ timeCountDown = window.setInterval(() => {
             time -= 1;
             timeCount.innerHTML = time;
         }
-        if (level == stageLevels[1] && time == 0) {
+        if (level == stageLevels[2] && time == 0) {
             cancelAnimationFrame(animationId);
             clearInterval(spawnEnemy);
             container.style.display = 'flex';
             endScore.innerHTML = score;
             gameStart = false;
             levelBreak[level - 1] = true;
-            lastLevel2.innerHTML = 'Congratulations! You break the last level of stage 2,we reward you with 5000000 golds!Looking forward to the next stage,to be continued...';
+            lastLevel3.innerHTML = 'Congratulations! You break the last level of stage 3,we reward you with 50000000 golds!Looking forward to the next stage,to be continued...';
+            // Clearance reward;
+            gold += 50000000;
+            hitGold += 1000;
+            killGold += 3000;
+            goldNumber.innerHTML = gold;
+        }
+        else if (level == stageLevels[1] && time == 0) {
+            cancelAnimationFrame(animationId);
+            clearInterval(spawnEnemy);
+            container.style.display = 'flex';
+            endScore.innerHTML = score;
+            gameStart = false;
+            levelBreak[level - 1] = true;
+            lastLevel2.innerHTML = 'Congratulations! You break the last level of stage 2,we reward you with 5000000 golds!There will be more stronger enemies waiting for you later~';
             // Clearance reward;
             gold += 5000000;
-            hitGold += 250;
-            killGold += 500;
+            hitGold += 300;
+            killGold += 750;
             goldNumber.innerHTML = gold;
         }
         else if (level == stageLevels[0] && time == 0) {
