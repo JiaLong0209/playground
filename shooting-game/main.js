@@ -321,27 +321,27 @@ function spawnEnemies() {
     spawnEnemy = window.setInterval(() => {
         let radius;
         let stageLevel = level;
-        
+
         if (level <= stageLevels[0]) {
             stageLevel = level;
-        } 
-        else if(level > stageLevels[0] && level <= stageLevels[1]) {
+        }
+        else if (level > stageLevels[0] && level <= stageLevels[1]) {
             stageLevel = level - stageLevels[0];
         }
-        else if(level > stageLevels[1] && level <= stageLevels[2]){
+        else if (level > stageLevels[1] && level <= stageLevels[2]) {
             stageLevel = level - stageLevels[1];
         }
 
-        
+
         if (level <= stageLevels[0]) {
             stageLevel = level;
             radius = Math.random() * (enemySize * level / 2) + (20 * stageLevel / 3);
-        } 
-        else if(level > stageLevels[0] && level <= stageLevels[1]) {
+        }
+        else if (level > stageLevels[0] && level <= stageLevels[1]) {
             stageLevel = level - stageLevels[0];
             radius = Math.random() * (enemySize / 3 * stageLevel) + (30 * (stageLevel / 4))
         }
-        else if(level > stageLevels[1] && level <= stageLevels[2]){
+        else if (level > stageLevels[1] && level <= stageLevels[2]) {
             stageLevel = level - stageLevels[1];
             radius = Math.random() * (enemySize / 3 * stageLevel) + (30 * (stageLevel / 4))
         }
@@ -375,7 +375,7 @@ function spawnEnemies() {
                 }
             }
         }
-        else if( level > stageLevels[0] && level <= stageLevels[1]){
+        else if (level > stageLevels[0] && level <= stageLevels[1]) {
             if (Math.random() < 0.5) {
                 color = `rgba(${Math.random() * 180 + 80},${Math.random() * 150 + 100},200,${Math.random() * 0.1 + 0.8})`
             }
@@ -383,12 +383,12 @@ function spawnEnemies() {
                 color = `rgba(${Math.random() * 100 + 30},${Math.random() * 200},105,${Math.random() * 0.1 + 0.8})`
             }
         }
-        else if( level > stageLevels[1] && level <= stageLevels[2]){
+        else if (level > stageLevels[1] && level <= stageLevels[2]) {
             if (Math.random() < 0.5) {
-                color = `rgba(${Math.random() * 100 + 200},${Math.random() * 120 },${Math.random() * 150 },${Math.random() * 0.1 + 0.8})`
+                color = `rgba(${Math.random() * 100 + 200},${Math.random() * 120},${Math.random() * 150},${Math.random() * 0.1 + 0.8})`
             }
-            else{
-                color = `rgba(${Math.random() * 100 + 150},${Math.random() * 150 },${Math.random() * 80 },${Math.random() * 0.1 + 0.8})`
+            else {
+                color = `rgba(${Math.random() * 100 + 150},${Math.random() * 150},${Math.random() * 80},${Math.random() * 0.1 + 0.8})`
             }
         }
 
@@ -407,11 +407,11 @@ function spawnEnemies() {
 
         if (level <= stageLevels[0]) {
             enemySpeed = 1;
-        } 
-        else if(level > stageLevels[0] && level <= stageLevels[1]){
+        }
+        else if (level > stageLevels[0] && level <= stageLevels[1]) {
             enemySpeed = 1.5;
         }
-        else if(level > stageLevels[1] && level <= stageLevels[2]){
+        else if (level > stageLevels[1] && level <= stageLevels[2]) {
             enemySpeed = 2;
         }
         enemies.push(new Enemy(x, y, radius, color, velocity, repulsion));
@@ -465,7 +465,7 @@ function animate() {
         const distance = Math.hypot(player.x - enemy.x, player.y - enemy.y);
         if (distance - player.radius - enemy.radius < -1) {
             enemies.splice(index, 1);
-            life -= Math.floor((1 * level)/2);
+            life -= Math.floor((1 * level) / 2);
             lifeNumber.innerHTML = life;
             let showDamageElement = document.createElement('i');
             let showDamageText = document.createTextNode(`-999999999`);
@@ -553,10 +553,10 @@ function animate() {
                 let hitDamage
                 if (level <= stageLevels[0]) {
                     hitDamage = finalDamage;
-                } 
-                else if(level > stageLevels[0] && level <= stageLevels[1]) {
+                }
+                else if (level > stageLevels[0] && level <= stageLevels[1]) {
                     hitDamage = finalDamage / 12;
-                }else if(level > stageLevels[1] && level <= stageLevels[2]){
+                } else if (level > stageLevels[1] && level <= stageLevels[2]) {
                     hitDamage = finalDamage / 60;
                 }
                 if (enemy.radius - hitDamage > 10) {
@@ -577,15 +577,15 @@ function animate() {
                     // increase our score
                     score += hitScore;
                     scoreNumber.innerHTML = score;
-                    if(level <= stageLevels[0]){
+                    if (level <= stageLevels[0]) {
                         gold += hitGold + level * 2;
                         goldNumber.innerHTML = gold;
                     }
-                    else if(level > stageLevels[0] && level <= stageLevels[1]){
+                    else if (level > stageLevels[0] && level <= stageLevels[1]) {
                         gold += hitGold + level * 4;
                         goldNumber.innerHTML = gold;
                     }
-                    else if(level > stageLevels[1] && level <= stageLevels[2]){
+                    else if (level > stageLevels[1] && level <= stageLevels[2]) {
                         gold += hitGold + level * 10;
                         goldNumber.innerHTML = gold;
                     }
@@ -618,16 +618,16 @@ function animate() {
                     // remove from scene altogether
                     score += killScore;
                     scoreNumber.innerHTML = score;
-                    
-                    if(level <= stageLevels[0]){
+
+                    if (level <= stageLevels[0]) {
                         gold += hitGold + level * 5;
                         goldNumber.innerHTML = gold;
                     }
-                    else if(level > stageLevels[0] && level <= stageLevels[1]){
+                    else if (level > stageLevels[0] && level <= stageLevels[1]) {
                         gold += hitGold + level * 10;
                         goldNumber.innerHTML = gold;
                     }
-                    else if(level > stageLevels[1] && level <= stageLevels[2]){
+                    else if (level > stageLevels[1] && level <= stageLevels[2]) {
                         gold += hitGold + level * 25;
                         goldNumber.innerHTML = gold;
                     }
@@ -825,122 +825,63 @@ levelUp.addEventListener('click', () => {
     gameStart = false;
     if (level <= stageLevels[0]) {
         stageLevel = level;
-    } 
-    else if(level > stageLevels[0] && level <= stageLevels[1]) {
+    }
+    else if (level > stageLevels[0] && level <= stageLevels[1]) {
         stageLevel = level - stageLevels[0];
     }
-    else if(level > stageLevels[1] && level <= stageLevels[2]){
+    else if (level > stageLevels[1] && level <= stageLevels[2]) {
         stageLevel = level - stageLevels[1];
     }
-    // switch(levelBreak[level -1]){
-    //     case true:
-    //         time = -1;
-    //         levelDown.style.backgroundColor = '#fff';
-    //         if(level == stageLevels[2]){         
-    //             levelUp.style.backgroundColor = '#fff7';
-    //             lastLevel3.style.display = 'inline';
-    //             breakText.style.display = 'none';
-    //         }
-    //         else if(level == stageLevels[1]){
-    //             levelUp.style.backgroundColor = '#fff';
-    //             lastLevel2.style.display = 'inline';
-    //             breakText.style.display = 'inline';
-    //         }
-    //         else if(level == stageLevels[0]){
-    //             levelUp.style.backgroundColor = '#fff';
-    //             lastLevel.style.display = 'inline';
-    //             breakText.style.display = 'inline';
-    //         }
-    //         else{
-    //             levelUp.style.backgroundColor = '#fff';
-    //             lastLevel.style.display = 'none';
-    //             lastLevel2.style.display = 'none';
-    //             lastLevel3.style.display = 'none';
-    //             breakText.style.display = 'inline';
-    //         }
-    //         break;
-        
-    //     case false: 
-    //         time = 30;
-    //         levelUp.style.backgroundColor = '#fff7';
-    //         levelDown.style.backgroundColor = '#fff';
 
-    //         if(level == stageLevels[2]){
-    //             lastLevel2.style.display = 'inline';
-    //             breakText.style.display = 'none';
-    //         }
-    //         else if(level == stageLevels[1]){
-    //             lastLevel2.style.display = 'inline';
-    //             breakText.style.display = 'none';
-    //         }
-    //         else if(level == stageLevels[0]){          
-    //             lastLevel.style.display = 'inline';
-    //             breakText.style.display = 'none';
-    //         }
-    //         else {
-    //             lastLevel.style.display = 'none';
-    //             lastLevel2.style.display = 'none';
-    //             breakText.style.display = 'none';
-    //         }
-    //         break;
-    // }
-    if (level == stageLevels[2] && !levelBreak[level - 1]) {
+    if (levelBreak[level - 1]) {
+        time = -1;
+        levelDown.style.backgroundColor = '#fff';
+        if (level == stageLevels[2]) {
+            levelUp.style.backgroundColor = '#fff7';
+            lastLevel3.style.display = 'inline';
+            breakText.style.display = 'none';
+        }
+        else if (level == stageLevels[1]) {
+            levelUp.style.backgroundColor = '#fff';
+            lastLevel2.style.display = 'inline';
+            breakText.style.display = 'inline';
+        }
+        else if (level == stageLevels[0]) {
+            levelUp.style.backgroundColor = '#fff';
+            lastLevel.style.display = 'inline';
+            breakText.style.display = 'inline';
+        }
+        else {
+            levelUp.style.backgroundColor = '#fff';
+            lastLevel.style.display = 'none';
+            lastLevel2.style.display = 'none';
+            lastLevel3.style.display = 'none';
+            breakText.style.display = 'inline';
+        }
+    }
+    else {
         time = 30;
         levelUp.style.backgroundColor = '#fff7';
         levelDown.style.backgroundColor = '#fff';
-        lastLevel3.style.display = 'inline';
-        breakText.style.display = 'none';
-    }
-    else if (level == stageLevels[2] && levelBreak[level - 1]) {
-        time = -1;
-        levelUp.style.backgroundColor = '#fff7';
-        levelDown.style.backgroundColor = '#fff';
-        lastLevel3.style.display = 'inline';
-        breakText.style.display = 'none';
-    }
-    else if (level == stageLevels[1] && !levelBreak[level - 1]) {
-        time = 30;
-        levelUp.style.backgroundColor = '#fff7';
-        levelDown.style.backgroundColor = '#fff';
-        lastLevel2.style.display = 'inline';
-        breakText.style.display = 'none';
-    }
-    else if (level == stageLevels[1] && levelBreak[level - 1]) {
-        time = -1;
-        levelUp.style.backgroundColor = '#fff7';
-        levelDown.style.backgroundColor = '#fff';
-        lastLevel2.style.display = 'inline';
-        breakText.style.display = 'none';
-    }
-    else if (level == stageLevels[0] && !levelBreak[level - 1]) {
-        time = 30;
-        levelUp.style.backgroundColor = '#fff7';
-        levelDown.style.backgroundColor = '#fff';
-        lastLevel.style.display = 'inline';
-        breakText.style.display = 'none';
-    }
-    else if (level == stageLevels[0] && levelBreak[level - 1]) {
-        time = -1;
-        levelUp.style.backgroundColor = '#fff';
-        levelDown.style.backgroundColor = '#fff';
-        lastLevel.style.display = 'inline';
-        breakText.style.display = 'inline';
-    }
-    else if (levelBreak[level - 1]) {
-        time = -1;
-        levelUp.style.backgroundColor = '#fff';
-        levelDown.style.backgroundColor = '#fff';
-        lastLevel.style.display = 'none';
-        lastLevel2.style.display = 'none';
-        breakText.style.display = 'inline';
-    }
-    else if (!levelBreak[level]) {
-        time = 30;
-        levelUp.style.backgroundColor = '#fff7';
-        levelDown.style.backgroundColor = '#fff';
-        lastLevel.style.display = 'none';
-        lastLevel2.style.display = 'none';
-        breakText.style.display = 'none';
+
+        if (level == stageLevels[2]) {
+            lastLevel3.style.display = 'inline';
+            breakText.style.display = 'none';
+        }
+        else if (level == stageLevels[1]) {
+            lastLevel2.style.display = 'inline';
+            breakText.style.display = 'none';
+        }
+        else if (level == stageLevels[0]) {
+            lastLevel.style.display = 'inline';
+            breakText.style.display = 'none';
+        }
+        else {
+            lastLevel.style.display = 'none';
+            lastLevel2.style.display = 'none';
+            breakText.style.display = 'none';
+        }
+
     }
 })
 levelDown.addEventListener('click', () => {
@@ -955,11 +896,11 @@ levelDown.addEventListener('click', () => {
     level--;
     levelNumber.innerHTML = level; if (level <= stageLevels[0]) {
         stageLevel = level;
-    } 
-    else if(level > stageLevels[0] && level <= stageLevels[1]) {
+    }
+    else if (level > stageLevels[0] && level <= stageLevels[1]) {
         stageLevel = level - stageLevels[0];
     }
-    else if(level > stageLevels[1] && level <= stageLevels[2]){
+    else if (level > stageLevels[1] && level <= stageLevels[2]) {
         stageLevel = level - stageLevels[1];
     }
     time = -1;
@@ -975,7 +916,18 @@ levelDown.addEventListener('click', () => {
     } else {
         lastLevel.style.display = 'none';
     }
-    lastLevel2.style.display = 'none';
+
+    if (level == stageLevels[1]) {
+        lastLevel2.style.display = 'inline';
+    } else {
+        lastLevel2.style.display = 'none';
+    }
+
+    if (level == stageLevels[2]) {
+        lastLevel3.style.display = 'inline';
+    } else {
+        lastLevel3.style.display = 'none';
+    }
 })
 //close and open game introduction
 closeBtn.addEventListener('click', () => {
@@ -1111,13 +1063,14 @@ devSaveBtn.addEventListener('click', () => {
             case 11:
                 level = Math.round(devDatas[i].value);
                 levelNumber.innerHTML = level;
+                levelBreak = [];
+                for (let i = 0; i < level - 1; i++) {
+
+                    levelBreak.push(true);
+                }
                 break;
             case 12:
                 maxLevel = Math.round(devDatas[i].value);
-                levelBreak = [];
-                for (let i = 0; i < maxLevel - 1; i++) {
-                    levelBreak.push(true);
-                }
                 break;
             case 13:
                 playerSpeed = Math.round(devDatas[i].value);
@@ -1144,8 +1097,8 @@ function keydownFn(e) {
             if (player.x - player.radius < 0) return;
             playerSpeedX = -1 * playerSpeed;
             left = true;
-
             break;
+
         case 68: //D
             if (player.x + player.radius > canvas.width) return;
             playerSpeedX = 1 * playerSpeed;
@@ -1271,7 +1224,7 @@ timeCountDown = window.setInterval(() => {
             endScore.innerHTML = score;
             gameStart = false;
             levelBreak[level - 1] = true;
-            lastLevel3.innerHTML = 'Congratulations! You break the last level of stage 3,we reward you with 50000000 golds!Looking forward to the next stage,to be continued...';
+            lastLevel3.innerHTML = 'Congratulations! You break the last level of stage 3,we reward you with 50000000 golds!Looking forward to the next stage,to be continued...and the DEV password is 1234 ';
             // Clearance reward;
             gold += 50000000;
             hitGold += 1000;
@@ -1322,7 +1275,7 @@ timeCountDown = window.setInterval(() => {
         if (levelBreak[level - 1] == true && level != stageLevels[0]) {
             levelUp.style.backgroundColor = '#fff';
             breakText.style.display = 'inline';
-        }else if (levelBreak[level - 1] == true && level == stageLevels[1]) {
+        } else if (levelBreak[level - 1] == true && level == stageLevels[1]) {
             levelUp.style.backgroundColor = '#fff7';
             breakText.style.display = 'none';
         }
