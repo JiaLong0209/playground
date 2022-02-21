@@ -961,7 +961,7 @@ function CheckFn(i) {
 }
 // dev mode
 devBtn.addEventListener('click', () => {
-    if (devPassword.value == '1234') {
+    if (devPassword.value == '4052') {
         devMode = true;
         devText.style.display = "inline";
     } else {
