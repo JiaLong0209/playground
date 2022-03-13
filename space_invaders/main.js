@@ -14,9 +14,9 @@ class Player {
         this.rotation = 0;
 
         const image = new Image();
-        image.src = './img/inabakumori01.png';
+        image.src = './img/spaceship01.png';
         image.onload = () => {
-            const scale = 0.7;
+            const scale = 1;
             this.image = image;
             this.width = image.width * scale;
             this.height = image.height * scale;
@@ -82,9 +82,9 @@ class Invader {
             y: 0
         }
         const image = new Image();
-        image.src = './img/knife2-w27.png';
+        image.src = './img/spacemonster01.png';
         image.onload = () => {
-            const scale = 1;
+            const scale = 0.9;
             this.image = image;
             this.width = image.width * scale;
             this.height = image.height * scale;
@@ -117,11 +117,11 @@ class Grid {
             x: 3,
             y: 0
         }
-        let width = 40;
-        let height = 60
+        let width = 55;
+        let height = 35;
         this.invaders = []
 
-        const columns = Math.floor(Math.random() * 21) +10
+        const columns = Math.floor(Math.random() * 13) +10
         const rows = Math.floor(Math.random() * 7) +1
 
         this.width = columns * width
