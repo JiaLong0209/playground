@@ -1,13 +1,13 @@
 // 1. Project setup v
 // 2. Create a player v
-// 3. Move the player v
+// 3. Move the player v                     2022/3/6
 // 4. Create projectiles v
 // 5. Create an invader v
-// 6. Create and move grids of invaders v
+// 6. Create and move grids of invaders v   2022/3/13
 // 7. Spawn grids at intvervals v
 // 7a.Take into account new grid width v
-// 8. Shoot invaders v
-// 9. Invaders shoot back v (take careful case-sensitive)
+// 8. Shoot invaders v                      2022/3/27
+// 9. Invaders shoot back, player automatic shooting, shooting tilt (take careful case-sensitive) v 2022/4/5  
 // 10. Enemy explosions
 // 11. Create background stars
 // 12. Lose condition
@@ -83,7 +83,7 @@ class Projectile {
     }
     draw() {
         c.beginPath();
-        c.arc(this.position.x, this.position.y, this.radius, Math.PI, Math.PI * 2);
+        c.arc(this.position.x, this.position.y, this.radius, 0 ,Math.PI * 2);
         c.fillStyle = "yellow"
         c.fill()
 
@@ -147,8 +147,8 @@ class InvaderProjectile {
         this.position = position
         this.velocity = velocity
 
-        this.width = 3
-        this.height = 10
+        this.width = 8
+        this.height = 16
 
     }
     draw() {
@@ -206,10 +206,16 @@ class Grid {
     }
 }
 
+
+
+let bulletCounts = 1;
 let bulletSpeed = 20;
-let bulletSize = 10;
+let bulletSize = 7;
+let bulletTilt = 3;
+
 let playerSpeedX = 10;
 let playerSpeedY = 10;
+let playerShootTime = 200;
 
 let invaderAttackFrames = 30;
 let invaderProjectilesSpeed = 10;
@@ -221,6 +227,30 @@ let invaderRandomRows = 3;
 
 let SpawnFrames = 50;
 let randomSpawnFrames = 100;
+
+let devMode = false;
+if(devMode){
+    
+ bulletCounts = 2;
+ bulletSpeed = 20;
+ bulletSize = 7;
+
+ playerSpeedX = 10;
+ playerSpeedY = 10;
+ playerShootTime = 100;
+
+ invaderAttackFrames = 30;
+ invaderProjectilesSpeed = 10;
+
+ invaderColumns = 3;
+ invaderRows = 10;
+ invaderRandomColumns = 3
+ invaderRandomRows = 3;
+
+ SpawnFrames = 50;
+ randomSpawnFrames = 100;
+
+}
 
 const player = new Player();
 const projectiles = []
@@ -266,10 +296,7 @@ function animate() {
     })
     projectiles.forEach((projectile, index) => {
         if (projectile.position.y + projectile.radius <= 0) {
-            setTimeout(() => {
-
                 projectiles.splice(index, 1)
-            }, 0)
         } else {
             projectile.update()
 
@@ -354,6 +381,21 @@ function animate() {
 
 animate();
 
+function playerShootFn() {
+    for (let i = 0; i < bulletCounts; i++) {
+        projectiles.push(new Projectile({
+            position: {
+                x: player.position.x + player.width / 2,
+                y: player.position.y
+            },
+            velocity: {
+                x: Math.random() * bulletTilt - bulletTilt / 2,
+                y: bulletSpeed * -1
+            }
+        }))
+    }
+}
+
 window.addEventListener("keydown", ({ key }) => {
     switch (key) {
 
@@ -378,20 +420,11 @@ window.addEventListener("keydown", ({ key }) => {
 
         case ' ':
             keys.space.pressed = true;
-            projectiles.push(new Projectile({
-                position: {
-                    x: player.position.x + player.width / 2,
-                    y: player.position.y
-                },
-                velocity: {
-                    x: 0,
-                    y: bulletSpeed * -1
-                }
-            }))
+            playerShootFn();
             break;
     }
 });
-
+let playerShoot = setInterval(playerShootFn, playerShootTime)
 window.addEventListener("keyup", ({ key }) => {
     switch (key) {
 
