@@ -1,13 +1,13 @@
-// 1. Project setup
-// 2. Create a player
-// 3. Move the player
-// 4. Create projectiles
-// 5. Create an invader
-// 6. Create and move grids of invaders
-// 7. Spawn grids at intvervals
-// 7a.Take into account new grid width
-// 8. Shoot invaders
-// 9. Invaders shoot back
+// 1. Project setup v
+// 2. Create a player v
+// 3. Move the player v
+// 4. Create projectiles v
+// 5. Create an invader v
+// 6. Create and move grids of invaders v
+// 7. Spawn grids at intvervals v
+// 7a.Take into account new grid width v
+// 8. Shoot invaders v
+// 9. Invaders shoot back v (take careful case-sensitive)
 // 10. Enemy explosions
 // 11. Create background stars
 // 12. Lose condition
@@ -83,7 +83,7 @@ class Projectile {
     }
     draw() {
         c.beginPath();
-        c.arc(this.position.x, this.position.y, this.radius, 0, Math.PI * 2);
+        c.arc(this.position.x, this.position.y, this.radius, Math.PI, Math.PI * 2);
         c.fillStyle = "yellow"
         c.fill()
 
@@ -95,6 +95,7 @@ class Projectile {
 
     }
 }
+
 
 class Invader {
     constructor({ position }) {
@@ -126,8 +127,41 @@ class Invader {
             this.position.y += velocity.y;
         }
     }
+
+    shoot(invaderProjectiles) {
+        invaderProjectiles.push(new InvaderProjectile({
+            position: {
+                x: this.position.x + this.width / 2,
+                y: this.position.y + this.height
+            },
+            velocity: {
+                x: 0,
+                y: invaderProjectilesSpeed
+            }
+        }))
+    }
 }
 
+class InvaderProjectile {
+    constructor({ position, velocity }) {
+        this.position = position
+        this.velocity = velocity
+
+        this.width = 3
+        this.height = 10
+
+    }
+    draw() {
+        c.fillStyle = "white"
+        c.fillRect(this.position.x, this.position.y, this.width, this.height)
+    }
+    update() {
+        this.draw()
+        this.position.x += this.velocity.x
+        this.position.y += this.velocity.y
+
+    }
+}
 class Grid {
     constructor() {
         this.position = {
@@ -142,13 +176,13 @@ class Grid {
         let height = 35;
         this.invaders = []
 
-        const columns = Math.floor(Math.random() * 11) + 5
-        const rows = Math.floor(Math.random() * 7) + 1
+        let columns = Math.floor(Math.random() * invaderRandomColumns) + invaderColumns
+        let rows = Math.floor(Math.random() * invaderRandomRows) + invaderRows
 
         this.width = columns * width
 
-        for (let i = 0; i < columns; i++) {
-            for (let y = 0; y < rows; y++) {
+        for (let i = 0; i < rows; i++) {
+            for (let y = 0; y < columns; y++) {
                 this.invaders.push(
                     new Invader({
                         position: {
@@ -177,12 +211,21 @@ let bulletSize = 10;
 let playerSpeedX = 10;
 let playerSpeedY = 10;
 
+let invaderAttackFrames = 30;
+let invaderProjectilesSpeed = 10;
+
+let invaderColumns = 1;
+let invaderRows = 3;
+let invaderRandomColumns = 3
+let invaderRandomRows = 3;
+
 let SpawnFrames = 50;
 let randomSpawnFrames = 100;
 
 const player = new Player();
 const projectiles = []
 const grids = []
+const invaderProjectiles = []
 const keys = {
     a: {
         pressed: false
@@ -210,7 +253,17 @@ function animate() {
     c.fillRect(0, 0, canvas.width, canvas.height);
     // invader.update();
     player.update();
+    invaderProjectiles.forEach((invaderProjectile, index) => {
+        if (invaderProjectile.position.y + invaderProjectile.height >= canvas.height) {
+            invaderProjectiles.splice(index, 1)
+        } else {
 
+            invaderProjectile.update()
+        }
+        if (invaderProjectile.position.y + invaderProjectile.height >= player.position.y && invaderProjectile.position.x + invaderProjectile.width >= player.position.x && invaderProjectile.position.x <= player.position.x + player.width) {
+            console.log("you lose")
+        }
+    })
     projectiles.forEach((projectile, index) => {
         if (projectile.position.y + projectile.radius <= 0) {
             setTimeout(() => {
@@ -225,11 +278,19 @@ function animate() {
     })
     grids.forEach((grid, gridIndex) => {
         grid.update()
+
+        // spawn projectiles
+        if (frames % invaderAttackFrames === 0 && grid.invaders.length > 0) {
+            let invaderAttack = Math.floor(Math.random() * grid.invaders.length);
+
+            // console.log("attack")
+            grid.invaders[invaderAttack].shoot(invaderProjectiles)
+        }
         grid.invaders.forEach((invader, i) => {
             invader.update({ velocity: grid.velocity })
             projectiles.forEach((projectile, j) => {
                 if (projectile.position.y - projectile.radius <= invader.position.y + invader.height &&
-                    projectile.position.x + projectile.radius >= invader.position.x - invader.width &&
+                    projectile.position.x + projectile.radius >= invader.position.x &&
                     projectile.position.x - projectile.radius <= invader.position.x + invader.width &&
                     projectile.position.y + projectile.radius >= invader.position.y) {
 
@@ -244,13 +305,13 @@ function animate() {
                     grid.invaders.splice(i, 1);
                     projectiles.splice(j, 1);
 
-                    if(grid.invaders.length > 0){
+                    if (grid.invaders.length > 0) {
                         const firstInvader = grid.invaders[0];
                         const lastInvader = grid.invaders[grid.invaders.length - 1];
 
                         grid.width = lastInvader.position.x - firstInvader.position.x + lastInvader.width;
                         grid.position.x = firstInvader.position.x;
-                    }else{
+                    } else {
                         grids.splice(gridIndex, 1);
                     }
                     //     }
@@ -286,8 +347,8 @@ function animate() {
         frames = 0;
         console.log(randomInterval)
     }
-    console.log(frames);
     frames++;
+
 
 }
 
