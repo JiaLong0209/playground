@@ -10,20 +10,22 @@
 // 9. Invaders shoot back, player automatic shooting, shooting tilt (take careful case-sensitive) v 2022/4/5  
 // 10. Enemy explosions
 // 11. Create background stars (care array name)v 2022/4/9
-// 12. Lose condition
-// 13. Score 
-// 14. Fixed-width canvas
-
-
+// 12. Lose condition v
+// 13. Score v
+// 14. Fixed-width canvas v 
+// ex. Add life and damage function v 2022/4/10
 
 
 
 
 const canvas = document.querySelector('canvas');
 const c = canvas.getContext('2d');
+const scoreNum = document.querySelector('.scoreNum');
 
 canvas.width = innerWidth - 3.2;
 canvas.height = innerHeight - 3.2;
+// canvas.width = 800;
+// canvas.height = 450;
 
 // particle
 let particleCounts = 15;
@@ -31,17 +33,22 @@ let particleSpeed = 4;
 let particleSize = 4;
 
 // bullet
+let bulletDamage = 100;
 let bulletCounts = 1;
-let bulletSpeed = 20;
+let bulletSpeed = 10;
 let bulletSize = 6;
-let bulletTilt = 3;
+let bulletTilt = 1;
 
 // player
+let playerLife = 300;
 let playerSpeedX = 10;
 let playerSpeedY = 10;
-let playerShootTime = 100;
+let playerShootTime = 300;
+let isPlayerAutoShoot = true;
 
 // invader
+let invaderDamage = 100;
+let invaderLife = 200;
 let invaderScale = 0.8;
 let invaderWidth = 50;
 let invaderHeight = 30;
@@ -50,15 +57,25 @@ let invaderProjectilesSpeed = 10;
 let invaderSpeedY = 30;
 let invaderSpeedX = 5;
 let invaderColumns = 1;
-let invaderRows = 3;
-let invaderRandomColumns = 3
-let invaderRandomRows = 3;
-let SpawnFrames = 50;
+let invaderRows = 1;
+let invaderRandomColumns = 4;
+let invaderRandomRows = 5;
+let SpawnFrames = 100;
 let randomSpawnFrames = 100;
 
 // Background
 let BGParticleCounts = 50;
 let BGParticleSpeed = 0.5;
+
+// game
+let score = 0;
+let frames = 0;
+let randomInterval = Math.floor(Math.random() * randomSpawnFrames + SpawnFrames)
+let gamePauseTime = 1600;
+let game = {
+    over: false,
+    active: true
+}
 
 // --------------devMode ---------------
 let devMode = false;
@@ -66,17 +83,22 @@ if (devMode) {
 
 particleCounts = 15;
 particleSpeed = 4;
-particleSize =
+particleSize = 4;
 
- bulletCounts = 1;
- bulletSpeed = 20;
- bulletSize = 6;
- bulletTilt = 3;
+bulletDamage = 100;
+bulletCounts = 3;
+bulletSpeed = 15;
+bulletSize = 6;
+bulletTilt = 1;
 
+playerLife = 3000;
 playerSpeedX = 10;
 playerSpeedY = 10;
-playerShootTime = 200;
+playerShootTime = 20;
+isPlayerAutoShoot = true;
 
+invaderDamage = 100;
+invaderLife = 100;
 invaderScale = 0.8;
 invaderWidth = 50;
 invaderHeight = 30;
@@ -84,16 +106,15 @@ invaderAttackFrames = 30;
 invaderProjectilesSpeed = 10;
 invaderSpeedY = 30;
 invaderSpeedX = 5;
-invaderColumns = 1;
-invaderRows = 3;
-invaderRandomColumns = 3
-invaderRandomRows = 3;
-
-SpawnFrames = 50;
+invaderColumns = 24;
+invaderRows = 24;
+invaderRandomColumns = 10;
+invaderRandomRows = 10;
+SpawnFrames = 100;
 randomSpawnFrames = 100;
 
-BGParticleCounts = 100;
-BGParticleSpeed = 1;
+BGParticleCounts = 50;
+BGParticleSpeed = 0.5;
 
 }
 
@@ -106,6 +127,7 @@ class Player {
         }
 
         this.rotation = 0;
+        this.opacity = 1;
 
         const image = new Image();
         image.src = './img/spaceship01.png';
@@ -124,6 +146,7 @@ class Player {
     draw() {
 
         c.save();
+        c.globalAlpha = this.opacity
         c.translate(player.position.x + player.width / 2, player.position.y + player.height / 2);
 
         c.rotate(this.rotation);
@@ -193,7 +216,7 @@ class Particle {
         this.draw()
         this.position.x += this.velocity.x
         this.position.y += this.velocity.y
-        if(this.fades){
+        if (this.fades) {
 
             this.opacity -= 0.01
         }
@@ -202,7 +225,7 @@ class Particle {
 
 
 class Invader {
-    constructor({ position }) {
+    constructor({ position, life }) {
         this.velocity = {
             x: 0,
             y: 0
@@ -218,6 +241,7 @@ class Invader {
                 y: position.y
             }
         }
+        this.life = life
     }
     draw() {
 
@@ -266,7 +290,7 @@ class InvaderProjectile {
     }
 }
 class Grid {
-    constructor() {
+    constructor(life) {
         this.position = {
             x: 0,
             y: 0
@@ -288,10 +312,8 @@ class Grid {
             for (let y = 0; y < columns; y++) {
                 this.invaders.push(
                     new Invader({
-                        position: {
-                            x: i * width,
-                            y: y * height
-                        }
+                        position: { x: i * width, y: y * height },
+                        life
                     }))
             }
 
@@ -330,18 +352,25 @@ const keys = {
     },
     space: {
         pressed: false
+    },
+    j: {
+        pressed: false
+    },
+    k: {
+        pressed: false
     }
 }
 
-let frames = 0;
-let randomInterval = Math.floor(Math.random() * 500 + 300);
+
+
+
 
 // Bakcground
-for(let i = 0; i < BGParticleCounts; i++){
+for (let i = 0; i < BGParticleCounts; i++) {
     particles.push(new Particle({
         position: {
             x: Math.random() * canvas.width,
-            y: Math.random() * canvas.height 
+            y: Math.random() * canvas.height
         },
         velocity: {
             x: 0,
@@ -355,7 +384,7 @@ for(let i = 0; i < BGParticleCounts; i++){
 
 function createParticles({
     object, color, fades
-}){
+}) {
     particles.push(new Particle({
         position: {
             x: object.position.x + object.width / 2,
@@ -372,6 +401,7 @@ function createParticles({
 }
 
 function animate() {
+    if (!game.active) return;
     requestAnimationFrame(animate);
     c.fillStyle = 'black';
     c.fillRect(0, 0, canvas.width, canvas.height);
@@ -379,7 +409,7 @@ function animate() {
     player.update();
 
     particles.forEach((particle, i) => {
-        if(particle.position.y - particle.radius >= canvas.height){
+        if (particle.position.y - particle.radius >= canvas.height) {
             particle.position.x = Math.random() * canvas.width
             particle.position.y = -particle.radius
         }
@@ -389,7 +419,7 @@ function animate() {
             particle.update()
         }
     })
-    
+
     invaderProjectiles.forEach((invaderProjectile, index) => {
         if (invaderProjectile.position.y + invaderProjectile.height >= canvas.height) {
             invaderProjectiles.splice(index, 1)
@@ -400,16 +430,24 @@ function animate() {
         // projectiles hits player
         if (invaderProjectile.position.y + invaderProjectile.height >= player.position.y && invaderProjectile.position.x + invaderProjectile.width >= player.position.x && invaderProjectile.position.x <= player.position.x + player.width) {
             // player lose
+            playerLife -= invaderDamage;
             invaderProjectiles.splice(index, 1)
-            for(let i = 0; i< 15; i++){
-
+            
+            for (let i = 0; i < 15; i++) {
                 createParticles({
-                    object:player,
+                    object: player,
                     color: 'white',
-                    fades:true
+                    fades: true
                 })
             }
+            if (playerLife <= 0) {
+                player.opacity = 0;
+                game.over = true;
+                setTimeout(() => {
+                    game.active = false;
+                }, gamePauseTime)
             }
+        }
     })
 
     projectiles.forEach((projectile, index) => {
@@ -441,8 +479,8 @@ function animate() {
 
                     for (let i = 0; i < particleCounts; i++) {
                         createParticles({
-                            object:invader,
-                            fades:true
+                            object: invader,
+                            fades: true
                         });
                     }
                     // setTimeout(()=>{
@@ -453,8 +491,13 @@ function animate() {
 
                     // remove invader and projectile
                     //     if(invaderFound){
-                    grid.invaders.splice(i, 1);
                     projectiles.splice(j, 1);
+                    score += 100;
+                    scoreNum.innerHTML = score;
+                    invader.life -= bulletDamage;
+                    if (invader.life <= 0) {
+                        grid.invaders.splice(i, 1);
+                    }
 
                     if (grid.invaders.length > 0) {
                         const firstInvader = grid.invaders[0];
@@ -493,7 +536,7 @@ function animate() {
     }
     // spawning enemies
     if (frames % randomInterval === 0) {
-        grids.push(new Grid())
+        grids.push(new Grid(invaderLife))
         randomInterval = Math.floor(Math.random() * randomSpawnFrames + SpawnFrames);
         frames = 0;
         console.log(randomInterval)
@@ -521,6 +564,7 @@ function playerShootFn() {
 }
 
 window.addEventListener("keydown", ({ key }) => {
+    if (game.over) return;
     switch (key) {
 
         case 'a':
@@ -546,32 +590,51 @@ window.addEventListener("keydown", ({ key }) => {
             keys.space.pressed = true;
             playerShootFn();
             break;
+        case 'j':
+            keys.j.pressed = true;
+            playerShootFn();
+            break;
+        case 'k':
+            keys.k.pressed = true;
+            playerShootFn();
+            break;
     }
 });
-let playerShoot = setInterval(playerShootFn, playerShootTime)
+
+let playerShoot;
+
+if (isPlayerAutoShoot) {
+    playerShoot = setInterval(playerShootFn, playerShootTime);
+
+}
+
 window.addEventListener("keyup", ({ key }) => {
     switch (key) {
 
         case 'a':
             keys.a.pressed = false;
             break;
-
         case 'd':
             keys.d.pressed = false;
 
             break;
-
         case 'w':
             keys.w.pressed = false;
 
             break;
-
         case 's':
             keys.s.pressed = false;
 
             break;
-
         case ' ':
+            keys.space.pressed = false;
+
+            break;
+        case 'j':
+            keys.space.pressed = false;
+
+            break;
+        case 'k':
             keys.space.pressed = false;
 
             break;
