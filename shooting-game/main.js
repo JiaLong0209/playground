@@ -88,9 +88,10 @@ const settingChecks = [
     document.querySelector('#check1'),
     document.querySelector('#check2'),
     document.querySelector('#check3'),
-    document.querySelector('#check4')];
+    document.querySelector('#check4'),
+    document.querySelector('#check5')];
 
-let isCheck = [true, true, true, true];
+let isCheck = [true, true, true, true, true];
 let isParticleEffect = true;
 let isShowDamage = true;
 let isShowAfterimage = true;
@@ -266,6 +267,7 @@ let clearTime = 300;
 let shrinkTime = 20;
 let levelUpTime = 700;
 let showDamageTime = 500;
+let showGetGoldTime = 500;
 let time = 30;
 
 let score = 0;
@@ -578,16 +580,22 @@ function animate() {
                     score += hitScore;
                     scoreNumber.innerHTML = score;
                     if (level <= stageLevels[0]) {
-                        gold += hitGold + level * 2;
+                        let finalGold = hitGold + level * 2;
+                        gold += finalGold;
                         goldNumber.innerHTML = gold;
+                        getGoldAn(finalGold);
                     }
                     else if (level > stageLevels[0] && level <= stageLevels[1]) {
-                        gold += hitGold + level * 4;
+                        let finalGold = hitGold + level * 4;
+                        gold += finalGold;
                         goldNumber.innerHTML = gold;
+                        getGoldAn(finalGold);
                     }
                     else if (level > stageLevels[1] && level <= stageLevels[2]) {
-                        gold += hitGold + level * 10;
+                        let finalGold = hitGold + level * 10;
+                        gold += finalGold;
                         goldNumber.innerHTML = gold;
+                        getGoldAn(finalGold);
                     }
 
                     //shrink animation
@@ -620,16 +628,22 @@ function animate() {
                     scoreNumber.innerHTML = score;
 
                     if (level <= stageLevels[0]) {
-                        gold += hitGold + level * 5;
+                        let finalGold = hitGold + level * 5;
+                        gold += finalGold;
                         goldNumber.innerHTML = gold;
+                        getGoldAn(finalGold);
                     }
                     else if (level > stageLevels[0] && level <= stageLevels[1]) {
-                        gold += hitGold + level * 10;
+                        let finalGold = hitGold + level * 10;
+                        gold += finalGold;
                         goldNumber.innerHTML = gold;
+                        getGoldAn(finalGold);
                     }
                     else if (level > stageLevels[1] && level <= stageLevels[2]) {
-                        gold += hitGold + level * 25;
+                        let finalGold = hitGold + level * 25;
+                        gold += finalGold;
                         goldNumber.innerHTML = gold;
+                        getGoldAn(finalGold);
                     }
                     // setTimeout(() => {
                     enemies.splice(index, 1);
@@ -639,6 +653,31 @@ function animate() {
         })
     })
 }
+// GetGold animate
+function getGoldAn(finalGold){
+    if(isCheck[4]){
+        let showGetGoldElement = document.createElement('i');
+                    let showGetGoldText = document.createTextNode(`+${finalGold}`);
+                    showGetGoldElement.appendChild(showGetGoldText);
+                    showGetGoldElement.classList.add('showGetGold');
+                    showGetGoldElement.style.left = 18*(checkDigits(gold)) + 100 + "px";
+                    console.log(checkDigits(gold));
+                    body.appendChild(showGetGoldElement);
+                    setTimeout(() => {
+                        body.removeChild(showGetGoldElement);
+                    }, showGetGoldTime)
+    }
+
+} 
+function checkDigits(number){
+    let i = 0;
+    while(number > 1){
+        number /= 10;
+        i++;
+    }
+    return i;
+}
+
 // skill up
 function levelUpAnFn(e) {
     if (isCheck[3]) {

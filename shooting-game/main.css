@@ -745,6 +745,23 @@ body {
     transform: translate(0%,0%);
     animation: showDamageAn 0.5s ease-in 0.05s 1;
 }
+
+.showGetGold{  
+    position: absolute;
+    left: 14%;
+    top: 6%;
+    min-width: 1em;
+    user-select: none;
+    color: rgb(239, 248, 66);
+    text-shadow: 1px 1px 0.5px rgb(0, 0, 0);
+    font-family: sans-serif;
+    font-size: 30px;
+    font-weight: 600;
+    padding: 0px;
+    transform: translate(0%,0%);
+    animation: showGetGoldAn 0.5s ease-in 0.05s 1;
+
+}
 @keyframes levelUpAn {
     0%{
         transform: translate(-45%,-150%);
@@ -759,6 +776,14 @@ body {
     }
     100%{
         transform: translate(0%,calc(-30px + -100%));
+    }
+}
+@keyframes showGetGoldAn {
+    0%{
+        transform: translate(0%,0%);
+    }
+    100%{
+        transform: translate(0%,-100%);
     }
 }
 
