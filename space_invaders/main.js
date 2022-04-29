@@ -14,13 +14,14 @@
 // 13. Score v
 // 14. Fixed-width canvas v 
 // ex. Add life and damage function v 2022/4/10
-
+// ex. show player instant life v 2022/4/29
 
 
 
 const canvas = document.querySelector('canvas');
 const c = canvas.getContext('2d');
 const scoreNum = document.querySelector('.scoreNum');
+const lifeNum = document.querySelector('.lifeNum');
 
 canvas.width = innerWidth - 3.2;
 canvas.height = innerHeight - 3.2;
@@ -33,22 +34,22 @@ let particleSpeed = 4;
 let particleSize = 4;
 
 // bullet
-let bulletDamage = 100;
+let bulletDamage = 1;
 let bulletCounts = 1;
 let bulletSpeed = 10;
 let bulletSize = 6;
 let bulletTilt = 1;
 
 // player
-let playerLife = 300;
+let playerLife = 3;
 let playerSpeedX = 10;
 let playerSpeedY = 10;
 let playerShootTime = 300;
 let isPlayerAutoShoot = true;
 
 // invader
-let invaderDamage = 100;
-let invaderLife = 200;
+let invaderDamage = 1;
+let invaderLife = 1;
 let invaderScale = 0.8;
 let invaderWidth = 50;
 let invaderHeight = 30;
@@ -71,7 +72,7 @@ let BGParticleSpeed = 0.5;
 let score = 0;
 let frames = 0;
 let randomInterval = Math.floor(Math.random() * randomSpawnFrames + SpawnFrames)
-let gamePauseTime = 1600;
+let gamePauseTime = 1000;
 let game = {
     over: false,
     active: true
@@ -151,12 +152,9 @@ class Player {
 
         c.rotate(this.rotation);
 
-
         c.translate(-player.position.x - player.width / 2, - player.position.y - player.height / 2);
 
-
         c.drawImage(this.image, this.position.x, this.position.y, this.width, this.height);
-
 
         c.restore();
     }
@@ -431,6 +429,9 @@ function animate() {
         if (invaderProjectile.position.y + invaderProjectile.height >= player.position.y && invaderProjectile.position.x + invaderProjectile.width >= player.position.x && invaderProjectile.position.x <= player.position.x + player.width) {
             // player lose
             playerLife -= invaderDamage;
+            lifeNum.innerHTML = playerLife;
+            
+
             invaderProjectiles.splice(index, 1)
             
             for (let i = 0; i < 15; i++) {
@@ -446,6 +447,7 @@ function animate() {
                 setTimeout(() => {
                     game.active = false;
                 }, gamePauseTime)
+                clearInterval(playerShoot);
             }
         }
     })

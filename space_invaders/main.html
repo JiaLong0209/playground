@@ -35,9 +35,20 @@
             top: 1%;
             user-select: none;
         }
-        .scoreBox{
+        .lifeBox,.lifeText,.lifeNumber{
+            position: relative;
+            font-family:sans-serif;
+            font-size: 24px;
+            color: #fff;
+            z-index: 3;
+            left: 1%;
+            top: 5%;
+            user-select: none;
+        }
+        .scoreBox,.lifeBox{
             position: absolute;
         }
+        
     </style>
 </head>
 
@@ -46,6 +57,11 @@
     <div class="scoreBox">
         <span class="scoreText">Score:</span>
         <span class="scoreNum">0</span>   
+    </div>
+    
+    <div class="lifeBox">
+        <span class="lifeText">Life:</span>
+        <span class="lifeNum">3</span>   
     </div>
     <canvas></canvas>
     <script src="main.js"></script>
