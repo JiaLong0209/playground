@@ -1,4 +1,4 @@
-const density = 'N@#W$9876543210?!abc;:+=-,.   ';
+// const density = 'N@#W$9876543210?!abc;:+=-,.   ';
 
 let img;
 function preload(){
@@ -18,7 +18,7 @@ function setup() {
     img.loadPixels();
 
     for(let j = 0; j < img.height; j++){
-        let row = " ";
+        let row = "  ";
     for(let i = 0; i < img.width; i++){
             const pixelIndex = (i + j * img.width) * 4;
             const r = img.pixels[pixelIndex + 0];

@@ -1,4 +1,7 @@
-const density = 'N@#W$9876543210?!abc;:+=-,.  ';
+// const density = 'N@#W$9876543210?!abc;:+=-,.  ';
+// const density = '廢喔物是說扭伯你一 ';
+const density = '接嗚哦直冠豆MVP ';
+
 
 let img;
 function preload(){
@@ -7,7 +10,7 @@ function preload(){
 function setup() {
     // createCanvas(1280, 760);
     // createCanvas(840, 554);
-    createCanvas(600,600);
+    createCanvas(600,600); 
 }
 
 function draw(){
