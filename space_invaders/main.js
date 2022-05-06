@@ -1,12 +1,12 @@
 // 1. Project setup v
 // 2. Create a player v
-// 3. Move the player v                     2022/3/6
+// 3. Move the player v                     2022/3/6 v0.25
 // 4. Create projectiles v
 // 5. Create an invader v
-// 6. Create and move grids of invaders v   2022/3/13
+// 6. Create and move grids of invaders v   2022/3/13 v0.5
 // 7. Spawn grids at intvervals v
 // 7a.Take into account new grid width v
-// 8. Shoot invaders v                      2022/3/27
+// 8. Shoot invaders v                      2022/3/27 
 // 9. Invaders shoot back, player automatic shooting, shooting tilt (take careful case-sensitive) v 2022/4/5  
 // 10. Enemy explosions
 // 11. Create background stars (care array name)v 2022/4/9
@@ -14,14 +14,19 @@
 // 13. Score v
 // 14. Fixed-width canvas v 
 // ex. Add life and damage function v 2022/4/10
-// ex. show player instant life v 2022/4/29
-
+// ex. show player instant life v 2022/4/29 v1.01
+// ex. Add start button v1.1 2022/5/6 
 
 
 const canvas = document.querySelector('canvas');
 const c = canvas.getContext('2d');
+
 const scoreNum = document.querySelector('.scoreNum');
 const lifeNum = document.querySelector('.lifeNum');
+const endScoreNum = document.querySelector('.endPoints');
+const startBtn = document.querySelector('#startBtn');
+const startContainer = document.querySelector('.startContainer');
+
 
 canvas.width = innerWidth - 3.2;
 canvas.height = innerHeight - 3.2;
@@ -72,50 +77,51 @@ let BGParticleSpeed = 0.5;
 let score = 0;
 let frames = 0;
 let randomInterval = Math.floor(Math.random() * randomSpawnFrames + SpawnFrames)
-let gamePauseTime = 1000;
+let gamePauseTime = 100;
 let game = {
     over: false,
     active: true
 }
+let isGameStart = false;
 
 // --------------devMode ---------------
 let devMode = false;
 if (devMode) {
 
-particleCounts = 15;
-particleSpeed = 4;
-particleSize = 4;
+    particleCounts = 15;
+    particleSpeed = 4;
+    particleSize = 4;
 
-bulletDamage = 100;
-bulletCounts = 3;
-bulletSpeed = 15;
-bulletSize = 6;
-bulletTilt = 1;
+    bulletDamage = 100;
+    bulletCounts = 3;
+    bulletSpeed = 15;
+    bulletSize = 6;
+    bulletTilt = 1;
 
-playerLife = 3000;
-playerSpeedX = 10;
-playerSpeedY = 10;
-playerShootTime = 20;
-isPlayerAutoShoot = true;
+    playerLife = 3000;
+    playerSpeedX = 10;
+    playerSpeedY = 10;
+    playerShootTime = 20;
+    isPlayerAutoShoot = true;
 
-invaderDamage = 100;
-invaderLife = 100;
-invaderScale = 0.8;
-invaderWidth = 50;
-invaderHeight = 30;
-invaderAttackFrames = 30;
-invaderProjectilesSpeed = 10;
-invaderSpeedY = 30;
-invaderSpeedX = 5;
-invaderColumns = 24;
-invaderRows = 24;
-invaderRandomColumns = 10;
-invaderRandomRows = 10;
-SpawnFrames = 100;
-randomSpawnFrames = 100;
+    invaderDamage = 100;
+    invaderLife = 100;
+    invaderScale = 0.8;
+    invaderWidth = 50;
+    invaderHeight = 30;
+    invaderAttackFrames = 30;
+    invaderProjectilesSpeed = 10;
+    invaderSpeedY = 30;
+    invaderSpeedX = 5;
+    invaderColumns = 24;
+    invaderRows = 24;
+    invaderRandomColumns = 10;
+    invaderRandomRows = 10;
+    SpawnFrames = 100;
+    randomSpawnFrames = 100;
 
-BGParticleCounts = 50;
-BGParticleSpeed = 0.5;
+    BGParticleCounts = 50;
+    BGParticleSpeed = 0.5;
 
 }
 
@@ -329,11 +335,11 @@ class Grid {
     }
 }
 
-const player = new Player();
-const projectiles = []
-const grids = []
-const invaderProjectiles = []
-const particles = []
+let player = new Player();
+let projectiles = []
+let grids = []
+let invaderProjectiles = []
+let particles = []
 
 const keys = {
     a: {
@@ -383,24 +389,27 @@ for (let i = 0; i < BGParticleCounts; i++) {
 function createParticles({
     object, color, fades
 }) {
-    particles.push(new Particle({
-        position: {
-            x: object.position.x + object.width / 2,
-            y: object.position.y + object.height / 2
-        },
-        velocity: {
-            x: (Math.random() - 0.5) * particleSpeed,
-            y: (Math.random() - 0.1) * particleSpeed
-        },
-        radius: Math.random() * particleSize,
-        color: color || "#AAA8DE",
-        fades: fades
-    }))
+        particles.push(new Particle({
+            position: {
+                x: object.position.x + object.width / 2,
+                y: object.position.y + object.height / 2
+            },
+            velocity: {
+                x: (Math.random() - 0.5) * particleSpeed,
+                y: (Math.random() - 0.1) * particleSpeed
+            },
+            radius: Math.random() * particleSize,
+            color: color || "#AAA8DE",
+            fades: fades
+        }))
+        
 }
-
+let animateId;
 function animate() {
-    if (!game.active) return;
-    requestAnimationFrame(animate);
+    if(isGameStart){
+        
+    }
+    animateId = requestAnimationFrame(animate);
     c.fillStyle = 'black';
     c.fillRect(0, 0, canvas.width, canvas.height);
     // invader.update();
@@ -428,12 +437,15 @@ function animate() {
         // projectiles hits player
         if (invaderProjectile.position.y + invaderProjectile.height >= player.position.y && invaderProjectile.position.x + invaderProjectile.width >= player.position.x && invaderProjectile.position.x <= player.position.x + player.width) {
             // player lose
-            playerLife -= invaderDamage;
-            lifeNum.innerHTML = playerLife;
-            
+            if(player.opacity != 0 && isGameStart){
 
-            invaderProjectiles.splice(index, 1)
-            
+                playerLife -= invaderDamage;
+                lifeNum.innerHTML = playerLife;
+                invaderProjectiles.splice(index, 1)
+                
+            }
+                
+                
             for (let i = 0; i < 15; i++) {
                 createParticles({
                     object: player,
@@ -443,9 +455,12 @@ function animate() {
             }
             if (playerLife <= 0) {
                 player.opacity = 0;
-                game.over = true;
                 setTimeout(() => {
-                    game.active = false;
+                    endScore = score;
+                    endScoreNum.innerHTML = endScore;
+                    startContainer.style.display = "flex";
+                    isGameStart = false;
+                    cancelAnimationFrame(animateId);
                 }, gamePauseTime)
                 clearInterval(playerShoot);
             }
@@ -564,83 +579,106 @@ function playerShootFn() {
         }))
     }
 }
-
-window.addEventListener("keydown", ({ key }) => {
-    if (game.over) return;
-    switch (key) {
-
-        case 'a':
-            keys.a.pressed = true;
-            break;
-
-        case 'd':
-            keys.d.pressed = true;
-
-            break;
-
-        case 'w':
-            keys.w.pressed = true;
-
-            break;
-
-        case 's':
-            keys.s.pressed = true;
-
-            break;
-
-        case ' ':
-            keys.space.pressed = true;
-            playerShootFn();
-            break;
-        case 'j':
-            keys.j.pressed = true;
-            playerShootFn();
-            break;
-        case 'k':
-            keys.k.pressed = true;
-            playerShootFn();
-            break;
-    }
-});
-
 let playerShoot;
 
-if (isPlayerAutoShoot) {
-    playerShoot = setInterval(playerShootFn, playerShootTime);
-
+function init(){
+        
+    projectiles = [];
+    grids = [];
+    invaderProjectiles = [];
+    particles = [];
+    playerLife = 3;
+    lifeNum.innerHTML = playerLife;
+    score = 0;
+    scoreNum.innerHTML = score;
+    if (isPlayerAutoShoot && isGameStart) {
+        playerShoot = setInterval(playerShootFn, playerShootTime);
+    }
+    player.opacity = 1;
 }
+startBtn.addEventListener("click",()=>{
+    isGameStart = true;
+    startContainer.style.display = 'none';
+    init();
+    cancelAnimationFrame(animateId);
+    animate();
+    keys.a.pressed = false;
+    keys.d.pressed = false;
+    keys.s.pressed = false;
+    keys.w.pressed = false;
+})
+
+window.addEventListener("keydown", ({ key }) => {
+
+        switch (key) {
+    
+            case 'a':
+                keys.a.pressed = true;
+                break;
+    
+            case 'd':
+                keys.d.pressed = true;
+    
+                break;
+    
+            case 'w':
+                keys.w.pressed = true;
+    
+                break;
+    
+            case 's':
+                keys.s.pressed = true;
+    
+                break;
+    
+            case ' ':
+                keys.space.pressed = true;
+                playerShootFn();
+                break;
+            case 'j':
+                keys.j.pressed = true;
+                playerShootFn();
+                break;
+            case 'k':
+                keys.k.pressed = true;
+                playerShootFn();
+                break;
+        }
+});
+
+
 
 window.addEventListener("keyup", ({ key }) => {
-    switch (key) {
 
-        case 'a':
-            keys.a.pressed = false;
-            break;
-        case 'd':
-            keys.d.pressed = false;
-
-            break;
-        case 'w':
-            keys.w.pressed = false;
-
-            break;
-        case 's':
-            keys.s.pressed = false;
-
-            break;
-        case ' ':
-            keys.space.pressed = false;
-
-            break;
-        case 'j':
-            keys.space.pressed = false;
-
-            break;
-        case 'k':
-            keys.space.pressed = false;
-
-            break;
-    }
+        switch (key) {
+            case 'a':
+                keys.a.pressed = false;
+                break;
+            case 'd':
+                keys.d.pressed = false;
+    
+                break;
+            case 'w':
+                keys.w.pressed = false;
+    
+                break;
+            case 's':
+                keys.s.pressed = false;
+    
+                break;
+            case ' ':
+                keys.space.pressed = false;
+    
+                break;
+            case 'j':
+                keys.space.pressed = false;
+    
+                break;
+            case 'k':
+                keys.space.pressed = false;
+    
+                break;
+        }
 
 });
 
