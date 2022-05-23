@@ -9,6 +9,7 @@ const settingContainer = document.querySelector('#settingContainer');
 const closeBtn = document.querySelector('.closeBtn')
 const scoreNum = document.querySelector('#scoreNum');
 const bestScoreNum = document.querySelector("#bestScoreNum");
+const accuracyNum = document.querySelector('#accuracyNum');
 const timeupTxt = document.querySelector('.timeup');
 const settingChecks = [document.querySelector('#check1'),
  document.querySelector("#check2")];
@@ -21,6 +22,9 @@ let isCheck = [true, true, true];
 let bestScore = 0;
 let score = 0;
 let time = 30;
+let accuracy = 0;
+let clickTimes = 0;
+let hitTimes = 0;
 let enableClickAn = true;
 let animationDuringTime = 400;
 let timer = setInterval(() => {
@@ -32,6 +36,19 @@ let timer = setInterval(() => {
         timeupTxt.style.display = "block";
     }
 }, 1000)
+let clientHeight = document.body.offsetHeight;
+let clientWidth = document.body.offsetWidth;
+let fontHeight;
+if(clientWidth > 770){
+    fontHeight = 28;
+}else if(clientWidth <= 770 && clientWidth > 500){
+    fontHeight = 22;
+}else{
+    fontHeight = 18;
+}
+let marginHeight = (clientHeight - (BoxHeight+10+60+fontHeight))/2 ;
+let marginWidth = (clientWidth - BoxWidth+10)/2 ;
+
 window.onload = reset();
 window.addEventListener("mousedown", clickAnFn);
 startBtn.addEventListener("mousedown", reset);
@@ -48,6 +65,16 @@ closeBtn.addEventListener("click",()=> {
 })
 
 function clickAnFn(e) {
+    if(time > 0 && 
+        e.clientY < clientHeight - marginHeight - 60 - fontHeight - 10 &&
+        e.clientY > marginHeight - 10 &&
+        e.clientX > marginWidth &&
+        e.clientX < clientWidth - marginWidth) {
+        console.log(clientHeight,marginHeight)
+        clickTimes++;
+        accuracy = accuracyCalculationFn(clickTimes,hitTimes);
+        accuracyNum.innerHTML = accuracy + "%";
+    }
     if (!isCheck[0]) return;
     let clickAnEl = document.createElement('i');
     let clickAnElTwo = document.createElement('p');
@@ -63,9 +90,13 @@ function clickAnFn(e) {
     }, animationDuringTime)
 }
 
+function accuracyCalculationFn(clickTimes,hitTimes){
+    return Math.round(hitTimes/clickTimes*10000)/100 
+}
 
 circles.forEach((item, index) => {
     item.addEventListener("mousedown", () => {
+        hitTimes++;
         if (time <= 0) return;
         let randomRadius = Math.random() * 0 + 100;
         let randomX = Math.random() * BoxWidth - 50;
@@ -116,6 +147,10 @@ function CheckFn(i) {
     }
 }
 function reset() {
+    hitTimes = 0;
+    clickTimes = 0;
+    accuracy = 100;
+    accuracyNum.innerHTML = accuracy + "%";
     timeupTxt.style.display = "none";
     if (score > bestScore) {
         bestScore = score;
