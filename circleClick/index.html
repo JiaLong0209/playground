@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Click Circle</title>
+    <link rel="styleSheet" href="index.css">
+</head>
+<body>
+    <div class="container">
+        <div class="box">
+            <button class="circle1 circle"></button>
+            <button class="circle2 circle"></button>
+            <button class="circle3 circle"></button>
+        </div>
+        <div class="startBox">
+            <button class="startBtn">Start</button>
+            <button class="settingBtn startBtn">Setting</button>
+        </div>
+        <div class="scoreBox">
+            <h2>Score:<span id="scoreNum">0</span></h2>
+            <h2>BestScore:<span id="bestScoreNum">0</span></h2>
+            <h2>Time: <span id="timeNum">0</span></h2>
+        </div>
+        
+    <div class="settingContainer" id="settingContainer">
+        <div class="settingBox">
+            <div class="closeBtn" id="settingCloseBtn">X</div>
+            <h1>Setting</h1>
+            <ul>
+                <li><span>Click Effects</span><div class="check" id="check1"></div></li>
+                <li><span>Circles Transition</span><div class="check" id="check2"></div></li>
+            </ul>
+        </div>
+    </div>
+    </div>
+    <script src="index.js"></script>
+</body>
+</html>

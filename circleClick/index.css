@@ -1,0 +1,209 @@
+
+        *{
+            cursor: url(cursor01.cur),auto !important;
+            
+            /* cursor: auto; */
+           margin: 0;
+           padding: 0;
+           user-select: none;
+           overflow: hidden;
+           font-family: sans-serif;
+       }
+       :root{
+           --BoxWidth: 400px;
+           --BoxHeight: 400px;
+           --circleRadius: 100px;
+           --clickAnElRadius: 20px; 
+           --circleTransitionTime: 0.05s;
+       }
+       .container{
+           width: 100%;
+           height: 100vh;
+           position: relative;
+           display: flex;
+           justify-content: center;
+           align-items: center;
+           flex-direction: column;
+           
+       }
+       .box{
+           background-image: repeating-linear-gradient(rgb(255, 255, 255) 0%,rgb(255, 255, 255) 3%,rgb(232, 232, 232) 3%,rgb(231, 231, 231) 4%);
+           width: var(--BoxWidth);
+           height: var(--BoxHeight);
+           border:solid rgb(152, 152, 152) 5px;
+       }
+       .circle{
+           z-index: 2;
+           padding: 0;
+           margin: 0;
+           transition: var(--circleTransitionTime);
+           outline: none;
+           position: relative;
+           width: var(--circleRadius);
+           height: var(--circleRadius);
+           top: calc(var(--BoxHeight)/2 - var(--circleRadius)/2);
+           left: calc(var(--BoxWidth)/2 - var(--circleRadius)/2);
+           border-radius: 50%;
+           border: none;
+           background: #56f;
+       }
+       .circle2{
+           transform: translate(-100%,0);
+       }
+       .circle3{
+           transform: translate(-200%,0);
+           
+       }
+       body i {
+           width: var(--clickAnElRadius);
+           height: var(--clickAnElRadius);
+           z-index: 1;
+           position: absolute;
+           background: rgba(112, 112, 112, 0.402);
+           transform: translate(-50%,-50%);
+           border-radius: 50%;
+           animation: clickAn 0.4s ;
+           user-select: none;
+       }
+       body p {
+           width: calc(var(--clickAnElRadius)*2);
+           height: calc(var(--clickAnElRadius)*2);
+           z-index: 1;
+           position: absolute;
+           background: none;
+           transform: translate(-50%,-50%);
+           border-radius: 50%;
+           border: rgba(164, 164, 164, 0.726) calc(var(--clickAnElRadius)/10) solid;
+           animation: clickAn2 0.4s ;
+           user-select: none;
+       }
+       @keyframes clickAn {
+           0%{
+               width: var(--clickAnElRadius);
+               height: var(--clickAnElRadius);
+           }
+           100%{
+               width: calc(var(--clickAnElRadius)*3);
+               height: calc(var(--clickAnElRadius)*3);
+           }
+       }
+       @keyframes clickAn2 {
+           0%{
+               width: var(--clickAnElRadius);
+               height: var(--clickAnElRadius);
+           }
+           100%{
+               width: calc(var(--clickAnElRadius)*7);
+               height: calc(var(--clickAnElRadius)*7);
+           }
+       }
+       .startBox{
+           margin: 15px;
+           position: relative;
+           display: flex;
+           justify-content: space-around;
+           width: 60%;
+           height: 60px;
+
+
+       }
+       .startBtn{
+           outline: none;
+           z-index: 2;
+           width: 100px;
+           height: 50px;
+           background: rgb(147, 247, 254);
+           border-radius: 30px;
+           box-shadow:1px 1px 2px #333 ;
+           transition: 0.3s;
+       }
+       .startBtn:hover{
+           filter: brightness(1.3);
+       }
+
+       .scoreBox{
+           width: 70%;
+           display: flex;
+           justify-content: space-around;
+           align-items: center;
+       }
+       
+.settingContainer {
+   position: absolute;
+   width: 100%;
+   height: 100vh;
+   display: none;
+   justify-content: center;
+   position: fixed;
+   z-index: 2;
+   background: rgba(0, 0, 0, 0.3);
+}
+
+.settingContainer .settingBox {
+   position: relative;
+   width: 60%;
+   z-index: 2;
+   top: 15%;
+   height: 70%;
+   display: flex;
+   align-items: center;
+   flex-direction: column;
+   text-align: center;
+   background: rgb(51, 51, 51);
+   border-radius: 20px;
+   box-shadow: 5px 5px 3px #3335;
+
+}
+
+.settingBox h1 {
+   position: relative;
+   margin-bottom: 3px;
+   font-size: 30px;
+   color: #ddd;
+   letter-spacing: 2px;
+}
+.settingBox span{
+   font-size: 20px;
+   color: #ddd;
+}
+.settingBox ul{
+   overflow-y: auto;
+   position: relative;
+   max-height: 40%;
+   width: 60%;
+   padding-left: 0px;
+}
+.settingBox li {
+   list-style: none;
+   display: flex;
+   justify-content:space-between;
+}
+.settingBox .check{
+   display: inline-block;
+   position: relative;
+   width: 1.1em;
+   height: 1.1em;
+   border: 1px solid #fff;
+   background: rgba(255, 255, 255);
+}
+
+.closeBtn {
+   position: absolute;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   width: 10%;
+   z-index: 4;
+   height: 30px;
+   top: 0%;
+   right: 0%;
+   user-select: none;
+   background: rgb(255, 145, 145);
+   color: #fff;
+   border-top-right-radius: 20px;
+   border-bottom-left-radius: 10px;
+}
+
+.closeBtn:hover {
+   background: rgb(255, 68, 68);
+}
