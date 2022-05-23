@@ -32,6 +32,16 @@
            height: var(--BoxHeight);
            border:solid rgb(152, 152, 152) 5px;
        }
+            
+        .timeup{
+            z-index: 3;
+            width: var(--BoxWidth);
+            text-align: center;
+            position: absolute;
+            color: rgb(75, 75, 75);
+            text-shadow:1px 1px 0px #fff;
+            font-size: 3.5em;
+        }
        .circle{
            z-index: 2;
            padding: 0;

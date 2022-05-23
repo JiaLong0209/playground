@@ -8,9 +8,8 @@ const settingBtn = document.querySelector('.settingBtn');
 const settingContainer = document.querySelector('#settingContainer');
 const closeBtn = document.querySelector('.closeBtn')
 const scoreNum = document.querySelector('#scoreNum');
-const multiple = document.querySelector('*');
 const bestScoreNum = document.querySelector("#bestScoreNum");
-
+const timeupTxt = document.querySelector('.timeup');
 const settingChecks = [document.querySelector('#check1'),
  document.querySelector("#check2")];
 const timeNum = document.querySelector("#timeNum");
@@ -28,6 +27,9 @@ let timer = setInterval(() => {
     time--;
     if (time >= 0) {
         timeNum.innerHTML = time;
+    }
+    if(time <= 0){
+        timeupTxt.style.display = "block";
     }
 }, 1000)
 window.onload = reset();
@@ -114,6 +116,7 @@ function CheckFn(i) {
     }
 }
 function reset() {
+    timeupTxt.style.display = "none";
     if (score > bestScore) {
         bestScore = score;
         bestScoreNum.innerHTML = bestScore;
