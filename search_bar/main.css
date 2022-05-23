@@ -7,10 +7,37 @@
 :root{
     font-size: calc(16px + (24 - 16)*(100vw - 320px)/(1920 - 320));
     --radius:0.875em;
+    --color: #1e2466;
+    
 }
+
+.text{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    position: absolute;
+    font-size: 30px;
+}
+
+.text span{
+    margin: 10px 5px 0 5px;
+    transition:background-size 0.3s;
+    background: linear-gradient(transparent 0%, transparent 90%,var(--color) 90%, var(--color) 100% );
+
+    background-repeat: no-repeat;
+    background-size: 0% 100%;
+    background-position-x: right;
+}
+.text span:hover{
+    background-size: 100% 100%;
+    background-position-x: left;
+}
+
+
 body, button, input{
     font: 1em Hind, sans-serif;
     line-height: 1.5em;
+    font-size: 20px;
 }
 body, input{
     color: #171717;
@@ -115,6 +142,15 @@ body{
     width: 1px;
     height: 1px;
 }
+.search-bar input:focus{
+    background-image: url(img1.jpg);
+    background-position: 17% 80%;
+    background-clip: text;
+    -webkit-background-clip: text;
+    
+    color: transparent;
+}
+
 /* Active state */
 .search-bar input:focus + .search-btn, 
 .search-bar input:valid + .search-btn {
