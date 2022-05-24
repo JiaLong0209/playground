@@ -41,9 +41,11 @@
                   1px 1px 2px rgb(225, 225, 225) inset,
                   1px 1px 5px rgb(249, 249, 249) inset;
       text-align: center;
+      transition: 0.2s;
     }
     .box2 .btn:nth-child(2){
       background: rgb(255, 166, 166);
+      border-radius: 30%;
     }
     .box .btn:nth-child(1){
       transform: scale(0.9);
@@ -61,7 +63,9 @@
     .btn:focus{
       transform: scale(1.1) ;
     }
-
+    .btn:hover{
+      filter: brightness(1.2);
+    }
     .btn span{
       font-size: 20px;
       font-weight: 600;
