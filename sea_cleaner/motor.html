@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+
+  <style>
+    *{
+      margin: 0;
+      padding: 0;
+      background: rgb(255, 248, 248);
+      font-family: sans-serif;
+    }
+    :root{
+      --btn-color: rgba(118, 6, 6, 0.365);
+    }
+    h1{
+      text-align: center;
+      color: rgb(51, 51, 51);
+    }
+    .container{
+      width: 100%;
+      height: 90vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+    a{
+      display: inline-block;
+      text-decoration: none;
+      color: rgb(34, 35, 35);
+    }
+    .btn{
+      color: rgb(48, 48, 48);
+      border-radius: 10px;
+      margin: 10px;
+      width: 100px;
+      height: 100px;
+      background: rgb(255, 157, 157);
+      box-shadow: 1px 1px 5px rgb(123, 9, 9),
+                  1px 1px 10px rgb(192, 192, 192),
+                  1px 1px 2px rgb(225, 225, 225) inset,
+                  1px 1px 5px rgb(249, 249, 249) inset;
+      text-align: center;
+    }
+    .box2 .btn:nth-child(2){
+      background: rgb(255, 166, 166);
+    }
+    .box .btn:nth-child(1){
+      transform: scale(0.9);
+      background: var(--btn-color);
+    }
+    .box .btn:nth-child(3){
+      transform: scale(0.9);
+      background: var(--btn-color);
+
+    }
+    .box .btn:focus{
+      transform: scale(1.1) ;
+
+    }
+    .btn:focus{
+      transform: scale(1.1) ;
+    }
+
+    .btn span{
+      font-size: 20px;
+      font-weight: 600;
+      position: relative;
+      top: 50%;
+      display: flex;
+      justify-content: center;
+      background: none;
+      transform: translate(0, -50%);
+    }
+    @media screen and (max-width:600px) {
+      .btn{
+        width: 70px;
+        height: 70px;
+      }
+      .btn span{
+        font-size: 16px;
+      }
+    }
+  </style>
+  <head>
+      <title>WiFi Controller Pad</title>
+  </head>
+  <body>
+      <h1>WiFi 動作控制面板</h1>
+
+      <div class="container">
+        <div class="box">
+          <a href="/LeftFront" class="btn" role="butoon"><span>左前</span></a>
+          <a href="/Forward" class="btn" role="butoon"><span>前進</span></a>
+          <a href="/RightFront" class="btn" role="butoon"><span>右前</span></a>
+
+        </div>
+          <div class="box2">
+            <a href="/Left" class="btn" role="button"><span>左轉</span></a>
+            <a href="/Stop" class="btn" role="butoon"><span>停止</span></a>
+            <a href="/Right" class="btn" role="button"><span>右轉</span></a>
+          </div>
+          
+          <div class="box">
+            <a href="/LeftRear" class="btn" role="button"><span>左後</span></a>
+            <a href="/Backward" class="btn" role="button"><span>後退</span></a>
+            <a href="/RightRear" class="btn" role="button"><span>右後</span></a>
+          </div>
+      </div>
+      <!-- jQuery文件在bootstrap.min.js 之前引入 -->
+      <script src="//cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+      <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+      <script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+  </body>
