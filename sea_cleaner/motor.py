@@ -2,6 +2,7 @@
 from __future__ import division
 
 from flask import Flask, render_template, Response
+
 import time
 
 # Import the PCA9685 module.
@@ -95,6 +96,7 @@ def Right():
     Drive_Motor('B', 'FW', 2000)
     return render_template('motor.html')
 
+
 @app.route('/Stop')
 def Stop():
     print('click 停止')
@@ -102,6 +104,35 @@ def Stop():
     Drive_Motor('B', 'STOP', 0)
     return render_template('motor.html')
 
+#-----------------------------------------以下是我新增的 左前右前左後右後
+
+@app.route('/LeftFront')
+def LeftFront():
+    print('click 左前')
+    Drive_Motor('A', 'FW', 2000)
+    Drive_Motor('B', 'FW', 1500)
+    return render_template('motor.html')
+
+@app.route('/RightFront')
+def RightFront():
+    print('click 右前')
+    Drive_Motor('A', 'FW', 1500)
+    Drive_Motor('B', 'FW', 2000)
+    return render_template('motor.html')
+
+@app.route('/LeftRear')
+def LeftRear():
+    print('click 左後')
+    Drive_Motor('A', 'BW', 2000)
+    Drive_Motor('B', 'BW', 1500)
+    return render_template('motor.html')
+
+@app.route('/RightRear')
+def RightRear():
+    print('click 右後')
+    Drive_Motor('A', 'BW', 1500)
+    Drive_Motor('B', 'BW', 2000)
+    return render_template('motor.html')
  
 if __name__ == '__main__':
     try:
