@@ -233,10 +233,10 @@ body {
     transition: 0.3s;
 }
 
-.levelUp:hover,
+/* .levelUp:hover,
 .levelDown:hover {
     background: rgb(221, 221, 221);
-}
+} */
 
 .time,
 .timeBox,
@@ -471,7 +471,7 @@ body {
     width: 1.1em;
     height: 1.1em;
     border: 1px solid #fff;
-    background: rgba(255, 255, 255, 0);
+    background: rgba(255, 255, 255);
 }
 .devModeBox{
     display: flex;

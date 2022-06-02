@@ -467,10 +467,11 @@ function animate() {
         const distance = Math.hypot(player.x - enemy.x, player.y - enemy.y);
         if (distance - player.radius - enemy.radius < -1) {
             enemies.splice(index, 1);
-            life -= Math.floor((1 * level) / 2);
+            let enemyDamage = Math.ceil((1 * level)/2);
+            life -= enemyDamage;
             lifeNumber.innerHTML = life;
             let showDamageElement = document.createElement('i');
-            let showDamageText = document.createTextNode(`-999999999`);
+            let showDamageText = document.createTextNode(`-${enemyDamage}`);
             showDamageElement.appendChild(showDamageText);
             showDamageElement.classList.add('showDamage');
             showDamageElement.style.left = enemy.x + 'px';
@@ -813,21 +814,24 @@ skillReset.addEventListener('click', () => {
 // shoot projectile
 window.addEventListener('click', shootFn);
 function shootFn(e) {
-    let angle = Math.atan2(
-        e.clientY - player.y,
-        e.clientX - player.x
-    )
-    let velocity = {
-        x: Math.cos(angle),
-        y: Math.sin(angle)
-    }
-    for (let i = 0; i < bulletCount; i++) {
-        setTimeout(() => {
-            projectiles.push(
-                new Projectile(player.x, player.y,
-                    bulletSize, 'white', velocity)
-            )
-        }, 250 * i)
+    if(gameStart || time == -1){
+        let angle = Math.atan2(
+            e.clientY - player.y,
+            e.clientX - player.x
+        )
+        let velocity = {
+            x: Math.cos(angle),
+            y: Math.sin(angle)
+        }
+        for (let i = 0; i < bulletCount; i++) {
+            setTimeout(() => {
+                projectiles.push(
+                    new Projectile(player.x, player.y,
+                        bulletSize, 'white', velocity)
+                )
+            }, 250 * i)
+        }
+
     }
 }
 // start game
@@ -851,10 +855,21 @@ startBtn.addEventListener("click", () => {
 })
 //adjust enemy level 
 levelUp.addEventListener('click', () => {
+    if (level == maxLevel || !levelBreak[level - 1]) return;
+    levelDown.style.display = "inline-block";
+    
     life = relife;
     lifeNumber.innerHTML = life;
-    if (level == maxLevel || !levelBreak[level - 1]) return;
     level++;
+    if(level == 1){
+        levelDown.style.display = 'none';
+    }
+    if(level == maxLevel){
+        levelUp.style.display = 'none';
+    }else{
+        levelUp.style.display = 'inline-block';
+    }
+
     levelNumber.innerHTML = level;
     timeCount.innerHTML = time;
     cancelAnimationFrame(animationId);
@@ -923,17 +938,22 @@ levelUp.addEventListener('click', () => {
 
     }
 })
+window.onload = ()=>{
+    levelDown.style.display = "none";
+}
 levelDown.addEventListener('click', () => {
     life = relife;
     lifeNumber.innerHTML = life;
     levelUp.style.backgroundColor = '#fff';
-
+    level--;
+    levelNumber.innerHTML = level; 
+    levelUp.style.display = 'inline-block';
     if (level == 1) {
         levelDown.style.backgroundColor = '#fff7';
+        levelDown.style.display = 'none';
         return;
     };
-    level--;
-    levelNumber.innerHTML = level; if (level <= stageLevels[0]) {
+    if (level <= stageLevels[0]) {
         stageLevel = level;
     }
     else if (level > stageLevels[0] && level <= stageLevels[1]) {
@@ -992,15 +1012,15 @@ settingChecks.forEach(function (item, i) {
 function CheckFn(i) {
     if (isCheck[i] == true) {
         isCheck[i] = false;
-        settingChecks[i].style.backgroundColor = '#fff';
+        settingChecks[i].style.backgroundColor = '#fff0';
     } else {
         isCheck[i] = true;
-        settingChecks[i].style.backgroundColor = '#fff0';
+        settingChecks[i].style.backgroundColor = '#fff';
     }
 }
 // dev mode
 devBtn.addEventListener('click', () => {
-    if (devPassword.value == '4052') {
+    if (devPassword.value == '1234') {
         devMode = true;
         devText.style.display = "inline";
     } else {
