@@ -2,7 +2,12 @@
     margin: 0;
     padding: 0;
     list-style: none;
-
+    font-family: sans-serif;
+}
+:root{
+    --trackContainer-color:#111;
+    --keypress-white:linear-gradient(0deg, rgba(252, 252, 252, 0.535) 0%, rgba(255, 255, 255, 0) 30%);
+    --key-black:rgb(2, 2, 2);
 }
 .container{
     width: 100vw;
@@ -14,15 +19,80 @@
 .setting{
     position: relative;
     flex: 0 0 calc(100% / 3);
-    background: rgb(255, 207, 207);
+    background: rgb(77, 79, 77);
 }
 .game{
     position: relative;
+    display: flex;
+    flex-direction: column;
     flex: 0 0 calc(100% / 3);
+    margin: 0 auto;
     background: #000;
+}
+.track-container{
+    position: relative;
+    display: flex;
+    flex:1 0 auto;
+    background: var(--trackContainer-color);
+}
+.track {
+    position:relative;
+    flex:0 0 calc(100% / 4);
+}
+.track:not(:last-child){
+    border-right: 1px solid gray;
+}
+/* .keyJudge{
+    align-items: flex-end;
+    width: 100%;
+    height: 100%;
+    background: #000;
+    display: flex;
+}
+.keyBtn {
+    position: relative;
+    flex: 0 0 calc(100% / 4);
+    height: 20%;
+    border-radius: 50%;
+    background: rgb(168, 168, 168);
+} */
+.key-container{
+    display: flex;
+    flex:0 0 20%;
+}
+.key--black{
+    background-color: var(--key-black);
+}
+.key {
+    flex: 0 0 calc(100% / 4);
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgb(187, 187, 187);
+    font-size: 1.3rem;
+    border-left: 1px solid rgb(69, 69, 69);
+    border-right: 1px solid rgb(88, 88, 88);
+}
+.keypress {
+    position: absolute;
+    width: calc(100% / 4);
+    height: 100%;
+    top: -20%;
+    display: none;
+    background: var(--keypress-white);
+}
+/* .keypress--white{
+    background:var(--keypress-white);
+} */
+.note{
+    position: absolute;
+    width: 100%;
+    height: 1.5rem;
+    top:-1.5rem;
 }
 .menu{
     position: relative;
     flex: 0 0 calc(100% / 3);
-    background: rgb(201, 201, 201);
+    background: rgb(99, 99, 99);
 }
