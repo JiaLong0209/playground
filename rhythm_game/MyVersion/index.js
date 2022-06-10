@@ -1,6 +1,7 @@
 // 1. make a rough structure 2022/05/30 v0.10
 // 2. add keypress listener 2022/06/05 v0.20
 // 3. make track container 2022/06/06 v0.30
+// 4. setup notes 2022/06/11 v0.40
 let isHolding = {
     d: false,
     f: false,
@@ -14,8 +15,8 @@ let hits = {
     miss: 0
 };
 
-// let isPlaying = false;
-let speed = 0;
+let isPlaying = true;
+let speed = 2.4;
 let combo = 0;
 let maxCombo = 0;
 let score = 0;
@@ -58,14 +59,23 @@ function initializeNotes (){
     })
 };
 
+function setupStartButton(){
+    isPlaying = true;
+    startTime = Date.now();
+} 
+
 function setupKeys (){
     document.addEventListener('keydown',(event)=>{ //當手壓下鍵盤的瞬間
         let keyIndex = getKeyIndex(event.key);
         if(Object.keys(isHolding).indexOf(event.key) !== -1 && !isHolding[event.key]){  //當壓下的鍵在isHolding裡的index不為0 以及 該鍵isHolding不為true時
             isHolding[event.key] = true;
             keypress[keyIndex].style.display = 'block';
-
             // console.log(Object.keys(isHolding))
+
+            if(isPlaying && tracks[keyIndex].firstChild){   //當遊戲開始以及該軌道有note時
+                judge(keyIndex);
+            }
+            
         }
 
     })
@@ -94,11 +104,55 @@ function getKeyIndex (key){
     }
 }
 
+function judge(index){
+    let timeInSecond = (Date.now() - startTime) / 1000; 
+    let nextNoteIndex = song.sheet[index].next;
+    let nextNote = song.sheet[index].notes[nextNoteIndex];
+    let perfectTime = nextNote.duration + nextNote.delay;
+    let accuracy = timeInSecond - perfectTime;
+    let hitJudgement;
+    console.log(accuracy)
+    console.log((nextNote.duration - speed) / 4);
+    // console.log(timeInSecond)
+    if(Math.abs(accuracy) > (nextNote.duration - speed) / 4){ //這行可能還要改進
+        return;
+    }
+    hitJudgement = getHitJudgement(accuracy);
+    console.log(getHitJudgement(accuracy));
+
+    removeNoteFromTrack(tracks[index],tracks[index].firstChild);
+    updateNext(index);
+
+
+}
+
+function getHitJudgement(accuracy){
+    accuracy = Math.abs(accuracy);
+    if(accuracy < 0.04){
+        return 'perfect';
+    }else if(accuracy < 0.1){
+        return 'good';
+    }else if(accuracy < 0.15){
+        return 'bad';
+    }
+    else{
+        return 'miss';
+    }
+}
+
+function removeNoteFromTrack(parent, child){
+    parent.removeChild(child);
+}
+
+function updateNext(index){
+    song.sheet[index].next++;
+}
 
 window.onload = function(){
     trackContainer = document.querySelector('.track-container');
     keypress = document.querySelectorAll(".keypress");
 
     initializeNotes();
-    setupKeys();
+    setupKeys();    
+    setupStartButton();
 }
