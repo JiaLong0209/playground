@@ -1,7 +1,8 @@
 // 1. make a rough structure 2022/05/30 v0.10
 // 2. add keypress listener 2022/06/05 v0.20
 // 3. make track container 2022/06/06 v0.30
-// 4. setup notes 2022/06/11 v0.40
+// 4. setup notes 2022/06/10 v0.40
+// 5. load music, make a map and start button 2022/06/11 v0.60
 let isHolding = {
     d: false,
     f: false,
@@ -42,14 +43,13 @@ function initializeNotes (){
         key.notes.forEach((note)=>{
             noteElement = document.createElement('div');
             noteElement.classList.add('note');
-            console.log('add note');
             noteElement.classList.add('note--' + index);
             noteElement.style.backgroundColor = key.color;
             noteElement.style.animationName = animation; //即為'moveDown'
             noteElement.style.animationTimingFunction = 'linear';
             noteElement.style.animationDuration = note.duration - speed + 's';
             noteElement.style.animationDelay = note.delay + speed + 's';  
-            // noteElement.style.animationPlayState = 'paused';
+            noteElement.style.animationPlayState = 'paused';
             trackElement.appendChild(noteElement);  //.track 增加.note子節點
 
         });
@@ -60,8 +60,19 @@ function initializeNotes (){
 };
 
 function setupStartButton(){
-    isPlaying = true;
-    startTime = Date.now();
+    let startButton = document.querySelector('.btn--start');
+    startButton.addEventListener('click',()=>{
+        isPlaying = true;
+        startTime = Date.now();
+
+        document.querySelector('.menu').style.opacity = 0;
+        document.querySelectorAll('.note').forEach((note)=>{
+            note.style.animationPlayState = 'running';
+        })
+        setTimeout(() => {
+            document.querySelector('.song').play();
+        }, 2000);
+    })
 } 
 
 function setupKeys (){
@@ -106,15 +117,13 @@ function getKeyIndex (key){
 
 function judge(index){
     let timeInSecond = (Date.now() - startTime) / 1000; 
-    let nextNoteIndex = song.sheet[index].next;
+    let nextNoteIndex = song.sheet[index].next; //是指sheet[index]裡面的next，並不是函式next();
     let nextNote = song.sheet[index].notes[nextNoteIndex];
     let perfectTime = nextNote.duration + nextNote.delay;
     let accuracy = timeInSecond - perfectTime;
     let hitJudgement;
     console.log(accuracy)
-    console.log((nextNote.duration - speed) / 4);
-    // console.log(timeInSecond)
-    if(Math.abs(accuracy) > (nextNote.duration - speed) / 4){ //這行可能還要改進
+    if(Math.abs(accuracy) > 0.17){ //這行可能還要改進
         return;
     }
     hitJudgement = getHitJudgement(accuracy);
@@ -155,4 +164,5 @@ window.onload = function(){
     initializeNotes();
     setupKeys();    
     setupStartButton();
+
 }

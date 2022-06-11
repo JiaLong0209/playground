@@ -3,6 +3,7 @@
     padding: 0;
     list-style: none;
     font-family: sans-serif;
+    overflow: hidden;
 }
 :root{
     --trackContainer-color:#111;
@@ -39,9 +40,9 @@
     position:relative;
     flex:0 0 calc(100% / 4);
 }
-.track:not(:last-child){
+/* .track:not(:last-child){
     border-right: 1px solid gray;
-}
+} */
 /* .keyJudge{
     align-items: flex-end;
     width: 100%;
@@ -71,9 +72,7 @@
     justify-content: center;
     color: rgb(187, 187, 187);
     font-size: 1.3rem;
-    /* border-left: 1px solid rgb(69, 69, 69); */
-    border-right: 1px solid rgb(0, 0, 0);
-    border-top: 1px solid ;
+    border-top: 2px solid ;
 }
 .keypress {
     position: absolute;
@@ -94,9 +93,43 @@
     top:-1.5rem;
 }
 .menu{
-    position: relative;
+    opacity: 1;
+    display: flex;
+    flex-direction: column;
+    color: #fff;
+    font-size: 2rem;
+    text-align: center;
+    justify-content: center;
     flex: 0 0 calc(100% / 3);
     background: rgb(99, 99, 99);
+    transition: 0.5s;
+}
+
+.btn{
+    display: inline-block;
+    border: 1px solid #fff;
+    font-size: 1rem;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: #fff;
+    margin: 0 auto;
+    transition: .2s;
+    
+}
+
+.btn--start{
+    background-color: #000;
+}
+
+.btn:hover,
+.btn:active{
+    background: #fff;
+    color:#000;
+}
+
+.btn--primary {
+    border-radius: 1rem;
+    padding: 1.5rem 3rem;
 }
 
 @keyframes moveDown{
