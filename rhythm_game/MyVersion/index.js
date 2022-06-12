@@ -3,6 +3,7 @@
 // 3. make track container 2022/06/06 v0.30
 // 4. setup notes 2022/06/10 v0.40
 // 5. load music, make a map and start button 2022/06/11 v0.60
+// 6. setupNotesMiss, displayAccuracy and hitEffect 2022/06/12 v.70
 let isHolding = {
     d: false,
     f: false,
@@ -16,6 +17,13 @@ let hits = {
     miss: 0
 };
 
+let multiplier = {
+    perfect:1,
+    good:0.6,
+    bad:0.3,
+    miss:0
+}
+
 let isPlaying = true;
 let speed = 2.4;
 let combo = 0;
@@ -25,7 +33,7 @@ let animation = 'moveDown';
 let startTime;
 let trackContainer;
 let tracks;
-let combotText;
+let comboText;
 let keypress;
 
 function initializeNotes (){
@@ -75,6 +83,23 @@ function setupStartButton(){
     })
 } 
 
+function setupNoteMiss(){
+    trackContainer.addEventListener('animationend',(event)=>{
+        setTimeout(() => {
+            if(event.target.parentNode.firstChild != event.target) return; //避免在setTimeout移除該note前，已被玩家移除,而導致點擊後又多一個miss，但是這種方法還是會出錯，但不引響遊戲。
+
+            let index = event.target.classList.item(1)[6]; //item(1)[6]是指該標籤的第二個class，也就是note--[index],[6]就代表該class的第七個字母，即為[index] 0~3。
+            displayAccuracy('miss');
+            updateHits('miss');
+            updateCombo('miss');
+            updateMaxCombo();
+            removeNoteFromTrack(event.target.parentNode, event.target);
+            updateNext(index);
+        }, 170);
+
+    })
+}
+
 function setupKeys (){
     document.addEventListener('keydown',(event)=>{ //當手壓下鍵盤的瞬間
         let keyIndex = getKeyIndex(event.key);
@@ -123,12 +148,17 @@ function judge(index){
     let accuracy = timeInSecond - perfectTime;
     let hitJudgement;
     console.log(accuracy)
-    if(Math.abs(accuracy) > 0.17){ //這行可能還要改進
+    if(Math.abs(accuracy) > 0.17){ 
         return;
     }
-    hitJudgement = getHitJudgement(accuracy);
     console.log(getHitJudgement(accuracy));
-
+    hitJudgement = getHitJudgement(accuracy);
+    displayAccuracy(hitJudgement);
+    showHitEffect(index);
+    updateHits(hitJudgement);
+    updateCombo(hitJudgement);
+    updateMaxCombo();
+    console.log(hits)
     removeNoteFromTrack(tracks[index],tracks[index].firstChild);
     updateNext(index);
 
@@ -137,16 +167,52 @@ function judge(index){
 
 function getHitJudgement(accuracy){
     accuracy = Math.abs(accuracy);
-    if(accuracy < 0.04){
+    if(accuracy < 0.040){ //40ms
         return 'perfect';
-    }else if(accuracy < 0.1){
+    }else if(accuracy < 0.100){ //100ms
         return 'good';
-    }else if(accuracy < 0.15){
+    }else if(accuracy < 0.150){ //150ms 
         return 'bad';
     }
     else{
         return 'miss';
     }
+}
+
+function displayAccuracy(accuracy){
+    let accuracyText = document.createElement('div');
+    document.querySelector('.hit__accuracy').remove();
+    accuracyText.classList.add('hit__accuracy');
+    accuracyText.classList.add('hit__accuracy--' + accuracy);
+    accuracyText.innerHTML = accuracy;
+    document.querySelector('.hit').appendChild(accuracyText);
+}
+
+function showHitEffect(index){
+    let key = document.querySelectorAll('.key')[index];
+    let hitEffect = document.createElement('div');
+    hitEffect.classList.add('key__hit');
+    key.appendChild(hitEffect);
+    setTimeout(()=>{
+        key.removeChild(hitEffect)
+    },1000)
+}
+
+function updateHits(judgement){
+    hits[judgement]++;
+}
+
+function updateCombo(judgement){
+    if(judgement === 'bad' || judgement === 'miss'){
+        combo = 0;
+        comboText.innerHTML = '';
+    }else{
+        comboText.innerHTML = ++combo;
+    }
+}
+
+function updateMaxCombo(){
+    maxCombo = maxCombo < combo ? combo : maxCombo; //(條件)三元運算子，當maxCombo小於combo時，maxCombo指定為combo，否則保持原來的值。
 }
 
 function removeNoteFromTrack(parent, child){
@@ -157,12 +223,14 @@ function updateNext(index){
     song.sheet[index].next++;
 }
 
+
 window.onload = function(){
     trackContainer = document.querySelector('.track-container');
     keypress = document.querySelectorAll(".keypress");
-
+    comboText = document.querySelector('.hit__combo');
+    document.querySelector('.btn--start').style.display = 'inline-block'
     initializeNotes();
     setupKeys();    
     setupStartButton();
-
+    setupNoteMiss();
 }

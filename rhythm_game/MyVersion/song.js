@@ -3,10 +3,12 @@ let offset = 0.16;
 let songStartTime = -1 + offset; //歌曲第一個音出現的時機
 
 let oneBeatTime = 1/(BPM/60); //0.76923...s
-let beat = oneBeatTime;    //一拍為四分音符
+let beat = oneBeatTime;    //以一拍統一為四分音符以便製作圖譜
 let QN = oneBeatTime;      //四分音符 quarterNote
 let EN = oneBeatTime / 2;  //八分音符 eighthNote
+let TN = oneBeatTime / 3;  //十二分音符 twelfthNote
 let SN = oneBeatTime / 4;  //十六分音符 sixteenthNote
+let TFN = oneBeatTime / 4; //二十四分音符 twentyFourthNote
 let TSN = oneBeatTime / 8; //三十二分音符 thirtySecondNote
 let SFN= oneBeatTime / 16; //六十四分音符  sixtyFourthNote
 
@@ -18,7 +20,7 @@ let d = {
         {duration: 3, delay: songStartTime + beat*3},
         {duration: 3, delay: songStartTime + beat*3 + EN + SN},
         {duration: 3, delay: songStartTime + beat*6},
-        {duration: 3, delay: songStartTime + beat*7 + SN},
+        {duration: 3, delay: songStartTime + beat*7 + TN},
         {duration: 3, delay: songStartTime + beat*8 + EN},
         {duration: 3, delay: songStartTime + beat*10},
         {duration: 3, delay: songStartTime + beat*10 + EN + SN},
@@ -52,10 +54,10 @@ let d = {
         {duration: 3, delay: songStartTime + beat*46},
         {duration: 3, delay: songStartTime + beat*48 + EN + SN},
         {duration: 3, delay: songStartTime + beat*49 + EN + SN},
-        {duration: 3, delay: songStartTime + beat*51 + SN},
+        {duration: 3, delay: songStartTime + beat*51 + TN},
         {duration: 3, delay: songStartTime + beat*52},
         {duration: 3, delay: songStartTime + beat*53},
-        {duration: 3, delay: songStartTime + beat*55 + SN},
+        {duration: 3, delay: songStartTime + beat*55 + TN},
         {duration: 3, delay: songStartTime + beat*56 + EN},
         {duration: 3, delay: songStartTime + beat*58},
         {duration: 3, delay: songStartTime + beat*60 + SN},
@@ -81,10 +83,10 @@ let f = {
         {duration: 3, delay: songStartTime + beat*14},
         {duration: 3, delay: songStartTime + beat*16 + EN + SN},
         {duration: 3, delay: songStartTime + beat*17 + EN + SN},
-        {duration: 3, delay: songStartTime + beat*19 + SN},
+        {duration: 3, delay: songStartTime + beat*19 + TN},
         {duration: 3, delay: songStartTime + beat*20},
         {duration: 3, delay: songStartTime + beat*21},
-        {duration: 3, delay: songStartTime + beat*23 + SN},
+        {duration: 3, delay: songStartTime + beat*23 + TN},
         {duration: 3, delay: songStartTime + beat*24 + EN},
         {duration: 3, delay: songStartTime + beat*26},
         {duration: 3, delay: songStartTime + beat*28 + SN},
@@ -94,7 +96,7 @@ let f = {
         {duration: 3, delay: songStartTime + beat*35},
         {duration: 3, delay: songStartTime + beat*35 + EN + SN},
         {duration: 3, delay: songStartTime + beat*38},
-        {duration: 3, delay: songStartTime + beat*39 + SN},
+        {duration: 3, delay: songStartTime + beat*39 + TN},
         {duration: 3, delay: songStartTime + beat*40 + EN},
         {duration: 3, delay: songStartTime + beat*42},
         {duration: 3, delay: songStartTime + beat*42 + EN + SN},
@@ -125,7 +127,7 @@ let j = {
     next: 0,
     notes: [
         {duration: 3, delay: songStartTime + beat*2},
-        {duration: 3, delay: songStartTime + beat*3 + SN},
+        {duration: 3, delay: songStartTime + beat*3 + TN},
         {duration: 3, delay: songStartTime + beat*6},
         {duration: 3, delay: songStartTime + beat*7},
         {duration: 3, delay: songStartTime + beat*8},
@@ -148,7 +150,7 @@ let j = {
         {duration: 3, delay: songStartTime + beat*30},
 
         {duration: 3, delay: songStartTime + beat*34},
-        {duration: 3, delay: songStartTime + beat*35 + SN},
+        {duration: 3, delay: songStartTime + beat*35 + TN},
         {duration: 3, delay: songStartTime + beat*38},
         {duration: 3, delay: songStartTime + beat*39},
         {duration: 3, delay: songStartTime + beat*40},
@@ -220,3 +222,5 @@ let song = {
     duration: 30,
     sheet: [d, f, j, k]
 };
+
+let totalNotes = d.notes.length + f.notes.length + j.notes.length + k.notes.length;
