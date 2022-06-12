@@ -24,8 +24,8 @@ let multiplier = {
     miss:0
 }
 
-let isPlaying = true;
-let speed = 2.4;
+let isPlaying = false;
+let speed = 2.3;
 let combo = 0;
 let maxCombo = 0;
 let score = 0;
