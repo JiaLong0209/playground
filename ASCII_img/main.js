@@ -1,6 +1,5 @@
-// const density = 'N@#W$9876543210?!abc;:+=-,.  ';
-// const density = '廢喔物是說扭伯你一 ';
-const density = '接嗚哦直冠豆MVP ';
+const density = 'N@#W$9876543210?!abc;:+=-,.  ';
+// const density = '接嗚哦直冠豆MVP ';
 
 
 let img;
@@ -30,8 +29,8 @@ function draw(){
             const avg = (r+g+b) / 3;
 
             noStroke();
-            // fill(avg);
-            fill(r,g,b);
+            fill(avg);
+            // fill(r,g,b);
             // square(i * w, j * h, w);
 
             const len = density.length;
