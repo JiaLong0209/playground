@@ -24,6 +24,7 @@
     height: 100vh;
     background: rgb(159, 159, 159);
     display: flex;
+    transform: 0.3s;
     
 }
 .setting{
@@ -142,10 +143,11 @@
 }
 .keypress {
     position: absolute;
-    width: calc(100% / 4 + 0.5px);
+    width: calc(100% / 4);
     height: 100%;
     top: -20%;
     display: none;
+    opacity: 1;
     background: var(--keypress-white);
 }
 /* .keypress--white{
@@ -215,11 +217,32 @@
 
 @keyframes moveDown{
     0%{
+        visibility: hidden;
         top: -1.5rem;
+    }
+    1%{
+        visibility: visible;
     }
     100%{
         top: calc(100% - 1.5rem);
         opacity: 1;
+    }
+}
+
+@keyframes fadeDown{
+    0%{
+        visibility: hidden;
+        top: -1.5rem;
+    }
+    1%{
+        visibility: visible;
+    }
+    70%{
+        opacity: 0;
+    }
+    100%{
+        top: calc(100% - 1.5rem);
+        opacity: 0;
     }
 }
 

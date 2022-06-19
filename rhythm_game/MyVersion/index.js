@@ -3,13 +3,18 @@
 // 3. make track container 2022/06/06 v0.30
 // 4. setup notes 2022/06/10 v0.40
 // 5. load music, make a map and start button 2022/06/11 v0.60
-// 6. setupNotesMiss, displayAccuracy and hitEffect 2022/06/12 v.70
+// 6. setupNotesMiss, displayAccuracy and hitEffect 2022/06/12 v0.70
+// 7. fix judgment dalay bug 2022/06/19 v0.71
+let keyCharacters = ['d','f','j','k']
+
+
 let isHolding = {
     d: false,
     f: false,
     j: false,
     k: false
 }
+
 let hits = {
     perfect: 0, 
     good: 0,
@@ -23,9 +28,13 @@ let multiplier = {
     bad:0.3,
     miss:0
 }
+let music = document.querySelector('.song');
+let noteSpeed = 2.5;
+let musicSpeed = 4;
+music.playbackRate = musicSpeed;
+let songPrepareTime = 2000;
 
 let isPlaying = false;
-let speed = 2.3;
 let combo = 0;
 let maxCombo = 0;
 let score = 0;
@@ -35,6 +44,8 @@ let trackContainer;
 let tracks;
 let comboText;
 let keypress;
+
+
 
 function initializeNotes (){
     let noteElement;
@@ -55,8 +66,8 @@ function initializeNotes (){
             noteElement.style.backgroundColor = key.color;
             noteElement.style.animationName = animation; //即為'moveDown'
             noteElement.style.animationTimingFunction = 'linear';
-            noteElement.style.animationDuration = note.duration - speed + 's';
-            noteElement.style.animationDelay = note.delay + speed + 's';  
+            noteElement.style.animationDuration = note.duration - noteSpeed + 's';
+            noteElement.style.animationDelay = note.delay + noteSpeed + 's';  
             noteElement.style.animationPlayState = 'paused';
             trackElement.appendChild(noteElement);  //.track 增加.note子節點
 
@@ -70,16 +81,17 @@ function initializeNotes (){
 function setupStartButton(){
     let startButton = document.querySelector('.btn--start');
     startButton.addEventListener('click',()=>{
+        if(!isPlaying){   //避免startBtn被點兩下，導致startTime重置。
+            startTime = Date.now();
+        }
         isPlaying = true;
-        startTime = Date.now();
-
         document.querySelector('.menu').style.opacity = 0;
         document.querySelectorAll('.note').forEach((note)=>{
             note.style.animationPlayState = 'running';
         })
         setTimeout(() => {
-            document.querySelector('.song').play();
-        }, 2000);
+            music.play();
+        }, songPrepareTime);
     })
 } 
 
@@ -129,13 +141,13 @@ function setupKeys (){
 
 
 function getKeyIndex (key){
-    if (key === 'd'){
+    if (key == keyCharacters[0]){
         return 0;
-    }else if(key === 'f'){
+    }else if(key == keyCharacters[1]){
         return 1;
-    }else if(key === 'j'){
+    }else if(key == keyCharacters[2]){
         return 2;
-    }else if(key === 'k'){
+    }else if(key == keyCharacters[3]){
         return 3;
     }
 }
@@ -222,6 +234,31 @@ function removeNoteFromTrack(parent, child){
 function updateNext(index){
     song.sheet[index].next++;
 }
+
+
+d.notes.forEach(item => {
+    item.delay-= songStartTime;
+    item.delay/= musicSpeed;
+    item.delay+= songStartTime;
+});
+
+f.notes.forEach(item => {
+    item.delay-= songStartTime;
+    item.delay/= musicSpeed;
+    item.delay+= songStartTime;
+});
+
+j.notes.forEach(item => {
+    item.delay-= songStartTime;
+    item.delay/= musicSpeed;
+    item.delay+= songStartTime;
+});
+
+k.notes.forEach(item => {
+    item.delay-= songStartTime;
+    item.delay/= musicSpeed;
+    item.delay+= songStartTime;
+});
 
 
 window.onload = function(){
