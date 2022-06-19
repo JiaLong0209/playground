@@ -10,7 +10,7 @@ let keyCharacters = ['d','f','j','k']
 
 let isHolding = {
     d: false,
-    f: false,
+    f: false, 
     j: false,
     k: false
 }

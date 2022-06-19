@@ -14,7 +14,7 @@ let SFN= oneBeatTime / 16; //六十四分音符  sixtyFourthNote
 
 let d = {
     color: "rgb(255,255,255)",
-    next: 0,
+    next: 0, 
     notes: [
         {duration: 3, delay: 0},
         {duration: 3, delay: beat*3},
