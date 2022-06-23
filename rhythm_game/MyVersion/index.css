@@ -184,7 +184,40 @@
     flex: 0 0 calc(100% / 3);
     background: rgb(99, 99, 99);
     transition: 0.5s;
+    overflow: hidden;
 }
+/* 
+.menu_speed{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin: 5px;
+    user-select: none;
+}
+.speedBox{
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+    margin: 5px 0px;
+}
+.speedBtn{
+    background: rgba(7, 7, 7, 0.747);
+    width: 2.4rem;
+    height: 2.4rem;
+    border-radius: 50%;
+    transition: 0.2s;
+}
+.speedBtn:hover{
+    background: rgba(255, 255, 255, 0.856);
+    color: rgba(0, 0, 0, 0.822);
+}
+.speedTxt{
+    background: rgba(0, 0, 0, 0.849);
+    margin: 0px 5px;
+    padding: 3px;
+    border-radius: 8px; */
+/* } */
 
 .btn{
     display: inline-block;
@@ -200,7 +233,7 @@
 }
 
 .btn--start{
-    background-color: #000;
+    background-color: rgba(0, 0, 0, 0.781);
     display: none;
 }
 
