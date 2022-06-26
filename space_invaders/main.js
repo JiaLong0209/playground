@@ -1,22 +1,22 @@
 // 1. Project setup v
 // 2. Create a player v
-// 3. Move the player v                     2022/3/6 v0.25
+// 3. Move the player v                     2022/03/06 v0.25
 // 4. Create projectiles v
 // 5. Create an invader v
-// 6. Create and move grids of invaders v   2022/3/13 v0.5
+// 6. Create and move grids of invaders v   2022/03/13 v0.5
 // 7. Spawn grids at intvervals v
 // 7a.Take into account new grid width v
-// 8. Shoot invaders v                      2022/3/27 
+// 8. Shoot invaders v                      2022/03/27 
 // 9. Invaders shoot back, player automatic shooting, shooting tilt (take careful case-sensitive) v 2022/4/5  
 // 10. Enemy explosions
-// 11. Create background stars (care array name)v 2022/4/9
+// 11. Create background stars (care array name)v 2022/04/09
 // 12. Lose condition v
 // 13. Score v
 // 14. Fixed-width canvas v 
-// ex. Add life and damage function v 2022/4/10
-// ex. show player instant life v 2022/4/29 v1.01
-// ex. Add start button v1.1 2022/5/6 
-
+// ex. Add life and damage function v       2022/04/10 v1.0
+// ex. show player instant life v           2022/04/29 v1.01
+// ex. Add start button v                   2022/05/06 v1.1
+// ex. Add favicon and fix bug v            2022/06/26 v1.11
 
 const canvas = document.querySelector('canvas');
 const c = canvas.getContext('2d');
@@ -336,10 +336,11 @@ class Grid {
 }
 
 let player = new Player();
-let projectiles = []
-let grids = []
-let invaderProjectiles = []
-let particles = []
+let projectiles = [];
+let grids = [];
+let invaderProjectiles = [];
+let particles = [];
+let BGParticles = [];
 
 const keys = {
     a: {
@@ -371,7 +372,7 @@ const keys = {
 
 // Bakcground
 for (let i = 0; i < BGParticleCounts; i++) {
-    particles.push(new Particle({
+    BGParticles.push(new Particle({
         position: {
             x: Math.random() * canvas.width,
             y: Math.random() * canvas.height
@@ -416,6 +417,14 @@ function animate() {
     player.update();
 
     particles.forEach((particle, i) => {
+        if (particle.opacity <= 0) {
+            particles.splice(i, 1)
+        } else {
+            particle.update()
+        }
+    })
+
+    BGParticles.forEach((particle, i) => {
         if (particle.position.y - particle.radius >= canvas.height) {
             particle.position.x = Math.random() * canvas.width
             particle.position.y = -particle.radius
@@ -426,7 +435,6 @@ function animate() {
             particle.update()
         }
     })
-
     invaderProjectiles.forEach((invaderProjectile, index) => {
         if (invaderProjectile.position.y + invaderProjectile.height >= canvas.height) {
             invaderProjectiles.splice(index, 1)
@@ -582,7 +590,6 @@ function playerShootFn() {
 let playerShoot;
 
 function init(){
-        
     projectiles = [];
     grids = [];
     invaderProjectiles = [];
