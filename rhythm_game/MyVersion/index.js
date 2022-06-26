@@ -5,14 +5,15 @@
 // 5. load music, make a map and start button 2022/06/11 v0.60
 // 6. setupNotesMiss, displayAccuracy and hitEffect 2022/06/12 v0.70
 // 7. fix judgment dalay bug 2022/06/19 v0.71
+// 8. Note Speed, Song Speed UI 2022/06/26 v0.80
 
-// const noteSpeedDownBtn = document.querySelector('.btn--noteSpeedDown');
-// const noteSpeedUpBtn = document.querySelector('.btn--noteSpeedUp');
-// const noteSpeedTxt = document.querySelector('.noteSpeedTxt');
+const noteSpeedDownBtn = document.querySelector('.btn--noteSpeedDown');
+const noteSpeedUpBtn = document.querySelector('.btn--noteSpeedUp');
+const noteSpeedTxt = document.querySelector('.noteSpeedTxt');
 
-// const songSpeedDownBtn = document.querySelector('.btn--songSpeedDown');
-// const songSpeedUpBtn = document.querySelector('.btn--songSpeedUp');
-// const songSpeedTxt = document.querySelector('.songSpeedTxt');
+const songSpeedDownBtn = document.querySelector('.btn--songSpeedDown');
+const songSpeedUpBtn = document.querySelector('.btn--songSpeedUp');
+const songSpeedTxt = document.querySelector('.songSpeedTxt');
 
 
 let keyCharacters = ['d','f','j','k']
@@ -243,75 +244,84 @@ function removeNoteFromTrack(parent, child){
 function updateNext(index){
     song.sheet[index].next++;
 }
-// function setupSongSpeed(){
-//     d.notes.forEach(item => {
-//         item.delay-= songStartTime;
-//         item.delay/= musicSpeed;
-//         item.delay+= songStartTime;
-//     });
+function fixSongSpeed(preMusicSpeed){
+    d.notes.forEach(item => {
+        item.delay-= songStartTime;
+        item.delay*= preMusicSpeed;
+        item.delay/= musicSpeed; 
+        item.delay+= songStartTime;
+        console.log(item.delay)
+    });
     
-//     f.notes.forEach(item => {
-//         item.delay-= songStartTime;
-//         item.delay/= musicSpeed;
-//         item.delay+= songStartTime;
-//     });
+    f.notes.forEach(item => {
+        item.delay-= songStartTime;
+        item.delay*= preMusicSpeed;
+        item.delay/= musicSpeed;
+        item.delay+= songStartTime;
+    });
     
-//     j.notes.forEach(item => {
-//         item.delay-= songStartTime;
-//         item.delay/= musicSpeed;
-//         item.delay+= songStartTime;
-//     });
+    j.notes.forEach(item => {
+        item.delay-= songStartTime;
+        item.delay*= preMusicSpeed;
+        item.delay/= musicSpeed;
+        item.delay+= songStartTime;
+    });
     
-//     k.notes.forEach(item => {
-//         item.delay-= songStartTime;
-//         item.delay/= musicSpeed;
-//         item.delay+= songStartTime;
-//     });
-// }
+    k.notes.forEach(item => {
+        item.delay-= songStartTime;
+        item.delay*= preMusicSpeed;
+        item.delay/= musicSpeed;
+        item.delay+= songStartTime;
+    });
+}
 
-// function round(num) {
-//     var m = Number((Math.abs(num) * 100).toPrecision(15));
-//     return Math.round(m) / 100 * Math.sign(num);
-// }
+function round(num) {
+    var m = Number((Math.abs(num) * 100).toPrecision(15));
+    return Math.round(m) / 100 * Math.sign(num);
+}
 
-// function setupSpeed(){
-//     noteSpeedTxt.innerHTML = "Note Speed:"+noteSpeed;
-//     songSpeedTxt.innerHTML = "Song Speed:"+musicSpeed;
-// }
+function setupSpeed(){
+    noteSpeedTxt.innerHTML = "Note Speed:"+noteSpeed;
+    songSpeedTxt.innerHTML = "Song Speed:"+musicSpeed;
+}
 
-// function setupSpeedBtnClickListener(){
-//     noteSpeedDownBtn.addEventListener("click",()=>{
-//         if(noteSpeed <= 0) return;
-//         noteSpeed-=0.05;
-//         noteSpeed = noteSpeed.toFixed(2);
-//         noteSpeedTxt.innerHTML = "Note Speed:"+noteSpeed;
-//         initializeNotes();
-//     })
-//     songSpeedDownBtn.addEventListener("click",()=>{
-//         if(musicSpeed <= 0.25) return;
-//         musicSpeed-=0.1;
-//         musicSpeed = musicSpeed.toFixed(1);
-//         music.playbackRate = musicSpeed;
-//         setupSongSpeed();
-//         songSpeedTxt.innerHTML = "Song Speed:"+musicSpeed;
-//     })
-    
-//     noteSpeedUpBtn.addEventListener("click",()=>{
-//         if(noteSpeed >= 3) return;
-//         noteSpeed+=0.05;
-//         noteSpeed = round(noteSpeed);
-//         noteSpeedTxt.innerHTML = "Note Speed:"+noteSpeed;
-//         initializeNotes();
-//     })
-//     songSpeedUpBtn.addEventListener("click",()=>{
-//         if(musicSpeed >= 5) return;
-//         musicSpeed+=0.1;
-//         musicSpeed = round(musicSpeed);
-//         music.playbackRate = musicSpeed;
-//         setupSongSpeed();
-//         songSpeedTxt.innerHTML = "Song Speed:"+musicSpeed;
-//     })
-// }
+function setupSpeedBtnClickListener(){
+    noteSpeedDownBtn.addEventListener("click",()=>{
+        if(noteSpeed <= -3) return;
+        noteSpeed-=0.05;
+        noteSpeed = round(noteSpeed);
+        noteSpeedTxt.innerHTML = "Note Speed:"+noteSpeed;
+        initializeNotes();
+    })
+    noteSpeedUpBtn.addEventListener("click",()=>{
+        if(noteSpeed >= 3) return;
+        noteSpeed+=0.05;
+        noteSpeed = round(noteSpeed);
+        noteSpeedTxt.innerHTML = "Note Speed:"+noteSpeed;
+        initializeNotes();
+    })
+
+    songSpeedDownBtn.addEventListener("click",()=>{
+        if(musicSpeed <= 0.25) return;
+        let preMusicSpeed = musicSpeed;
+        musicSpeed-=0.1;
+        musicSpeed = round(musicSpeed);
+        music.playbackRate = musicSpeed;
+        fixSongSpeed(preMusicSpeed);
+        initializeNotes();
+        songSpeedTxt.innerHTML = "Song Speed:"+musicSpeed;
+    })
+    songSpeedUpBtn.addEventListener("click",()=>{
+        if(musicSpeed >= 5) return;
+        let preMusicSpeed = musicSpeed;
+        musicSpeed+=0.1;
+        musicSpeed = round(musicSpeed);
+        music.playbackRate = musicSpeed;
+        fixSongSpeed(preMusicSpeed);
+        initializeNotes();
+        songSpeedTxt.innerHTML = "Song Speed:"+musicSpeed;
+    })
+}
 
 window.onload = function(){
     trackContainer = document.querySelector('.track-container');

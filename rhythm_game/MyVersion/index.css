@@ -186,7 +186,7 @@
     transition: 0.5s;
     overflow: hidden;
 }
-/* 
+
 .menu_speed{
     display: flex;
     flex-direction: column;
@@ -196,10 +196,12 @@
 }
 .speedBox{
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     text-align: center;
     align-items: center;
-    margin: 5px 0px;
+    width: 95%;
+    
+    margin: 5px 5px;
 }
 .speedBtn{
     background: rgba(7, 7, 7, 0.747);
@@ -216,8 +218,8 @@
     background: rgba(0, 0, 0, 0.849);
     margin: 0px 5px;
     padding: 3px;
-    border-radius: 8px; */
-/* } */
+    border-radius: 8px;
+ } 
 
 .btn{
     display: inline-block;
