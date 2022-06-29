@@ -13,6 +13,7 @@
       --btn-color:rgb(255, 157, 157);
       --btn-bevel-color: rgba(118, 6, 6, 0.365);
       --btn-stop-color:rgb(255, 166, 166);
+      --font-color:rgb(59, 55, 55);
     }
     h1{
       text-align: center;
@@ -30,10 +31,9 @@
     a{
       display: inline-block;
       text-decoration: none;
-      color: rgb(34, 35, 35);
     }
     .btn{
-      color: rgb(48, 48, 48);
+      color:var(--font-color);
       border-radius: 10px;
       margin: 10px;
       width: 100px;
@@ -50,7 +50,7 @@
       background: var(--btn-stop-color);
       border-radius: 30%;
     }
-    .box .btn:nth-child(1){
+    /* .box .btn:nth-child(1){
       transform: scale(0.9);
       background: var(--btn-bevel-color);
     }
@@ -58,7 +58,7 @@
       transform: scale(0.9);
       background: var(--btn-bevel-color);
 
-    }
+    } */
     .box .btn:focus{
       transform: scale(1.1) ;
 
@@ -97,9 +97,7 @@
 
       <div class="container">
         <div class="box">
-          <a href="/LeftFront" class="btn" role="butoon"><span>左前</span></a>
-          <a href="/Forward" class="btn" role="butoon"><span>前進</span></a>
-          <a href="/RightFront" class="btn" role="butoon"><span>右前</span></a>
+          <a href="/Forward" class="btn" role="button"><span>前進</span></a>
 
         </div>
           <div class="box2">
@@ -109,14 +107,12 @@
           </div>
           
           <div class="box">
-            <a href="/LeftRear" class="btn" role="button"><span>左後</span></a>
             <a href="/Backward" class="btn" role="button"><span>後退</span></a>
-            <a href="/RightRear" class="btn" role="button"><span>右後</span></a>
           </div>
       </div>
-      <!-- jQuery文件在bootstrap.min.js 之前引入 -->
+      <!-- jQuery文件在bootstrap.min.js 之前引入
       <script src="//cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
-      <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
-      <script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+      最新的 Bootstrap 核心 JavaScript 文件
+      <script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script> -->
 
   </body>
