@@ -1,0 +1,9 @@
+*{
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+:root{
+    --background-color: rgb(244, 248, 17);
+    --background-color2:rgb(243, 239, 200);
+}

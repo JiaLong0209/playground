@@ -1,0 +1,120 @@
+.login_container{
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.title{
+    position: absolute;
+    color: #444;
+    font-size: 3rem;
+    margin-top: 10%;
+    text-shadow: 1px 1px rgba(58, 51, 13, 0.712)
+}
+
+.login {
+    width: 100%;
+    height: 100vh;
+    font-family: sans-serif;
+    background: linear-gradient(205deg, var(--background-color2) 0%, var(--background-color) 51%, transparent 51%) right center/
+      100% 100%, url("image3.png") right center / 100% 100% ;
+}
+
+.login_box {
+    border: 2px solid rgb(243, 229, 165);
+    box-shadow: 10px 10px 10px rgb(139, 156, 61),
+    inset 0px 3px 25px rgb(248, 255, 232);
+    border-radius: 20px;
+    backdrop-filter: blur(5px);
+    background: rgba(248, 247, 155, 0.8);
+    position: relative;
+    width: 300px;
+    padding: 30px;
+    top: 55%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+
+}
+
+.login_box h1 {
+
+    background:  none;
+    text-transform: uppercase;
+    font-size: 50px;
+    color: rgb(54, 65, 28);
+    font-weight:600;
+}
+
+.login_box input[type="text"], .login_box input[type="password"] {
+    outline: none;
+    background: none;
+    display: block;
+    width: 150px;
+    color: rgb(63, 52, 52);
+    margin: 15px auto;
+    padding: 10px 14px;
+    border: 2px solid #8876da;
+    border-radius: 24px;
+    transition: 0.3s;
+}
+
+.login_box input[type="text"]:focus,
+.login_box input[type="password"]:focus {
+    width: 200px;
+    border-color: #11555a;
+
+}
+
+.login_box input[type="button"] {
+    outline: none;
+    background: none;
+    display: block;
+    width: 100px;
+    color: rgb(73, 62, 62);
+    margin: 20px auto;
+    padding: 10px 14px;
+    border: 2px solid #444d0e;
+    border-radius: 24px;
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+.login_box input[type="button"]:hover {
+    background: #ceee5b;
+}
+::placeholder{
+    color: rgba(77, 63, 63, 0.9);
+}
+h3 {
+    display: none;
+    text-align: center;
+    position: relative;
+    font-size:15px;
+    color: rgb(59, 127, 182);
+    z-index: 30;
+    background: none;
+    max-width:300px;
+}
+h3 span{
+    position: relative;
+    padding: 1px 7px;
+    background: linear-gradient(180deg,rgb(181, 227, 247) 0%,rgb(51, 87, 153));
+    color: rgb(16, 41, 21);
+    font-size: 15px;
+    border-radius: 50%;
+    border: 1.5px solid rgb(29, 29, 29);
+    margin-right:5px;
+    font-family: sans-serif;
+}
+
+
+.success {
+    width: 100%;
+    height: 100vh;
+    font-family: sans-serif;
+    background: linear-gradient(205deg, var(--background-color2) 0%, var(--background-color) 51%, transparent 51%) right center/
+      100% 100%, url("image1.png") right center / auto 100% ;
+}
