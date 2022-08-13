@@ -1,0 +1,119 @@
+* {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  cursor: url(./cursor01.cur), auto;
+  font-family: sans-serif;
+}
+
+.container {
+  height: 100vh;
+  background-image: linear-gradient(45deg, rgb(205, 252, 78) 0%, rgb(240, 80, 101));
+}
+
+.card {
+  font-size: 16px;
+  border-radius: 30px;
+  width: 280px;
+  transition: 0.3s;
+  height: 130px;
+  -webkit-backdrop-filter: blur(20px);
+          backdrop-filter: blur(20px);
+  margin: 20px;
+  background: #fff;
+  padding: 20px;
+  box-shadow: 0 0 100px rgba(136, 136, 136, 0.5333333333);
+  z-index: 1;
+}
+.card:hover {
+  height: 400px;
+  transform: translate(0px, 30px);
+}
+.card:hover .card__img {
+  top: -60px;
+  transform: scale(1.5);
+  margin: 20px;
+}
+.card:hover .card__name {
+  font-size: 1.2rem;
+}
+.card:hover .card__name span {
+  font-size: 1rem;
+}
+.card:hover .hidden {
+  opacity: 100%;
+}
+.card .card__img {
+  overflow: visible;
+  position: relative;
+  top: 0px;
+  z-index: 3;
+  border-radius: 30px;
+  box-shadow: 0px 5px 20px rgba(136, 136, 136, 0.5333333333);
+  margin-bottom: 80px;
+  transform: translate(0, 60px) scale(1);
+  transition: 0.3s;
+}
+.card .card__name {
+  transition: 0.25s;
+}
+.card .card__data {
+  margin: 20px 0;
+  width: 100%;
+}
+.card .card__data__item {
+  position: relative;
+  margin: 5px 0;
+}
+.card .card__button {
+  width: 100%;
+}
+.card .card__button__item {
+  transition: 0.25s;
+  cursor: pointer;
+  padding: 10px 20px;
+  border: 1px solid rgb(228, 93, 145);
+  border-radius: 5px;
+  color: rgb(228, 93, 145);
+}
+.card .card__button__item:nth-child(1) {
+  background: rgb(228, 93, 145);
+  color: rgb(255, 255, 255);
+}
+.card .card__button__item:hover {
+  background: rgb(247, 114, 53);
+  color: #fff;
+  border: 1px solid rgb(247, 114, 53);
+}
+.card .description {
+  position: relative;
+  color: #999;
+  margin: 5px 0;
+  font-size: 0.8rem;
+  transition: 0.3s;
+}
+
+.flex--ccc {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+}
+
+.flex--rcc {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.space--around {
+  display: flex;
+  justify-content: space-around;
+}
+
+.hidden {
+  transition: 0.25s;
+  opacity: 0%;
+}/*# sourceMappingURL=style.css.map */

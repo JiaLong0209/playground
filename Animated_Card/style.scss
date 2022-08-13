@@ -1,0 +1,135 @@
+$linear--color1:rgb(205, 252, 78);
+$linear--color2:rgb(240, 80, 101);
+$card--height1:130px;
+$card--height2:400px;
+$button--color:rgb(228, 93, 145);
+$button--hoverColor:rgb(247, 114, 53);
+$transition1:0.25s;
+$transition2:0.3s;
+$transition3:0.4s;
+$fz1:0.8rem;
+$fz2:1rem;
+$fz3:1.2rem;
+*{
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    cursor: url(./cursor01.cur),auto ;
+    font-family: sans-serif;
+}
+.container{
+    height: 100vh;
+    background-image: linear-gradient(45deg,$linear--color1 0%,$linear--color2);
+}
+
+.card{
+    font-size: 16px;
+    border-radius: 30px;
+    width: 280px;
+    transition: $transition2;
+    height: $card--height1;
+    backdrop-filter: blur(20px);
+    margin: 20px;
+    background: #fff;
+    padding: 20px;
+    box-shadow: 0 0 100px #8888;
+    // overflow: hidden;
+    z-index: 1;
+
+    &:hover{
+        height: $card--height2;
+        transform: translate(0px,30px);
+        .card__img{
+            top: -60px;
+            transform: scale(1.5);
+            margin: 20px;
+        }
+        .card__name{
+            font-size: $fz3;
+            span{
+                font-size: $fz2;
+            }
+        }
+        .hidden{
+            opacity: 100%;
+        }
+    }
+
+    .card{
+        &__img{
+            overflow: visible;
+            position: relative;
+            top: -0px;
+            z-index: 3;
+            border-radius: 30px;
+            box-shadow: 0px 5px 20px #8888;
+            margin-bottom: 80px;
+            transform: translate(0,60px) scale(1);
+            transition: $transition2;
+        }
+        &__name{
+            transition: $transition1;
+        }
+        &__data{
+            margin: 20px 0;
+            width: 100%;
+            
+            &__item{
+                position: relative;
+                margin: 5px 0;
+            }
+        }
+        &__button{
+            width: 100%;
+            &__item{
+                transition: $transition1;
+                cursor: pointer;
+                padding: 10px 20px ;
+                border: 1px solid $button--color;
+                border-radius: 5px;
+                color: $button--color;
+                &:nth-child(1){
+                    background: $button--color;
+                    color: rgb(255, 255, 255);
+                }
+                &:hover{
+                    background:$button--hoverColor;
+                    color: #fff;
+                    border: 1px solid $button--hoverColor;
+                }
+            }
+        }
+    }
+    .description{
+        position: relative;
+        color: #999;
+        margin: 5px 0;
+        font-size: 0.8rem;
+        transition: $transition2;
+    }
+}
+
+.flex--ccc{
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+}
+
+.flex--rcc{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.space--around{
+    display: flex;
+    justify-content: space-around;
+}
+
+.hidden{
+    transition: $transition1;
+    opacity: 0%;
+}
