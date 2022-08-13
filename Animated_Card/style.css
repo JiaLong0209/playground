@@ -19,7 +19,7 @@
   height: 130px;
   -webkit-backdrop-filter: blur(20px);
           backdrop-filter: blur(20px);
-  margin: 20px;
+  margin: 50px 20px;
   background: #fff;
   padding: 20px;
   box-shadow: 0 0 100px rgba(136, 136, 136, 0.5333333333);
@@ -103,6 +103,7 @@
 
 .flex--rcc {
   display: flex;
+  flex-wrap: wrap;
   flex-direction: row;
   justify-content: center;
   align-items: center;

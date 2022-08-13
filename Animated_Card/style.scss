@@ -29,7 +29,7 @@ $fz3:1.2rem;
     transition: $transition2;
     height: $card--height1;
     backdrop-filter: blur(20px);
-    margin: 20px;
+    margin: 50px 20px;
     background: #fff;
     padding: 20px;
     box-shadow: 0 0 100px #8888;
@@ -117,8 +117,9 @@ $fz3:1.2rem;
     align-items: center;
 }
 
-.flex--rcc{
+.flex--rcc{ 
     display: flex;
+    flex-wrap: wrap;
     flex-direction: row;
     justify-content: center;
     align-items: center;
