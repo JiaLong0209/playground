@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Shadow Clone Jutsu of Square</title>
+    <style>
+        :root{
+            --boxSize:250px;
+            --shadowTranslate:350px;
+            --smallBoxSize:210px;
+            
+        }
+        *{
+            margin: 0;
+            padding: 0;
+            user-select: none;
+        }
+        body{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100vh;
+            background: rgb(37, 37, 37);
+            overflow: hidden;
+        }
+        button{
+            position: relative;
+            width: var(--boxSize);
+            height: var(--boxSize);
+            font-size: 3rem;
+            background: rgb(255, 255, 255);
+            border-radius: 40px;
+            outline: none;
+            border: 2px solid rgb(172, 172, 172);
+            box-shadow: 3px 3px 10px rgb(163, 157, 157);
+            cursor: pointer;
+            transition: 0.5s;
+        }
+        button::before{
+            position: absolute;
+            content: '';
+            z-index: -1;
+            width: var(--smallBoxSize);
+            height: var(--smallBoxSize);
+            top: 0;
+            left: 0;
+            font-size: 3rem;
+            background: rgb(255, 255, 255);
+            border-radius: 40px;
+            outline: none;
+            border: 2px solid rgb(172, 172, 172);
+            box-shadow: 3px 3px 10px rgb(163, 157, 157);
+            cursor: pointer;
+            transition: 0.5s;
+
+        }
+        button::after{
+            position: absolute;
+            content: '';
+            z-index: -1;
+            width: var(--smallBoxSize);
+            height: var(--smallBoxSize);
+            top: 0;
+            left: 0;
+            font-size: 3rem;
+            background: rgb(255, 255, 255);
+            border-radius: 40px;
+            outline: none;
+            border: 2px solid rgb(172, 172, 172);
+            box-shadow: 3px 3px 10px rgb(163, 157, 157);
+            cursor: pointer;
+            transition: 0.5s;
+
+        }
+        button:hover{
+            transform: scale(1.2) rotate(360deg);
+            box-shadow: 0 0 100px #fff6,
+                        0 0 200px #fff3;
+            border-radius: 0;
+            color: rgb(48, 39, 102);
+            text-shadow: 0 0 70px rgba(177, 168, 226, 0.658),
+                        0 0 50px rgba(41, 49, 153, 0.333);
+            font-size: 3rem;
+        }
+        button:hover::before{
+            z-index: -1;
+            transform: scale(1) rotate(360deg) translateX(350px);
+            box-shadow: 0 0 100px #fff6,
+                        0 0 200px #fff3,
+                        -330px 350px 0 #fff,
+                        -330px 350px 100px #fff9,
+                        -330px -350px 0 #fff,
+                        -330px -350px 100px #fff9,
+                        0 350px 0 #fff,
+                        0 350px 100px #fff9,
+                        0 -350px 0 #fff,
+                        0 -350px 100px #fff9;
+            border-radius: 0;
+            color: rgb(48, 39, 102);
+            text-shadow: 0 0 70px rgba(177, 168, 226, 0.658),
+                        0 0 50px rgba(41, 49, 153, 0.333);
+        }
+        button:hover::after{
+            z-index: -1;
+            transform: scale(1) rotate(360deg) translateX(-350px);
+            box-shadow: 0 0 100px #fff6,
+                        0 0 200px #fff3,
+                        0 350px 0 #fff,
+                        0 350px 100px #fff9,
+                        0 -350px 0 #fff,
+                        0 -350px 100px #fff9;
+            border-radius: 0;
+            color: rgb(48, 39, 102);
+            text-shadow: 0 0 70px rgba(177, 168, 226, 0.658),
+                        0 0 50px rgba(41, 49, 153, 0.333);
+        }
+        button:active{
+            transform: scale(1.2) rotate(360deg);
+            /* transform: scale(1.2) rotate(720deg); */
+            background: rgb(95, 95, 95);
+            color: rgb(255, 255, 255);
+            border: 1px solid rgb(255, 255, 255);
+            font-size: 3.3rem;
+            /* border-radius: 50%; */
+            box-shadow: 
+                        0 335px 0 -20px #fff,
+                        0 335px 70px -35px #fff,
+                        0 -365px 0 -20px #fff,
+                        0 -365px 70px -35px #fff
+                        ;
+        }
+        button:active::before{            
+            /* transform: translateX(-350px) rotate(180deg); */
+            background:#db784b;
+            box-shadow: 
+                        0 0 70px #fff6,
+                        0 -350px 0 -20px rgb(215, 226, 56),
+                        0 -350px 70px -20px #fff6,
+                        0 350px 0 -20px rgb(51, 255, 102),
+                        0 350px 70px -20px #fff6,
+                        350px 0px 0 -20px rgb(209, 78, 78),
+                        350px 0px 70px -20px #fff6,
+                        350px 350px 0 -20px rgb(157, 163, 247),
+                        350px 350px 70px -20px #fff6,
+                        350px -350px 0 -20px rgb(233, 51, 193),
+                        350px -350px 70px -20px #fff6;
+        }
+        button:active::after{
+            /* transform: translateX(350px) rotate(180deg); */
+            background: rgb(110, 212, 238);
+            box-shadow: 
+                        0 0 70px #fff6,
+                        0 -350px 0 -20px rgb(205, 209, 150),
+                        0 -350px 70px -20px #fff6,
+                        0 350px 0 -20px rgb(221, 175, 75),
+                        0 350px 70px -20px #fff6,
+                        -350px 0px 0 -20px rgb(137, 192, 218),
+                        -350px 0px 70px -20px #fff6,
+                        -350px 350px 0 -20px rgb(231, 57, 164),
+                        -350px 350px 70px -20px #fff6,
+                        -350px -350px 0 -20px rgb(211, 240, 108),
+                        -350px -350px 70px -20px #fff6;
+        }
+    </style>
+</head>
+<body>
+    <button onclick="console.log('The Shadow Clone Jutsu of Square')">Click me!</button>
+</body>
+</html>
