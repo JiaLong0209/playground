@@ -27,7 +27,7 @@
 }
 .card:hover {
   height: 400px;
-  transform: translate(0px, 30px);
+  transform: translate(0px, -10px);
 }
 .card:hover .card__img {
   top: -60px;
