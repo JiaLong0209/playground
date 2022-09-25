@@ -20,25 +20,41 @@
     --keyContainer-height:20%;
 }
 .container{
+    position: relative;  /* overflow */
+    overflow: hidden;
     width: 100vw;
     height: 100vh;
     background: rgb(159, 159, 159);
     display: flex;
     transform: 0.3s;
-     
+}
+.background{
+    width: 100%;
+    height: 100%;
+    transition: 0.3s;
+    transition-timing-function:ease;
+    position: absolute;
+    z-index: 1;
+    filter: blur(0px) brightness(0.9);
+    transform:scale(1.0);
+    background-image: url(./koishi01.jpg);
+    background-size: cover;
 }
 .setting{
     position: relative;
     flex: 0 0 calc(100% / 3);
-    background: rgb(77, 79, 77);
+    z-index: 2;
+    /* background: rgb(77, 79, 77); */
 }
 .game{
+    /* backdrop-filter: blur(10px); */
     position: relative;
     display: flex;
     flex-direction: column;
     flex: 0 0 calc(100% / 3);
     margin: 0 auto;
-    background: #000;
+    background: #0009;
+    z-index: 2;
 }
 
 .hit{
@@ -47,7 +63,7 @@
     height: 20%;
     top: 50%;
     left: 50%;
-    z-index: 1;
+    z-index: 3;
     text-align: center;
     transform: translate(-50%, -50%);
 }
@@ -58,7 +74,7 @@
     width: 100%;
     height: 100%;
     top: -60%;
-    z-index: 1;
+    z-index: 2;
     font-size: 3rem;
     color:var(--combo-color);
 }
@@ -69,26 +85,30 @@
     height: 120%;
     font-size: 3rem;
     background: none;
-    z-index: 1;
+    z-index: 2;
     user-select: none;
 }
 
 .hit__accuracy--perfect{
+    z-index: 2;
     color: var(--perfect-color);
     opacity: 0;
     animation: fade 0.6s;
 }
 .hit__accuracy--good{
+    z-index: 2;
     color: var(--good-color);
     opacity: 0;
     animation: fade 0.6s;
 }
 .hit__accuracy--bad{
+    z-index: 2;
     color: var(--bad-color);
     opacity: 0;
     animation: fade 0.6s;
 }
 .hit__accuracy--miss{
+    z-index: 2;
     color: var(--miss-color);
     opacity: 0;
     animation: fade 0.6s;
@@ -97,12 +117,14 @@
 
 
 .track-container{
+    z-index: 2;
     position: relative;
     display: flex;
     flex:1 0 auto;
     background: var(--trackContainer-color);
 }
 .track {
+    z-index: 2;
     position:relative;
     flex:0 0 calc(100% / 4);
 }
@@ -124,6 +146,7 @@
     background: rgb(168, 168, 168);
 } */
 .key-container{
+    z-index: 2;
     display: flex;
     flex:0 0 var(--keyContainer-height);
     user-select: none;
@@ -133,6 +156,7 @@
 }
 .key {
     flex: 0 0 calc(100% / 4);
+    z-index: 2;
     text-align: center;
     display: flex;
     align-items: center;
@@ -146,6 +170,7 @@
     width: calc(100% / 4);
     height: 100%;
     top: -20%;
+    z-index: 2;
     display: none;
     opacity: 1;
     background: var(--keypress-white);
@@ -154,6 +179,7 @@
     background:var(--keypress-white);
 } */
 .note{
+    z-index: 2;
     position: absolute;
     background: rgb(227, 227, 227);
     width: 100%;
@@ -165,7 +191,7 @@
     position: absolute;
     width: calc(100% / 4);
     height: 1.5rem;
-    z-index: 1;
+    z-index: 2;
     bottom: calc(var(--keyContainer-height) - 0.75rem);
     background: var(--hit-color);
     transform: translate(0%,-50%);
@@ -174,6 +200,7 @@
 }
 
 .menu{
+    z-index: 2;
     opacity: 1;
     display: flex;
     flex-direction: column;
@@ -182,12 +209,13 @@
     text-align: center;
     justify-content: center;
     flex: 0 0 calc(100% / 3);
-    background: rgb(99, 99, 99);
+    /* background: rgb(99, 99, 99); */
     transition: 0.5s;
     overflow: hidden;
 }
 
 .menu_speed{
+    z-index: 2;
     display: flex;
     flex-direction: column;
     width: 100%;
@@ -195,6 +223,7 @@
     user-select: none;
 }
 .speedBox{
+    z-index: 2;
     display: flex;
     justify-content: space-between;
     text-align: center;
@@ -204,6 +233,7 @@
     margin: 5px 5px;
 }
 .speedBtn{
+    z-index: 2;
     background: rgba(7, 7, 7, 0.747);
     width: 2.4rem;
     height: 2.4rem;
@@ -222,6 +252,7 @@
  } 
 
 .btn{
+    z-index: 2;
     display: inline-block;
     border: 1px solid #fff;
     font-size: 1rem;

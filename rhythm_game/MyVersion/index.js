@@ -1,11 +1,21 @@
-// 1. make a rough structure 2022/05/30 v0.10
-// 2. add keypress listener 2022/06/05 v0.20
-// 3. make track container 2022/06/06 v0.30
-// 4. setup notes 2022/06/10 v0.40
-// 5. load music, make a map and start button 2022/06/11 v0.60
-// 6. setupNotesMiss, displayAccuracy and hitEffect 2022/06/12 v0.70
-// 7. fix judgment dalay bug 2022/06/19 v0.71
-// 8. Note Speed, Song Speed UI 2022/06/26 v0.80
+// 1. Make a rough structure                                        2022/05/30 v0.10
+// 2. Add keypress listener                                         2022/06/05 v0.20
+// 3. Make track container                                          2022/06/06 v0.30
+// 4. Setup notes                                                   2022/06/10 v0.40
+// 5. Load music, make a map and start button                       2022/06/11 v0.60
+// 6. SetupNotesMiss, displayAccuracy and hitEffect                 2022/06/12 v0.70
+// 7. Fix judgment delay bug                                        2022/06/19 v0.71
+// 8. Note Speed, Song Speed UI                                     2022/06/26 v0.80
+// 9. Add background image, simplify code (noteKeys = [d,f,j,k])    2022/09/25 v0.81
+
+
+// 解決的Bug或值得注意的點
+// 1.已解決音符速度越快時，判定區越小的Bug
+// 2.已解決音符下落到判定線後不能判定的Bug
+// 3.已解決重複按下Start按鈕，判定時間重置的Bug
+// 
+// 
+// 
 
 const noteSpeedDownBtn = document.querySelector('.btn--noteSpeedDown');
 const noteSpeedUpBtn = document.querySelector('.btn--noteSpeedUp');
@@ -15,6 +25,7 @@ const songSpeedDownBtn = document.querySelector('.btn--songSpeedDown');
 const songSpeedUpBtn = document.querySelector('.btn--songSpeedUp');
 const songSpeedTxt = document.querySelector('.songSpeedTxt');
 
+const background = document.querySelector(".background");
 
 let keyCharacters = ['d','f','j','k']
 
@@ -82,7 +93,6 @@ function initializeNotes (){
             trackElement.appendChild(noteElement);  //.track 增加.note子節點
 
         });
-
         trackContainer.appendChild(trackElement);  //在trackContainer增加.track子節點，沒有這行的話.track 跟 .note 會顯示不出來
         tracks = document.querySelectorAll('.track');
     })
@@ -99,6 +109,8 @@ function setupStartButton(){
         document.querySelectorAll('.note').forEach((note)=>{
             note.style.animationPlayState = 'running';
         })
+        background.style.filter = "blur(1.4px) brightness(0.5)";
+        background.style.transform = "scale(1.3)";
         setTimeout(() => {
             music.play();
         }, songPrepareTime);
@@ -245,34 +257,43 @@ function updateNext(index){
     song.sheet[index].next++;
 }
 function fixSongSpeed(preMusicSpeed){
-    d.notes.forEach(item => {
-        item.delay-= songStartTime;
-        item.delay*= preMusicSpeed;
-        item.delay/= musicSpeed; 
-        item.delay+= songStartTime;
-        console.log(item.delay)
-    });
+    noteKeys.forEach(key => {
+        key.notes.forEach(item => {
+            item.delay-= songStartTime;
+            item.delay*= preMusicSpeed;
+            item.delay/= musicSpeed;
+            item.delay+= songStartTime;
+        });
+    })
+
+    // d.notes.forEach(item => {
+    //     item.delay-= songStartTime;
+    //     item.delay*= preMusicSpeed;
+    //     item.delay/= musicSpeed; 
+    //     item.delay+= songStartTime;
+    //     // console.log(item.delay)
+    // });
     
-    f.notes.forEach(item => {
-        item.delay-= songStartTime;
-        item.delay*= preMusicSpeed;
-        item.delay/= musicSpeed;
-        item.delay+= songStartTime;
-    });
+    // f.notes.forEach(item => {
+    //     item.delay-= songStartTime;
+    //     item.delay*= preMusicSpeed;
+    //     item.delay/= musicSpeed;
+    //     item.delay+= songStartTime;
+    // });
     
-    j.notes.forEach(item => {
-        item.delay-= songStartTime;
-        item.delay*= preMusicSpeed;
-        item.delay/= musicSpeed;
-        item.delay+= songStartTime;
-    });
+    // j.notes.forEach(item => {
+    //     item.delay-= songStartTime;
+    //     item.delay*= preMusicSpeed;
+    //     item.delay/= musicSpeed;
+    //     item.delay+= songStartTime;
+    // });
     
-    k.notes.forEach(item => {
-        item.delay-= songStartTime;
-        item.delay*= preMusicSpeed;
-        item.delay/= musicSpeed;
-        item.delay+= songStartTime;
-    });
+    // k.notes.forEach(item => {
+    //     item.delay-= songStartTime;
+    //     item.delay*= preMusicSpeed;
+    //     item.delay/= musicSpeed;
+    //     item.delay+= songStartTime;
+    // });
 }
 
 function round(num) {

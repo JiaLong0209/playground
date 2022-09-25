@@ -218,26 +218,33 @@ let k = {
     ]
 };
 
+let noteKeys = [d,f,j,k];
+let totalNotes = 0;
 
-d.notes.forEach(item => {
-    item.delay+= songStartTime;
-});
-
-f.notes.forEach(item => {
-    item.delay+= songStartTime;
-});
-
-j.notes.forEach(item => {
-    item.delay+= songStartTime;
-});
-
-k.notes.forEach(item => {
-    item.delay+= songStartTime;
-});
+noteKeys.forEach(key=>{
+    totalNotes += key.notes.length;
+    key.notes.forEach(item=>{
+        item.delay += songStartTime;
+    })
+})
 
 let song = {
     duration: 56,
     sheet: [d, f, j, k]
 };
 
-let totalNotes = d.notes.length + f.notes.length + j.notes.length + k.notes.length;
+// d.notes.forEach(item => {
+//     item.delay+= songStartTime;
+// });
+
+// f.notes.forEach(item => {
+//     item.delay+= songStartTime;
+// });
+
+// j.notes.forEach(item => {
+//     item.delay+= songStartTime;
+// });
+
+// k.notes.forEach(item => {
+//     item.delay+= songStartTime;
+// });
