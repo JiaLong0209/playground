@@ -7,7 +7,7 @@
 // 7. Fix judgment delay bug                                        2022/06/19 v0.71
 // 8. Note Speed, Song Speed UI                                     2022/06/26 v0.80
 // 9. Add background image, simplify code (noteKeys = [d,f,j,k])    2022/09/25 v0.81
-
+// 10. Update map                                                   2022/12/03 v0.82
 
 // 解決的Bug或值得注意的點
 // 1.已解決音符速度越快時，判定區越小的Bug
@@ -51,8 +51,8 @@ let multiplier = {
     miss:0
 }
 let music = document.querySelector('.song');
-let noteSpeed = 2.55;
-let musicSpeed = 3;
+let noteSpeed = 2.4;
+let musicSpeed = 1;
 music.playbackRate = musicSpeed;
 let songPrepareTime = 2000;
 
