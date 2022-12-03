@@ -40,7 +40,7 @@ let d = {
         {duration: 3, delay: beat*27 + EN},
         {duration: 3, delay: beat*28},
         {duration: 3, delay: beat*28 + EN},
-        {duration: 3, delay: beat*29},
+        {duration: 3, delay: beat*29 + SN},
         {duration: 3, delay: beat*30},
 
         {duration: 3, delay: beat*36},
@@ -60,7 +60,8 @@ let d = {
         {duration: 3, delay: beat*55 + TN},
         {duration: 3, delay: beat*56 + EN},
         {duration: 3, delay: beat*58},
-        {duration: 3, delay: beat*60 + SN},
+        {duration: 3, delay: beat*58 + EN + SN},
+        {duration: 3, delay: beat*60},
         {duration: 3, delay: beat*61},
         {duration: 3, delay: beat*61 + EN + SN},
 
@@ -73,7 +74,6 @@ let f = {
     notes: [
         {duration: 3, delay: beat},
         {duration: 3, delay: beat*4},
-        {duration: 3, delay: beat*4 + EN},
         {duration: 3, delay: beat*7},
         {duration: 3, delay: beat*8},
         {duration: 3, delay: beat*9},
@@ -89,7 +89,8 @@ let f = {
         {duration: 3, delay: beat*23 + TN},
         {duration: 3, delay: beat*24 + EN},
         {duration: 3, delay: beat*26},
-        {duration: 3, delay: beat*28 + SN},
+        {duration: 3, delay: beat*27 + SN},
+        {duration: 3, delay: beat*28},
         {duration: 3, delay: beat*29 + EN + SN},
 
         
@@ -114,8 +115,8 @@ let f = {
         {duration: 3, delay: beat*57},
         {duration: 3, delay: beat*58},
         {duration: 3, delay: beat*59 + EN},
-        {duration: 3, delay: beat*60},
-        {duration: 3, delay: beat*60 + EN},
+        {duration: 3, delay: beat*60 + SN},
+        {duration: 3, delay: beat*61},
         {duration: 3, delay: beat*62},
 
 
@@ -128,6 +129,7 @@ let j = {
     notes: [
         {duration: 3, delay: beat*2},
         {duration: 3, delay: beat*3 + TN},
+        {duration: 3, delay: beat*4 + EN},
         {duration: 3, delay: beat*6},
         {duration: 3, delay: beat*7},
         {duration: 3, delay: beat*8},
@@ -143,9 +145,7 @@ let j = {
         {duration: 3, delay: beat*23},
         {duration: 3, delay: beat*24},
         {duration: 3, delay: beat*25 + EN},
-        {duration: 3, delay: beat*27 + SN},
-        {duration: 3, delay: beat*28},
-        {duration: 3, delay: beat*28 + EN},
+        {duration: 3, delay: beat*28 + SN},
         {duration: 3, delay: beat*29},
         {duration: 3, delay: beat*30},
 
@@ -169,7 +169,6 @@ let j = {
         {duration: 3, delay: beat*59 + SN},
         {duration: 3, delay: beat*60},
         {duration: 3, delay: beat*60 + EN},
-        {duration: 3, delay: beat*61},
         {duration: 3, delay: beat*62},
     ]
 };
@@ -194,7 +193,8 @@ let k = {
         {duration: 3, delay: beat*25},
         {duration: 3, delay: beat*26 + EN + SN},
         {duration: 3, delay: beat*27 + EN + SN},
-        {duration: 3, delay: beat*29 + SN},
+        {duration: 3, delay: beat*28 + EN},
+        {duration: 3, delay: beat*29},
         {duration: 3, delay: beat*30},
 
         {duration: 3, delay: beat*35},
@@ -206,13 +206,13 @@ let k = {
         {duration: 3, delay: beat*46},
         {duration: 3, delay: beat*48 + SN},
         {duration: 3, delay: beat*49 + SN},
-        {duration: 3, delay: beat*51},
+        {duration: 3, delay: beat*51}, 
         {duration: 3, delay: beat*52},
         {duration: 3, delay: beat*54},
         {duration: 3, delay: beat*56},
         {duration: 3, delay: beat*57},
-        {duration: 3, delay: beat*58 + EN + SN},
         {duration: 3, delay: beat*59 + EN + SN},
+        {duration: 3, delay: beat*60 + EN},
         {duration: 3, delay: beat*61 + SN},
         {duration: 3, delay: beat*62},
     ]

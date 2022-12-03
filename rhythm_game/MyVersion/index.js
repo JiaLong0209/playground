@@ -51,8 +51,8 @@ let multiplier = {
     miss:0
 }
 let music = document.querySelector('.song');
-let noteSpeed = 2.3;
-let musicSpeed = 1;
+let noteSpeed = 2.55;
+let musicSpeed = 3;
 music.playbackRate = musicSpeed;
 let songPrepareTime = 2000;
 
@@ -349,11 +349,12 @@ window.onload = function(){
     keypress = document.querySelectorAll(".keypress");
     comboText = document.querySelector('.hit__combo');
     document.querySelector('.btn--start').style.display = 'inline-block'
+    fixSongSpeed(1);
     initializeNotes();
     setupKeys();    
     setupStartButton();
     setupNoteMiss();
     setupSpeed(); 
     setupSpeedBtnClickListener();
-    setupSongSpeed();
+    
 }
