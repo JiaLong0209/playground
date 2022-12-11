@@ -6,6 +6,8 @@
 * [space_invaders](https://jialong0209.github.io/playground/space_invaders/main.html) 
 * [shooting-game](https://jialong0209.github.io/playground/shooting-game/main.html)
 ## Others
+* [Sliding Image](https://jialong0209.github.io/playground/sliding_image/index.html)
+* [c3](https://jialong0209.github.io/playground/c3/chart.html)
 * [boxShadowClone](https://jialong0209.github.io/playground/boxShadowClone.html)
 * [Animated_Card UI](https://jialong0209.github.io/playground/Animated_Card/index.html)
 * [ASCII_img](https://jialong0209.github.io/playground/ASCII_img/main.html)

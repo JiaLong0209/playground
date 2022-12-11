@@ -1,0 +1,34 @@
+  :root{
+    --basic: 45vmin;
+  }
+  
+  body {
+    height: 100vh;
+    width: 100vw;
+    background-color: black;
+    margin: 0rem;
+    overflow: hidden;
+  }
+  
+  #image-track {
+    display: flex;
+    gap: 4vmin;
+    position: absolute;
+    left: 40%;
+    top: 50%;
+    transform: translate(0%, -50%); 
+    user-select: none; /* -- Prevent image highlighting -- */
+  }
+  
+  #image-track > .image {
+    width: calc(var(--basic));
+    height: calc(var(--basic) * 1.4);
+    object-fit: cover;
+    object-position: 100% center;
+    border-radius: 20px;
+    transition: 0.2s;
+  }
+
+  #image-track .image:hover{
+    transform: scale(1.1);
+  }
