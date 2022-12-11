@@ -15,7 +15,7 @@
 * [Animated Card UI](https://jialong0209.github.io/playground/Animated_Card/index.html) _`Creation Date: 2022/08/13`_
 * [Search Bar](https://jialong0209.github.io/playground/search_bar/main.html) _`Creation Date: 2022/05/11`_
 * [ASCII Image](https://jialong0209.github.io/playground/ASCII_img/main.html) _`Creation Date: 2022/05/01`_
-* [Calculator](https://jialong0209.github.io/playground/calculator.html) _`Creation Date: 2022/12/11`_
+* [Calculator](https://jialong0209.github.io/playground/calculator.html) _`Creation Date: 2022/01/26`_
 * [Neon Light Button](https://jialong0209.github.io/playground/neon-light-button.html) _`Creation Date: 2022/01/26`_
 * [Rain](https://jialong0209.github.io/playground/rain.html) _`Creation Date: 2022/01/21`_
 
