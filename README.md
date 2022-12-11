@@ -8,9 +8,9 @@
 * [Shooting Game](https://jialong0209.github.io/playground/shooting-game/main.html)
 ## Others
 * [Sliding Image](https://jialong0209.github.io/playground/sliding_image/index.html)
-   Creation Date: 2022/12/11
+Creation Date: 2022/12/11
 * [c3](https://jialong0209.github.io/playground/c3/chart.html)
-   Creation Date: 2022/11/27
+Creation Date: 2022/11/27
 * [Box Shadow Clone](https://jialong0209.github.io/playground/boxShadowClone.html)
 * [Animated Card UI](https://jialong0209.github.io/playground/Animated_Card/index.html)
 * [ASCII Image](https://jialong0209.github.io/playground/ASCII_img/main.html)
