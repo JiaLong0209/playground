@@ -41,9 +41,9 @@ window.onload = ()=>{
     let str = columnsInput.value;
     let arr = [];
     if(str=='') alert("Please enter the valid values !")
-    str = str.trim().replace(/[ \[\]]/g,'').split(",");
+    str = str.trim().replace(/[ \[\]"]/g,'').split(",");
     for(let i in str){
-      i == 0? arr.push(str[i].slice(1,str[i].length-1)) : arr.push(Number(str[i]));
+      i == 0? arr.push(str[i]) : arr.push(Number(str[i]));
     }
     data.push(arr);
     categories[arr[0]] = arr;
@@ -62,4 +62,3 @@ window.onload = ()=>{
   }
   
 }
-
