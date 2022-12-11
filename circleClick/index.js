@@ -1,3 +1,4 @@
+
 const circles = [
     document.querySelector(".circle1"),
     document.querySelector(".circle2"),
@@ -16,9 +17,10 @@ const settingChecks = [document.querySelector('#check1'),
 const timeNum = document.querySelector("#timeNum");
 const startBtn = document.querySelector(".startBtn");
 const body = document.querySelector('body');
+const Box = document.querySelector(".box").getBoundingClientRect();
 const BoxWidth = 400;
 const BoxHeight = 400;
-let isCheck = [true, true, true];
+let isCheck = [false, true];
 let bestScore = 0;
 let score = 0;
 let time = 30;
@@ -46,8 +48,6 @@ if(clientWidth > 770){
 }else{
     fontHeight = 18;
 }
-let marginHeight = (clientHeight - (BoxHeight+10+60+fontHeight))/2 ;
-let marginWidth = (clientWidth - BoxWidth+10)/2 ;
 
 window.onload = reset();
 window.addEventListener("mousedown", clickAnFn);
@@ -66,11 +66,12 @@ closeBtn.addEventListener("click",()=> {
 
 function clickAnFn(e) {
     if(time > 0 && 
-        e.clientY < clientHeight - marginHeight - 60 - fontHeight - 10 &&
-        e.clientY > marginHeight - 10 &&
-        e.clientX > marginWidth &&
-        e.clientX < clientWidth - marginWidth) {
-        console.log(clientHeight,marginHeight)
+        e.clientY < Box.bottom &&
+        e.clientY > Box.top &&
+        e.clientX > Box.left &&
+        e.clientX < Box.right) {
+        console.log(Box);
+
         clickTimes++;
         accuracy = accuracyCalculationFn(clickTimes,hitTimes);
         accuracyNum.innerHTML = accuracy + "%";
@@ -183,4 +184,9 @@ function reset() {
         item.style.left = randomX + "px";
         item.style.top = randomY + "px";
     })
+
+    isCheck.forEach((item,index) => {
+        item ? settingChecks[index].style.backgroundColor = '#fff' : settingChecks[index].style.backgroundColor = '#fff0';
+    })
+
 }
