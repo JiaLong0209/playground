@@ -22,7 +22,7 @@ function virus(i){
     i.style.backgroundImage='url(https://img.ltn.com.tw/Upload/news/600/2017/05/24/215.jpg)';
     i.style.backgroundSize = `${(Math.random()+0.5)*300}px ${(Math.random()+0.5)*500}px`;
     i.style.transform = `rotate(${random[0]}deg)`;
-    i.style.transform += `translate(${(Math.random()-0.5)*300}px, ${(Math.random()-0.5)*300}px`;
+    i.style.transform += `translate(${(Math.random()-0.5)*700}px, ${(Math.random()-0.5)*700}px`;
     i.style.filter = `contrast(${(Math.random()+0.5)*120}%) hue-rotate(${(Math.random()+0.5)*360}deg)`;
 }
 rec(document.body);
