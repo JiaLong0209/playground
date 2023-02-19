@@ -1,0 +1,275 @@
+@import url("https://fonts.googleapis.com/earlyaccess/notosanstc.css");
+@import url("https://fonts.googleapis.com/css?family=Baloo+Tamma+2:600, 700");
+
+
+* {
+  font-family:  sans-serif;
+  box-sizing: border-box;
+  transition: 0.2s;
+  list-style: none;
+}
+
+/* 捲軸底色 */
+*::-webkit-scrollbar-track {
+  background-color: #ffffff;
+}
+
+/* 捲軸寬度 */
+*::-webkit-scrollbar {
+  width: 7px;
+  height: 10px;
+}
+
+/* 捲軸本體顏色 */
+*::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background-color: #e88f8f;
+}
+
+html {
+  font-size: 16px;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  background: #eee;
+  display: flex;
+  color: #333;
+  background-image: linear-gradient(170deg, #ff0370 2%, #ff0370 46%, #ffffff 46%, #ffffff 100%, #e8e8e8 100%);
+  letter-spacing: 0.07em;
+  overflow: hidden;
+}
+
+h1 {
+  user-select: none;
+  text-align: center;
+  font-size: 3rem;
+  margin-bottom: 1.5rem;
+  font-family: "Baloo Tamma 2";
+  letter-spacing: 0.5rem;
+  color: #fff;
+  font-weight: bold;
+}
+@media (max-width: 575px) {
+  h1 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+  }
+}
+
+.container {
+  margin: 0rem auto 1.5rem auto;
+  padding: 0 12px;
+  width: 550px;
+}
+@media (max-width: 575px) {
+  .container {
+    margin-top: 1.5rem;
+  }
+}
+
+.card {
+  margin-bottom: 0.5rem;
+  max-width: 100%;
+  padding: 1rem;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.15);
+}
+
+input[type=text] {
+  width: 100%;
+  border: 0;
+  outline: 0;
+  font-size: 1rem;
+  padding-right: 1rem;
+  color: #333;
+}
+input[type=text]::placeholder {
+  color: #0f9a91;
+}
+
+.input {
+  padding: 4px 4px 4px 1rem;
+  display: flex;
+}
+
+.btn_add {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: #333;
+  color: #fff;
+  font-size: 2rem;
+  text-decoration: none;
+}
+
+.card_list {
+  padding: 0;
+}
+
+.tab {
+  display: flex;
+  text-align: center;
+  color: #0f9a91;
+  font-size: 14px;
+  user-select: none;
+}
+.tab li {
+  padding: 1rem;
+  width: 100%;
+  border-bottom: 2px solid #efefef;
+}
+.tab li.active {
+  border-bottom: 2px solid #333;
+  color: #333;
+  font-weight: bold;
+}
+
+.cart_content {
+  padding: 0.5rem 1rem 1rem 1rem;
+}
+@media (max-width: 575px) {
+  .cart_content {
+    padding: 0.5rem 1rem 0.5rem 0.5rem;
+  }
+}
+
+.tab li:hover {
+  cursor: pointer;
+}
+
+.list {
+  overflow-y: scroll;
+  max-height: 35vh;
+}
+
+.list li {
+  position: relative;
+  padding-right: 2rem;
+}
+@media (max-width: 575px) {
+  .list li {
+    padding-right: 0;
+  }
+}
+.list li a.delete {
+  font-size: 1.1rem;
+  position: absolute;
+  opacity: 0;
+  right: 0;
+  top: 50%;
+  transform: translate(-50%,-50%);
+  text-decoration: none;
+  color: #333;
+  display: block;
+  width: 1rem;
+  height: 1rem;
+  /* background: #000; */
+  /* background-image: url("https://i.imgur.com/czhCuvj.jpgc"); */
+  background-size: contain;
+}
+@media (max-width: 575px) {
+  .list li a.delete {
+    opacity: 1;
+    width: 12px;
+    height: 12px;
+  }
+}
+.list li:hover a.delete {
+  opacity: 1;
+}
+
+.list_footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.5rem 2rem 1rem 0.5rem;
+  font-size: 14px;
+}
+.list_footer a {
+  color: #0f9a91;
+  text-decoration: none;
+}
+@media (max-width: 575px) {
+  .list_footer {
+    padding: 1.5rem 0 1rem 0.5rem;
+  }
+}
+
+.checkbox {
+  position: relative;
+  user-select: none;
+  width: 100%;
+  display: block;
+  padding-left: 44px;
+  cursor: pointer;
+}
+.checkbox span {
+  display: block;
+  padding: 1rem 0;
+  border-bottom: 1px solid #eee;
+  line-height: 1.5;
+}
+@media (max-width: 575px) {
+  .checkbox span {
+    padding-right: 1rem;
+  }
+}
+.checkbox input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  cursor: pointer;
+  display: block;
+  height: 100%;
+  width: 100%;
+  margin: 0;
+}
+.checkbox span::before {
+  content: "";
+  position: absolute;
+  left: 0.5rem;
+  top: 50%;
+  transform: translateY(-50%) scale(1);
+  height: 20px;
+  width: 20px;
+  border-radius: 5px;
+  border: 1px solid #333;
+  pointer-events: none;
+  transition: 0.3s ease;
+}
+.checkbox span::after {
+  content: "";
+  position: absolute;
+  left: 14px;
+  top: 27%;
+  transform: rotate(45deg);
+  height: 15px;
+  width: 0.5rem;
+  border-radius: 1px;
+  border-bottom: 3px solid #ff0370;
+  border-right: 3px solid #ff0370;
+  pointer-events: none;
+  opacity: 0;
+  transition: 0.3s ease;
+}
+.checkbox input:checked ~ span {
+  color: #0f9a91;
+  text-decoration: line-through;
+}
+.checkbox input:checked ~ span::before {
+  border-color: transparent;
+  transform: translateY(-50%) scale(0);
+}
+.checkbox input:checked ~ span::after {
+  opacity: 1;
+}
