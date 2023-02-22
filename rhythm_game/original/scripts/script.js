@@ -18,7 +18,7 @@ var multiplier = {
   combo80: 1.10
 };
 var isPlaying = false;
-var speed = 1;
+var speed = 0;
 var combo = 0;
 var maxCombo = 0;
 var score = 0;
@@ -48,7 +48,7 @@ var initializeNotes = function () {
       noteElement.style.backgroundColor = key.color;
       noteElement.style.animationName = animation;
       noteElement.style.animationTimingFunction = 'linear';
-      noteElement.style.animationDuration = note.duration - speed + 's' ;
+      noteElement.style.animationDuration = note.duration - speed + 's';
       noteElement.style.animationDelay = note.delay + speed + 's';
       noteElement.style.animationPlayState = 'paused';
       trackElement.appendChild(noteElement);
@@ -78,7 +78,7 @@ var setupSpeed = function () {
         buttons[0].className = 'btn btn--small';
         buttons[1].className = 'btn btn--small';
         buttons[2].className = 'btn btn--small btn--selected';
-        speed = parseInt(this.innerHTML) - 0.5;
+        speed = parseInt(this.innerHTML) - 1;
       }
 
       initializeNotes();
