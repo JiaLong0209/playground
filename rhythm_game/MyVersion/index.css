@@ -4,6 +4,7 @@
     list-style: none;
     font-family: sans-serif;
     /* overflow: hidden; */
+    transition: 0.2s;
 }
 :root{
     --perfectPlus-color:linear-gradient(to bottom, rgb(255, 98, 0), rgb(238, 255, 0), rgb(43, 255, 0), rgb(0, 255, 255), rgb(128, 0, 255));
@@ -267,7 +268,8 @@
 
 .btn--start{
     background-color: rgba(0, 0, 0, 0.781);
-    display: none;
+    display: inline-block;
+    opacity: 0%;
 }
 
 .btn:hover,

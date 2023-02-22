@@ -8,6 +8,7 @@
 // 8. Note Speed, Song Speed UI                                     2022/06/26 v0.80
 // 9. Add background image, simplify code (noteKeys = [d,f,j,k])    2022/09/25 v0.81
 // 10. Update map                                                   2022/12/03 v0.82
+// 11. Add noteSpeed and musicSpeed to localStorage                 2023/02/23 v0.83
 
 // 解決的Bug或值得注意的點
 // 1.已解決音符速度越快時，判定區越小的Bug
@@ -51,8 +52,8 @@ let multiplier = {
     miss:0
 }
 let music = document.querySelector('.song');
-let noteSpeed = 2.4;
-let musicSpeed = 1;
+let noteSpeed = Number(localStorage['noteSpeed']) || 2.4;
+let musicSpeed = Number(localStorage['musicSpeed']) || 1;
 music.playbackRate = musicSpeed;
 let songPrepareTime = 2000;
 
@@ -120,6 +121,7 @@ function setupStartButton(){
 function setupNoteMiss(){
     trackContainer.addEventListener('animationend',(event)=>{
         setTimeout(() => {
+            if(!event.target.parentNode) return;
             if(event.target.parentNode.firstChild != event.target) return; //避免在setTimeout移除該note前，已被玩家移除,而導致點擊後又多一個miss，但是這種方法還是會出錯，但不引響遊戲。
 
             let index = event.target.classList.item(1)[6]; //item(1)[6]是指該標籤的第二個class，也就是note--[index],[6]就代表該class的第七個字母，即為[index] 0~3。
@@ -203,9 +205,9 @@ function getHitJudgement(accuracy){
     accuracy = Math.abs(accuracy);
     if(accuracy < 0.040){ //40ms
         return 'perfect';
-    }else if(accuracy < 0.100){ //100ms
+    }else if(accuracy < 0.80){ //100ms
         return 'good';
-    }else if(accuracy < 0.150){ //150ms 
+    }else if(accuracy < 0.120){ //150ms 
         return 'bad';
     }
     else{
@@ -297,7 +299,7 @@ function fixSongSpeed(preMusicSpeed){
 }
 
 function round(num) {
-    var m = Number((Math.abs(num) * 100).toPrecision(15));
+    var m = Number((Math.abs(num) * 100).toPrecision(15)); 
     return Math.round(m) / 100 * Math.sign(num);
 }
 
@@ -311,15 +313,18 @@ function setupSpeedBtnClickListener(){
         if(noteSpeed <= -3) return;
         noteSpeed-=0.05;
         noteSpeed = round(noteSpeed);
-        noteSpeedTxt.innerHTML = "Note Speed:"+noteSpeed;
+        initializeUI()
         initializeNotes();
+        saveToLocal()
     })
     noteSpeedUpBtn.addEventListener("click",()=>{
         if(noteSpeed >= 3) return;
         noteSpeed+=0.05;
         noteSpeed = round(noteSpeed);
-        noteSpeedTxt.innerHTML = "Note Speed:"+noteSpeed;
+        
+        initializeUI()
         initializeNotes();
+        saveToLocal()
     })
 
     songSpeedDownBtn.addEventListener("click",()=>{
@@ -329,32 +334,48 @@ function setupSpeedBtnClickListener(){
         musicSpeed = round(musicSpeed);
         music.playbackRate = musicSpeed;
         fixSongSpeed(preMusicSpeed);
+        initializeUI()
         initializeNotes();
-        songSpeedTxt.innerHTML = "Song Speed:"+musicSpeed;
+        saveToLocal()
     })
     songSpeedUpBtn.addEventListener("click",()=>{
         if(musicSpeed >= 5) return;
         let preMusicSpeed = musicSpeed;
-        musicSpeed+=0.1;
+        musicSpeed += 0.1;
         musicSpeed = round(musicSpeed);
         music.playbackRate = musicSpeed;
         fixSongSpeed(preMusicSpeed);
+        initializeUI()
         initializeNotes();
-        songSpeedTxt.innerHTML = "Song Speed:"+musicSpeed;
+        saveToLocal()
     })
+}
+
+function initializeUI(){
+    noteSpeedTxt.innerHTML = "Note Speed:"+noteSpeed;
+    songSpeedTxt.innerHTML = "Song Speed:"+musicSpeed;
+}
+
+function saveToLocal(){
+    console.log(noteSpeed,musicSpeed)
+    localStorage['noteSpeed'] = noteSpeed;
+    localStorage['musicSpeed'] = musicSpeed;
 }
 
 window.onload = function(){
     trackContainer = document.querySelector('.track-container');
     keypress = document.querySelectorAll(".keypress");
     comboText = document.querySelector('.hit__combo');
-    document.querySelector('.btn--start').style.display = 'inline-block'
+    document.querySelector('.btn--start').style.opacity = '100%';
     fixSongSpeed(1);
     initializeNotes();
+    initializeUI();
+    saveToLocal();
     setupKeys();    
     setupStartButton();
     setupNoteMiss();
     setupSpeed(); 
     setupSpeedBtnClickListener();
-    
+    console.log(localStorage['noteSpeed'])
+    console.log(localStorage['musicSpeed'])
 }
