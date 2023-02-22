@@ -52,6 +52,7 @@ let multiplier = {
     miss:0
 }
 let music = document.querySelector('.song');
+console.log(localStorage['noteSpeed'],localStorage['musicSpeed']);
 let noteSpeed = Number(localStorage['noteSpeed']) || 2.4;
 let musicSpeed = Number(localStorage['musicSpeed']) || 1;
 music.playbackRate = musicSpeed;
@@ -159,7 +160,7 @@ function setupKeys (){
             keypress[keyIndex].style.display = 'none';
         }
 
-
+ 
     })
 }
 

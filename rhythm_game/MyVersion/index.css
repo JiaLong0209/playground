@@ -4,7 +4,7 @@
     list-style: none;
     font-family: sans-serif;
     /* overflow: hidden; */
-    transition: 0.2s;
+    transition: 0.2s; 
 }
 :root{
     --perfectPlus-color:linear-gradient(to bottom, rgb(255, 98, 0), rgb(238, 255, 0), rgb(43, 255, 0), rgb(0, 255, 255), rgb(128, 0, 255));
