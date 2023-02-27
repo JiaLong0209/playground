@@ -8,9 +8,9 @@ let QN = oneBeatTime;      //四分音符 quarterNote
 let EN = oneBeatTime / 2;  //八分音符 eighthNote
 let TN = oneBeatTime / 3;  //十二分音符 twelfthNote
 let SN = oneBeatTime / 4;  //十六分音符 sixteenthNote
-let TFN = oneBeatTime / 4; //二十四分音符 twentyFourthNote
+let TFN = oneBeatTime / 6; //二十四分音符 twentyFourthNote
 let TSN = oneBeatTime / 8; //三十二分音符 thirtySecondNote
-let SFN= oneBeatTime / 16; //六十四分音符  sixtyFourthNote
+let SFN = oneBeatTime / 16; //六十四分音符  sixtyFourthNote
 
 let d = {
     color: "rgb(255,255,255)",

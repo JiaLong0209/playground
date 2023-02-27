@@ -9,7 +9,8 @@
 // 9. Add background image, simplify code (noteKeys = [d,f,j,k])    2022/09/25 v0.81
 // 10. Update map                                                   2022/12/03 v0.82
 // 11. Add noteSpeed and musicSpeed to localStorage                 2023/02/23 v0.83
-// 12. Add perfect+ judgement                                       2023/02/27 v0.84
+// 12. Add perfect+ judgement (offset < 20ms)                       2023/02/27 v0.84
+// 13. Add songOffset button                                        2023/02/27 v0.85
 
 // 解決的Bug或值得注意的點
 // 1.已解決音符速度越快時，判定區越小的Bug
@@ -62,8 +63,7 @@ let music = document.querySelector('.song');
 console.log(localStorage['noteSpeed'],localStorage['musicSpeed']);
 let noteSpeed = Number(localStorage['noteSpeed']) || 2.4;
 let musicSpeed = Number(localStorage['musicSpeed']) || 1;
-let songOffset = 0;
-music.playbackRate = musicSpeed;
+let songOffset = Number(localStorage['songOffset']) || 0;
 let songPrepareTime = 2000;
 
 let isPlaying = false;
@@ -113,6 +113,7 @@ function setupStartButton(){
         if(!isPlaying){   //避免startBtn被點兩下，導致startTime重置。
             startTime = Date.now();
         }
+        initializeNotes();
         isPlaying = true;
         document.querySelector('.menu').style.opacity = 0;
         document.querySelectorAll('.note').forEach((note)=>{
@@ -262,6 +263,7 @@ function updateNext(index){
     song.sheet[index].next++;
 }
 function fixSongSpeed(preMusicSpeed){
+    music.playbackRate = musicSpeed;
     noteKeys.forEach(key => {
         key.notes.forEach(item => {
             item.delay-= songStartTime;
@@ -270,35 +272,6 @@ function fixSongSpeed(preMusicSpeed){
             item.delay+= songStartTime;
         });
     })
-
-    // d.notes.forEach(item => {
-    //     item.delay-= songStartTime;
-    //     item.delay*= preMusicSpeed;
-    //     item.delay/= musicSpeed; 
-    //     item.delay+= songStartTime;
-    //     // console.log(item.delay)
-    // });
-    
-    // f.notes.forEach(item => {
-    //     item.delay-= songStartTime;
-    //     item.delay*= preMusicSpeed;
-    //     item.delay/= musicSpeed;
-    //     item.delay+= songStartTime;
-    // });
-    
-    // j.notes.forEach(item => {
-    //     item.delay-= songStartTime;
-    //     item.delay*= preMusicSpeed;
-    //     item.delay/= musicSpeed;
-    //     item.delay+= songStartTime;
-    // });
-    
-    // k.notes.forEach(item => {
-    //     item.delay-= songStartTime;
-    //     item.delay*= preMusicSpeed;
-    //     item.delay/= musicSpeed;
-    //     item.delay+= songStartTime;
-    // });
 }
 
 function round(num) {
@@ -311,59 +284,78 @@ function setupSpeed(){
     songSpeedTxt.innerHTML = "Song Speed:"+musicSpeed;
 }
 
-function setupSpeedBtnClickListener(){
+function setupBtnClickListener(){
+    function initializeAll(){
+        initializeUI()
+        saveToLocal();
+    }
     noteSpeedDownBtn.addEventListener("click",()=>{
         if(noteSpeed <= -3) return;
         noteSpeed-=0.05;
         noteSpeed = round(noteSpeed);
-        initializeUI()
-        initializeNotes();
-        saveToLocal()
+        initializeAll();
     })
     noteSpeedUpBtn.addEventListener("click",()=>{
         if(noteSpeed >= 3) return;
         noteSpeed+=0.05;
         noteSpeed = round(noteSpeed);
-        
-        initializeUI()
-        initializeNotes();
-        saveToLocal()
+        initializeAll();
     })
 
     songSpeedDownBtn.addEventListener("click",()=>{
         if(musicSpeed <= 0.25) return;
         let preMusicSpeed = musicSpeed;
-        musicSpeed-=0.1;
+        musicSpeed -= 0.1;
         musicSpeed = round(musicSpeed);
-        music.playbackRate = musicSpeed;
         fixSongSpeed(preMusicSpeed);
-        initializeUI()
-        initializeNotes();
-        saveToLocal()
+        initializeAll();
     })
     songSpeedUpBtn.addEventListener("click",()=>{
         if(musicSpeed >= 5) return;
         let preMusicSpeed = musicSpeed;
         musicSpeed += 0.1;
         musicSpeed = round(musicSpeed);
-        music.playbackRate = musicSpeed;
         fixSongSpeed(preMusicSpeed);
-        initializeUI()
-        initializeNotes();
-        saveToLocal()
+        initializeAll();
+    })
+    songOffsetDownBtn.addEventListener("click",()=>{
+        let preOffset = songOffset;
+        songOffset -= 5;
+        fixOffset(preOffset);
+        initializeAll();
+    })
+    songOffsetUpBtn.addEventListener("click",()=>{
+        let preOffset = songOffset;
+        songOffset += 5;
+        fixOffset(preOffset);
+        initializeAll();
     })
 }
 
 function initializeUI(){
     noteSpeedTxt.innerHTML = "Note Speed:"+noteSpeed;
     songSpeedTxt.innerHTML = "Song Speed:"+musicSpeed;
+    songOffsetTxt.innerHTML = `Song Offset ${songOffset}ms`
 }
 
 function saveToLocal(){
     console.log(noteSpeed,musicSpeed)
     localStorage['noteSpeed'] = noteSpeed;
     localStorage['musicSpeed'] = musicSpeed;
+    localStorage['songOffset'] = songOffset;
 }
+
+function fixOffset(preOffset){
+    console.log(songOffset/1000)
+    noteKeys.forEach(key => {
+        key.notes.forEach(item => {
+            item.delay += preOffset/1000;
+            item.delay -= songOffset/1000;
+        });
+    })
+}
+
+
 
 window.onload = function(){
     trackContainer = document.querySelector('.track-container');
@@ -371,6 +363,7 @@ window.onload = function(){
     comboText = document.querySelector('.hit__combo');
     document.querySelector('.btn--start').style.opacity = '100%';
     fixSongSpeed(1);
+    fixOffset(0);
     initializeNotes();
     initializeUI();
     saveToLocal();
@@ -378,7 +371,7 @@ window.onload = function(){
     setupStartButton();
     setupNoteMiss();
     setupSpeed(); 
-    setupSpeedBtnClickListener();
+    setupBtnClickListener();
     console.log(localStorage['noteSpeed'])
     console.log(localStorage['musicSpeed'])
 }
