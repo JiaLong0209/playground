@@ -20,12 +20,11 @@ let d = {
         {duration: 3, delay: beat*3},
         {duration: 3, delay: beat*3 + EN + SN},
         {duration: 3, delay: beat*6},
-        {duration: 3, delay: beat*7 + TN},
-        {duration: 3, delay: beat*8 + EN},
-        {duration: 3, delay: beat*10},
+        {duration: 3, delay: beat*7},
+        {duration: 3, delay: beat*8},
+        {duration: 3, delay: beat*9},
         {duration: 3, delay: beat*10 + EN + SN},
         {duration: 3, delay: beat*12},
-        {duration: 3, delay: beat*12 + EN},
         {duration: 3, delay: beat*13 + EN + SN},
         {duration: 3, delay: beat*15 + EN + SN},
         {duration: 3, delay: beat*16 + EN},
@@ -37,14 +36,12 @@ let d = {
         {duration: 3, delay: beat*23 + EN + SN},
         {duration: 3, delay: beat*25},
         {duration: 3, delay: beat*26},
-        {duration: 3, delay: beat*27 + EN},
+        {duration: 3, delay: beat*27 + EN,color:'#ff0'},
         {duration: 3, delay: beat*28},
-        {duration: 3, delay: beat*28 + EN},
-        {duration: 3, delay: beat*29 + SN},
+        {duration: 3, delay: beat*29},
         {duration: 3, delay: beat*30},
 
         {duration: 3, delay: beat*36},
-        {duration: 3, delay: beat*36 + EN},
         {duration: 3, delay: beat*39},
         {duration: 3, delay: beat*40},
         {duration: 3, delay: beat*41},
@@ -57,8 +54,8 @@ let d = {
         {duration: 3, delay: beat*51 + TN},
         {duration: 3, delay: beat*52},
         {duration: 3, delay: beat*53},
-        {duration: 3, delay: beat*55 + TN},
-        {duration: 3, delay: beat*56 + EN},
+        {duration: 3, delay: beat*55},
+        {duration: 3, delay: beat*56 + EN,color: "#ff0"},
         {duration: 3, delay: beat*58},
         {duration: 3, delay: beat*58 + EN + SN},
         {duration: 3, delay: beat*60},
@@ -74,9 +71,8 @@ let f = {
     notes: [
         {duration: 3, delay: beat},
         {duration: 3, delay: beat*4},
-        {duration: 3, delay: beat*7},
-        {duration: 3, delay: beat*8},
-        {duration: 3, delay: beat*9},
+        {duration: 3, delay: beat*7 + TN},
+        {duration: 3, delay: beat*10},
         {duration: 3, delay: beat*11 + SN},
         {duration: 3, delay: beat*12},
         {duration: 3, delay: beat*13},
@@ -90,7 +86,8 @@ let f = {
         {duration: 3, delay: beat*24 + EN},
         {duration: 3, delay: beat*26},
         {duration: 3, delay: beat*27 + SN},
-        {duration: 3, delay: beat*28},
+        {duration: 3, delay: beat*28 + SN},
+        {duration: 3, delay: beat*29},
         {duration: 3, delay: beat*29 + EN + SN},
 
         
@@ -103,14 +100,13 @@ let f = {
         {duration: 3, delay: beat*42 + EN + SN},
         {duration: 3, delay: beat*44},
         {duration: 3, delay: beat*44 + EN},
-        {duration: 3, delay: beat*45 + EN + SN},
+        {duration: 3, delay: beat*45 + EN + SN,color:"#ff0"},
         {duration: 3, delay: beat*47 + EN + SN},
         {duration: 3, delay: beat*48 + EN},
         {duration: 3, delay: beat*50},
         {duration: 3, delay: beat*51 + EN + SN},
         {duration: 3, delay: beat*52 + EN},
         {duration: 3, delay: beat*54},
-        {duration: 3, delay: beat*55},
         {duration: 3, delay: beat*55 + EN + SN},
         {duration: 3, delay: beat*57},
         {duration: 3, delay: beat*58},
@@ -118,7 +114,6 @@ let f = {
         {duration: 3, delay: beat*60 + SN},
         {duration: 3, delay: beat*61},
         {duration: 3, delay: beat*62},
-
 
     ]
 };
@@ -145,12 +140,14 @@ let j = {
         {duration: 3, delay: beat*23},
         {duration: 3, delay: beat*24},
         {duration: 3, delay: beat*25 + EN},
-        {duration: 3, delay: beat*28 + SN},
-        {duration: 3, delay: beat*29},
+        {duration: 3, delay: beat*26 + EN + SN},
+        {duration: 3, delay: beat*27 + EN + SN},
+        {duration: 3, delay: beat*28 + EN, color: '#ff0'},
         {duration: 3, delay: beat*30},
 
         {duration: 3, delay: beat*34},
         {duration: 3, delay: beat*35 + TN},
+        {duration: 3, delay: beat*36 + EN, color: '#ff0'},
         {duration: 3, delay: beat*38},
         {duration: 3, delay: beat*39},
         {duration: 3, delay: beat*40},
@@ -163,7 +160,7 @@ let j = {
         {duration: 3, delay: beat*50},
         {duration: 3, delay: beat*51},
         {duration: 3, delay: beat*53},
-        {duration: 3, delay: beat*55},
+        {duration: 3, delay: beat*55, color:'#ff0'},
         {duration: 3, delay: beat*56},
         {duration: 3, delay: beat*57 + EN},
         {duration: 3, delay: beat*59 + SN},
@@ -181,8 +178,10 @@ let k = {
         {duration: 3, delay: beat*4},
         {duration: 3, delay: beat*5},
         {duration: 3, delay: beat*7 + EN + SN},
+        {duration: 3, delay: beat*8 + EN},
         {duration: 3, delay: beat*10},
         {duration: 3, delay: beat*11 + EN + SN},
+        {duration: 3, delay: beat*12 + EN},
         {duration: 3, delay: beat*14},
         {duration: 3, delay: beat*16 + SN},
         {duration: 3, delay: beat*17 + SN},
@@ -191,10 +190,9 @@ let k = {
         {duration: 3, delay: beat*22},
         {duration: 3, delay: beat*24},
         {duration: 3, delay: beat*25},
-        {duration: 3, delay: beat*26 + EN + SN},
-        {duration: 3, delay: beat*27 + EN + SN},
+        {duration: 3, delay: beat*28},
         {duration: 3, delay: beat*28 + EN},
-        {duration: 3, delay: beat*29},
+        {duration: 3, delay: beat*29 + SN,},
         {duration: 3, delay: beat*30},
 
         {duration: 3, delay: beat*35},
@@ -209,6 +207,7 @@ let k = {
         {duration: 3, delay: beat*51}, 
         {duration: 3, delay: beat*52},
         {duration: 3, delay: beat*54},
+        {duration: 3, delay: beat*55 + TN},
         {duration: 3, delay: beat*56},
         {duration: 3, delay: beat*57},
         {duration: 3, delay: beat*59 + EN + SN},
@@ -232,7 +231,9 @@ let song = {
     duration: 56,
     sheet: [d, f, j, k]
 };
-
+song.sheet.forEach( i =>{
+    console.log(i.notes.length)
+})
 // d.notes.forEach(item => {
 //     item.delay+= songStartTime;
 // });

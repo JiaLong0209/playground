@@ -10,7 +10,7 @@
 // 10. Update map                                                   2022/12/03 v0.82
 // 11. Add noteSpeed and musicSpeed to localStorage                 2023/02/23 v0.83
 // 12. Add perfect+ judgement (offset < 20ms)                       2023/02/27 v0.84
-// 13. Add songOffset button                                        2023/02/27 v0.85
+// 13. Add songOffset and noteOffset button                         2023/02/27 v0.85
 
 // 解決的Bug或值得注意的點
 // 1.已解決音符速度越快時，判定區越小的Bug
@@ -31,6 +31,10 @@ const songSpeedTxt = document.querySelector('.songSpeedTxt');
 const songOffsetDownBtn = document.querySelector('.btn--songOffsetDown');
 const songOffsetUpBtn = document.querySelector('.btn--songOffsetUp');
 const songOffsetTxt = document.querySelector('.songOffsetTxt')
+
+const noteOffsetDownBtn = document.querySelector('.btn--noteOffsetDown');
+const noteOffsetUpBtn = document.querySelector('.btn--noteOffsetUp');
+const noteOffsetTxt = document.querySelector('.noteOffsetTxt')
 
 const background = document.querySelector(".background");
 
@@ -64,6 +68,7 @@ console.log(localStorage['noteSpeed'],localStorage['musicSpeed']);
 let noteSpeed = Number(localStorage['noteSpeed']) || 2.4;
 let musicSpeed = Number(localStorage['musicSpeed']) || 1;
 let songOffset = Number(localStorage['songOffset']) || 0;
+let noteOffset = Number(localStorage['noteOffset']) || 0;
 let songPrepareTime = 2000;
 
 let isPlaying = false;
@@ -93,7 +98,7 @@ function initializeNotes (){
             noteElement = document.createElement('div');
             noteElement.classList.add('note');
             noteElement.classList.add('note--' + index);
-            noteElement.style.backgroundColor = key.color;
+            noteElement.style.backgroundColor = note.color ? note.color : "#fff";
             noteElement.style.animationName = animation; //即為'moveDown'
             noteElement.style.animationTimingFunction = 'linear';
             noteElement.style.animationDuration = note.duration - noteSpeed + 's';
@@ -121,8 +126,13 @@ function setupStartButton(){
         })
         background.style.filter = "blur(1.4px) brightness(0.5)";
         background.style.transform = "scale(1.3)";
+        let beats = 1;
         setTimeout(() => {
             music.play();
+            console.log(0)
+            setInterval(()=>{
+                console.log(beats++)
+            },beat*1000/musicSpeed)
         }, songPrepareTime);
     })
 } 
@@ -183,7 +193,7 @@ function judge(index){
     let timeInSecond = (Date.now() - startTime) / 1000; 
     let nextNoteIndex = song.sheet[index].next; //是指sheet[index]裡面的next，並不是函式next();
     let nextNote = song.sheet[index].notes[nextNoteIndex];
-    let perfectTime = nextNote.duration + nextNote.delay;
+    let perfectTime = nextNote.duration + nextNote.delay + noteOffset/1000;
     let accuracy = timeInSecond - perfectTime;
     let hitJudgement;
     console.log(accuracy)
@@ -262,7 +272,7 @@ function removeNoteFromTrack(parent, child){
 function updateNext(index){
     song.sheet[index].next++;
 }
-function fixSongSpeed(preMusicSpeed){
+function fixSongSpeed(preMusicSpeed = 1){
     music.playbackRate = musicSpeed;
     noteKeys.forEach(key => {
         key.notes.forEach(item => {
@@ -330,23 +340,31 @@ function setupBtnClickListener(){
         fixOffset(preOffset);
         initializeAll();
     })
+    noteOffsetDownBtn.addEventListener("click",()=>{
+        noteOffset -= 5;
+        initializeAll();
+    })
+    noteOffsetUpBtn.addEventListener("click",()=>{
+        noteOffset += 5;
+        initializeAll();
+    })
 }
 
 function initializeUI(){
     noteSpeedTxt.innerHTML = "Note Speed:"+noteSpeed;
     songSpeedTxt.innerHTML = "Song Speed:"+musicSpeed;
-    songOffsetTxt.innerHTML = `Song Offset ${songOffset}ms`
+    noteOffsetTxt.innerHTML = `Note Offset:${noteOffset}ms`
+    songOffsetTxt.innerHTML = `Song Offset:${songOffset}ms`
 }
 
 function saveToLocal(){
-    console.log(noteSpeed,musicSpeed)
     localStorage['noteSpeed'] = noteSpeed;
     localStorage['musicSpeed'] = musicSpeed;
+    localStorage['noteOffset'] = noteOffset;
     localStorage['songOffset'] = songOffset;
 }
 
-function fixOffset(preOffset){
-    console.log(songOffset/1000)
+function fixOffset(preOffset = 0){
     noteKeys.forEach(key => {
         key.notes.forEach(item => {
             item.delay += preOffset/1000;
@@ -362,8 +380,8 @@ window.onload = function(){
     keypress = document.querySelectorAll(".keypress");
     comboText = document.querySelector('.hit__combo');
     document.querySelector('.btn--start').style.opacity = '100%';
-    fixSongSpeed(1);
-    fixOffset(0);
+    fixSongSpeed();
+    fixOffset();
     initializeNotes();
     initializeUI();
     saveToLocal();
@@ -372,6 +390,7 @@ window.onload = function(){
     setupNoteMiss();
     setupSpeed(); 
     setupBtnClickListener();
-    console.log(localStorage['noteSpeed'])
-    console.log(localStorage['musicSpeed'])
+    console.log(localStorage['noteSpeed'],localStorage['musicSpeed'])
+    console.log(localStorage['noteOffset'],localStorage['songOffset'])
+    let beats = 0;
 }
