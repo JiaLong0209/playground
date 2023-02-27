@@ -392,5 +392,4 @@ window.onload = function(){
     setupBtnClickListener();
     console.log(localStorage['noteSpeed'],localStorage['musicSpeed'])
     console.log(localStorage['noteOffset'],localStorage['songOffset'])
-    let beats = 0;
 }

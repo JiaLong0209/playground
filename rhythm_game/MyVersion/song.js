@@ -160,7 +160,7 @@ let j = {
         {duration: 3, delay: beat*50},
         {duration: 3, delay: beat*51},
         {duration: 3, delay: beat*53},
-        {duration: 3, delay: beat*55, color:'#ff0'},
+        {duration: 3, delay: beat*55},
         {duration: 3, delay: beat*56},
         {duration: 3, delay: beat*57 + EN},
         {duration: 3, delay: beat*59 + SN},
