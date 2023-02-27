@@ -9,6 +9,7 @@
 // 9. Add background image, simplify code (noteKeys = [d,f,j,k])    2022/09/25 v0.81
 // 10. Update map                                                   2022/12/03 v0.82
 // 11. Add noteSpeed and musicSpeed to localStorage                 2023/02/23 v0.83
+// 12. Add perfect+ judgement                                       2023/02/27 v0.84
 
 // 解決的Bug或值得注意的點
 // 1.已解決音符速度越快時，判定區越小的Bug
@@ -26,19 +27,24 @@ const songSpeedDownBtn = document.querySelector('.btn--songSpeedDown');
 const songSpeedUpBtn = document.querySelector('.btn--songSpeedUp');
 const songSpeedTxt = document.querySelector('.songSpeedTxt');
 
+const songOffsetDownBtn = document.querySelector('.btn--songOffsetDown');
+const songOffsetUpBtn = document.querySelector('.btn--songOffsetUp');
+const songOffsetTxt = document.querySelector('.songOffsetTxt')
+
 const background = document.querySelector(".background");
 
 let keyCharacters = ['d','f','j','k']
 
 
 let isHolding = {
-    d: false,
-    f: false, 
-    j: false,
-    k: false
+    'd': false,
+    'f': false, 
+    'j': false,
+    'k': false
 }
 
 let hits = {
+    perfectPlus: 0,
     perfect: 0, 
     good: 0,
     bad: 0,
@@ -46,7 +52,8 @@ let hits = {
 };
 
 let multiplier = {
-    perfect:1,
+    perfectPlus:1,
+    perfect:0.9,
     good:0.6,
     bad:0.3,
     miss:0
@@ -55,6 +62,7 @@ let music = document.querySelector('.song');
 console.log(localStorage['noteSpeed'],localStorage['musicSpeed']);
 let noteSpeed = Number(localStorage['noteSpeed']) || 2.4;
 let musicSpeed = Number(localStorage['musicSpeed']) || 1;
+let songOffset = 0;
 music.playbackRate = musicSpeed;
 let songPrepareTime = 2000;
 
@@ -68,7 +76,6 @@ let trackContainer;
 let tracks;
 let comboText;
 let keypress;
-
 
 
 function initializeNotes (){
@@ -140,17 +147,13 @@ function setupNoteMiss(){
 function setupKeys (){
     document.addEventListener('keydown',(event)=>{ //當手壓下鍵盤的瞬間
         let keyIndex = getKeyIndex(event.key);
-        if(Object.keys(isHolding).indexOf(event.key) !== -1 && !isHolding[event.key]){  //當壓下的鍵在isHolding裡的index不為0 以及 該鍵isHolding不為true時
+        if(Object.keys(isHolding)[keyIndex] && !isHolding[event.key]){  //當壓下的鍵在isHolding裡的index不為0 以及 該鍵isHolding不為true時
             isHolding[event.key] = true;
             keypress[keyIndex].style.display = 'block';
-            // console.log(Object.keys(isHolding))
-
             if(isPlaying && tracks[keyIndex].firstChild){   //當遊戲開始以及該軌道有note時
                 judge(keyIndex);
             }
-            
         }
-
     })
 
     document.addEventListener("keyup",(event)=>{ //當手放開鍵盤時
@@ -159,8 +162,6 @@ function setupKeys (){
             isHolding[event.key] = false;
             keypress[keyIndex].style.display = 'none';
         }
-
- 
     })
 }
 
@@ -185,7 +186,7 @@ function judge(index){
     let accuracy = timeInSecond - perfectTime;
     let hitJudgement;
     console.log(accuracy)
-    if(Math.abs(accuracy) > 0.17){ 
+    if(Math.abs(accuracy) > 0.160){ 
         return;
     }
     console.log(getHitJudgement(accuracy));
@@ -204,24 +205,25 @@ function judge(index){
 
 function getHitJudgement(accuracy){
     accuracy = Math.abs(accuracy);
-    if(accuracy < 0.040){ //40ms
+    if(accuracy < 0.020){
+        return 'perfectPlus'
+    }else if(accuracy < 0.040){ 
         return 'perfect';
-    }else if(accuracy < 0.80){ //100ms
+    }else if(accuracy < 0.080){ 
         return 'good';
-    }else if(accuracy < 0.120){ //150ms 
+    }else if(accuracy < 0.120){ 
         return 'bad';
-    }
-    else{
+    }else{
         return 'miss';
     }
 }
-
+// displayAccuracy('perfectPlus')
 function displayAccuracy(accuracy){
     let accuracyText = document.createElement('div');
     document.querySelector('.hit__accuracy').remove();
     accuracyText.classList.add('hit__accuracy');
     accuracyText.classList.add('hit__accuracy--' + accuracy);
-    accuracyText.innerHTML = accuracy;
+    accuracyText.innerHTML = accuracy === 'perfectPlus' ? 'perfect+' : accuracy;
     document.querySelector('.hit').appendChild(accuracyText);
 }
 
