@@ -10,7 +10,7 @@
 // 10. Update map                                                   2022/12/03 v0.82
 // 11. Add noteSpeed and musicSpeed to localStorage                 2023/02/23 v0.83
 // 12. Add perfect+ judgement (offset < 20ms)                       2023/02/27 v0.84
-// 13. Add songOffset and noteOffset button                         2023/02/27 v0.85
+// 13. Add songOffset and noteOffset button                         2023/02/27 v0.90
 
 // 解決的Bug或值得注意的點
 // 1.已解決音符速度越快時，判定區越小的Bug
