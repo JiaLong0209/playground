@@ -11,6 +11,7 @@
 // 11. Add noteSpeed and musicSpeed to localStorage                 2023/02/23 v0.83
 // 12. Add perfect+ judgement (offset < 20ms)                       2023/02/27 v0.84
 // 13. Add songOffset and noteOffset button                         2023/02/27 v0.90
+// 14. Add favicon and change the style of perfect+                 2023/02/28 v0.91
 
 // 解決的Bug或值得注意的點
 // 1.已解決音符速度越快時，判定區越小的Bug
@@ -112,29 +113,31 @@ function initializeNotes (){
     })
 };
 
+function startGame(){
+    if(!isPlaying){   //避免startBtn被點兩下，導致startTime重置。
+        startTime = Date.now();
+    }
+    initializeNotes();
+    isPlaying = true;
+    document.querySelector('.menu').style.opacity = 0;
+    document.querySelectorAll('.note').forEach((note)=>{
+        note.style.animationPlayState = 'running';
+    })
+    background.style.filter = "blur(1.4px) brightness(0.5)";
+    background.style.transform = "scale(1.3)";
+    let beats = 1;
+    setTimeout(() => {
+        music.play();
+        console.log(0)
+        setInterval(()=>{
+            console.log(beats++)
+        },beat*1000/musicSpeed)
+    }, songPrepareTime);
+}
+
 function setupStartButton(){
     let startButton = document.querySelector('.btn--start');
-    startButton.addEventListener('click',()=>{
-        if(!isPlaying){   //避免startBtn被點兩下，導致startTime重置。
-            startTime = Date.now();
-        }
-        initializeNotes();
-        isPlaying = true;
-        document.querySelector('.menu').style.opacity = 0;
-        document.querySelectorAll('.note').forEach((note)=>{
-            note.style.animationPlayState = 'running';
-        })
-        background.style.filter = "blur(1.4px) brightness(0.5)";
-        background.style.transform = "scale(1.3)";
-        let beats = 1;
-        setTimeout(() => {
-            music.play();
-            console.log(0)
-            setInterval(()=>{
-                console.log(beats++)
-            },beat*1000/musicSpeed)
-        }, songPrepareTime);
-    })
+    startButton.addEventListener('click',()=>startGame())
 } 
 
 function setupNoteMiss(){
