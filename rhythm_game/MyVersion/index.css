@@ -212,7 +212,7 @@
     background: var(--hit-color);
     transform: translate(0%,-50%);
     opacity: 0;
-    /* animation: scaleFade .5s; */
+    animation: scaleFade .5s;
 }
 
 .menu{
