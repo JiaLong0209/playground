@@ -23,7 +23,7 @@ class Canva {
         this.c.lineCap = "round";
         this.c.lineWidth = 3;
         this.c.lineTo(x,y)
-        this.c.strokeStyle = "#0000000f"
+        this.c.strokeStyle = "#00000016"
         this.c.stroke();
         // this.c.beginPath();
         // this.c.moveTo(x,y);
