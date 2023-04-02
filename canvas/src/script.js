@@ -4,7 +4,7 @@ const canvas = document.querySelector('#canvas');
 const c = canvas.getContext('2d');
 
 canvas.width = window.innerWidth;
-canvas.height = window.innerHeight - 10;
+canvas.height = window.innerHeight - 1;
 
 let canva = new Canva(canvas);
 
