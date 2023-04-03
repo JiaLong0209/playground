@@ -13,10 +13,6 @@ class Canva {
     }
     startDrawing(e){
         this.painting = true;
-        // this.x = e.clientX - rect.left;
-        // this.y = e.clientY - rect.top;
-        // this.c.beginPath();
-        // this.moveTo(this.x,this.y)
         this.draw(e)
     }
     endDrawing(){
@@ -47,7 +43,7 @@ class Canva {
             this.c.lineWidth = this.radius;
             this.c.lineTo(currentX, currentY);
             // this.c.quadraticCurveTo(this.x,this.y,controlX,controlY)
-            this.c.strokeStyle = "#00000022"
+            this.c.strokeStyle = "#00334f22"
             this.c.stroke();
         }
         this.x = currentX;
