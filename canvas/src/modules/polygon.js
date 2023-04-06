@@ -7,8 +7,9 @@ class Polygon {
         this.corner = 3;
         this.text = true;
         this.lineWidth = this.polygonWidth/100;
-        this.mode = 0;
+        this.mode = 1;
     }
+
     draw(){
         switch(this.mode){
             case 0:
@@ -17,6 +18,11 @@ class Polygon {
             case 1:
                 this.drawStar();
             break;
+            case 2:
+                this.drawRegularPoly();
+                this.drawStar();
+            break;
+
         }
     }
     drawText(){
@@ -59,36 +65,62 @@ class Polygon {
         this.c.moveTo(this.polygonWidth/2, 0);
         this.c.lineTo(100,0);
         this.c.stroke();
+        this.c.restore();
+
     }
 
     clear(){
         this.c.clearRect(0,0, this.canvas.width, this.canvas.height);
     }
 
+    init(){
+        this.clear();
+        this.draw();
+    }
+
+    changeMode(mode){
+        this.mode = Number(mode)-1;
+    }
+
     changePoly(e){
+        console.log(e.ctrlKey, e.shiftKey,e.key);
         switch(e.key.toLowerCase()){
             case "arrowleft":
             case "arrowdown":
                 this.corner -= 1;
-                this.clear();
-                this.draw();
-            break;
+                this.init();
+                break;
             
             case "arrowright":
             case "arrowup":
                 this.corner += 1;
-                this.clear();
-                this.draw();
-            break;
+                this.init();
+                break;
             case "escape":
                 this.text = !this.text;
-                this.clear();
-                this.draw();
+                this.init();
+                break;
+            case "1":
+                this.changeMode(e.key.toLowerCase());
+                console.log
+                break;
+            case "2":
+                this.changeMode(e.key.toLowerCase());
+                break;
+            case "3":
+                this.changeMode(e.key.toLowerCase());
+                break;
         }
     }
 
     setupPolygon(){
         document.addEventListener("keydown", this.changePoly.bind(this));
+        // window.addEventListener("beforeunload",(e)=>{
+        //     if(!this.shouldClose){
+        //         e.preventDefault();
+        //         e.returnValue = "Console.log";
+        //     }
+        // })
         this.draw();
 
     }

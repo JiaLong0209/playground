@@ -23,8 +23,20 @@ switch(page){
         break;
 }
 
+function savaImage(e){
+    let link = document.createElement('a');
+    link.download = 'canvasImage.png';
+    link.href = canvas.toDataURL("image/png").replace(/^data:image\/[^;]/, 'data:application/octet-stream');
+    link.click();
+    e.preventDefault();
+    console.log("Save!");
+}
 
-
+function keydown(e){
+    if(e.ctrlKey && e.key.toLowerCase() == "s" && e.shiftKey){
+        savaImage(e);
+    }
+}
 
 function penGenerator(){
     let pen = new Pen(c, canvas.width, canvas.height);
@@ -44,3 +56,8 @@ function polygonGenerator(){
     let polygon = new Polygon(canvas);
     polygon.setupPolygon();
 }
+
+
+document.addEventListener("keydown", keydown);
+        
+

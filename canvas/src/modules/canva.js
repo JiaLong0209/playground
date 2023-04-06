@@ -65,13 +65,12 @@ class Canva {
     }
     setupCanva(){
         document.addEventListener("keydown", (e) => {
-            console.log(e)
             switch(e.key.toLowerCase()){
                 case "b": 
                     this.mode = "brush";
                     break;  
                 case "e":
-                    this.mode = "eraser";
+                    this.mode = this.mode == "eraser" ? "brush" : "eraser";
                     break;
                 case "c":
                     this.c.clearRect(0,0, canvas.width, canvas.height);
