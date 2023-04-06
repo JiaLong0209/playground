@@ -7,7 +7,7 @@ class Polygon {
         this.corner = 3;
         this.text = true;
         this.lineWidth = this.polygonWidth/100;
-        this.mode = 1;
+        this.mode = 0;
     }
 
     draw(){
@@ -96,7 +96,7 @@ class Polygon {
                 this.corner += 1;
                 this.init();
                 break;
-            case "escape":
+            case "d":
                 this.text = !this.text;
                 this.init();
                 break;

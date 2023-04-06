@@ -10,6 +10,7 @@ class Canva {
         this.radius = 3;
         this.mode = "brush";
         this.cursorHidden = false;
+        this.color = "#00334f22"
     }
     startDrawing(e){
         this.painting = true;
