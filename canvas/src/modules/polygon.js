@@ -7,7 +7,7 @@ class Polygon {
         this.corner = 3;
         this.text = true;
         this.lineWidth = this.polygonWidth/100;
-        this.mode = 0;
+        this.mode = 1;
     }
 
     draw(){

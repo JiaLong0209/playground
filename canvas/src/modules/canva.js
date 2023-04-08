@@ -9,12 +9,12 @@ class Canva {
         this.y = 0;
         this.radius = 3;
         this.mode = "brush";
-        this.cursorHidden = false;
         this.color = "#00334f22"
     }
     startDrawing(e){
         this.painting = true;
         this.draw(e)
+        console.log("mouseup")
     }
     endDrawing(){
         this.painting = false;
@@ -35,10 +35,8 @@ class Canva {
             this.c.globalCompositeOperation = 'destination-out';
             this.c.strokeStyle = "#000f"
             this.c.stroke();
-            // this.c.fillStyle = "blue";
-            // this.c.arc(currentX, currentY, eraserSize, 0, Math.PI * 2);
             this.c.restore();
-            // this.c.fill();
+
         }else if(this.mode == "brush"){
             this.c.lineCap = "round";
             this.c.lineWidth = this.radius;
@@ -76,11 +74,6 @@ class Canva {
                 case "c":
                     this.c.clearRect(0,0, canvas.width, canvas.height);
                     break;
-                case "escape":
-                    this.canvas.style.cursor = this.cursorHidden ? "auto" : "none";
-                    this.cursorHidden = !this.cursorHidden;
-                    break;
-                    
             }
         })
         this.canvas.addEventListener("mousedown",this.startDrawing.bind(this));

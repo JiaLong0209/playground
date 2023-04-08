@@ -1,0 +1,37 @@
+Date : 2023-04-06 10:18:37
+Directory : /home/jialong/Programming/HTML5/playground/canvas
+Total : 7 files,  283 codes, 17 comments, 27 blanks, all 327 lines
+
+Languages
++------------+------------+------------+------------+------------+------------+
+| language   | files      | code       | comment    | blank      | total      |
++------------+------------+------------+------------+------------+------------+
+| JavaScript |          5 |        246 |         15 |         24 |        285 |
+| CSS        |          1 |         21 |          1 |          2 |         24 |
+| HTML       |          1 |         16 |          1 |          1 |         18 |
++------------+------------+------------+------------+------------+------------+
+
+Directories
++--------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                     | files      | code       | comment    | blank      | total      |
++--------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                        |          7 |        283 |         17 |         27 |        327 |
+| . (Files)                                                                |          1 |         16 |          1 |          1 |         18 |
+| src                                                                      |          6 |        267 |         16 |         26 |        309 |
+| src (Files)                                                              |          2 |         58 |          1 |         11 |         70 |
+| src/modules                                                              |          4 |        209 |         15 |         15 |        239 |
++--------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++--------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| filename                                                                 | language   | code       | comment    | blank      | total      |
++--------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| /home/jialong/Programming/HTML5/playground/canvas/index.html             | HTML       |         16 |          1 |          1 |         18 |
+| /home/jialong/Programming/HTML5/playground/canvas/src/main.js            | JavaScript |         37 |          0 |          9 |         46 |
+| /home/jialong/Programming/HTML5/playground/canvas/src/modules/canva.js   | JavaScript |         76 |         13 |          3 |         92 |
+| /home/jialong/Programming/HTML5/playground/canvas/src/modules/module.js  | JavaScript |          4 |          0 |          1 |          5 |
+| /home/jialong/Programming/HTML5/playground/canvas/src/modules/pen.js     | JavaScript |         41 |          2 |          3 |         46 |
+| /home/jialong/Programming/HTML5/playground/canvas/src/modules/polygon.js | JavaScript |         88 |          0 |          8 |         96 |
+| /home/jialong/Programming/HTML5/playground/canvas/src/style.css          | CSS        |         21 |          1 |          2 |         24 |
+| Total                                                                    |            |        283 |         17 |         27 |        327 |
++--------------------------------------------------------------------------+------------+------------+------------+------------+------------+

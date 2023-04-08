@@ -1,0 +1,9 @@
+"filename", "language", "HTML", "CSS", "JavaScript", "comment", "blank", "total"
+"/home/jialong/Programming/HTML5/playground/canvas/index.html", "HTML", 16, 0, 0, 1, 1, 18
+"/home/jialong/Programming/HTML5/playground/canvas/src/main.js", "JavaScript", 0, 0, 37, 0, 9, 46
+"/home/jialong/Programming/HTML5/playground/canvas/src/modules/canva.js", "JavaScript", 0, 0, 76, 13, 3, 92
+"/home/jialong/Programming/HTML5/playground/canvas/src/modules/module.js", "JavaScript", 0, 0, 4, 0, 1, 5
+"/home/jialong/Programming/HTML5/playground/canvas/src/modules/pen.js", "JavaScript", 0, 0, 41, 2, 3, 46
+"/home/jialong/Programming/HTML5/playground/canvas/src/modules/polygon.js", "JavaScript", 0, 0, 88, 0, 8, 96
+"/home/jialong/Programming/HTML5/playground/canvas/src/style.css", "CSS", 0, 21, 0, 1, 2, 24
+"Total", "-", 16, 21, 246, 17, 27, 327

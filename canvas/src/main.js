@@ -1,26 +1,42 @@
-import {Pen, Canva, Polygon} from "./modules/module.js";
+import {Pen, Canva, Polygon, Crash} from "./modules/module.js";
 
 const canvas = document.querySelector('#canvas');
 const c = canvas.getContext('2d');
 
 canvas.width = window.innerWidth;
-canvas.height = window.innerHeight - 1;
-let page = 10;
+canvas.height = window.innerHeight;
+let cursorHidden = false;
+let page = 11;
 
-switch(page){
-    case 1:
-        penGenerator();
-        break;
-    case 2:
-        canvaGenerator();
-        break;
-    case 3:
-        polygonGenerator();
-        break;
-    case 10:
-        polygonGenerator();
-        canvaGenerator();
-        break;
+let pages = {
+    pen: new Pen(c, canvas.width, canvas.height),
+    canva: new Canva(canvas),
+    polygon: new Polygon(canvas),
+    crash: new Crash(canvas)
+}
+
+function drawPage(page){
+    switch(page){
+        case 1:
+            penGenerator();
+            break;
+        case 2:
+            canvaGenerator();
+            break;
+        case 3:
+            polygonGenerator();
+            break;
+        case 4:
+            crashGenerator();
+            break;
+        case 10:
+            polygonGenerator();
+            canvaGenerator();
+            break;
+        case 11:
+            canvaGenerator();
+            crashGenerator();
+    }
 }
 
 function savaImage(filename = "canvaImage.png"){
@@ -35,28 +51,42 @@ function keydown(e){
     if(e.ctrlKey && e.key.toLowerCase() == "s" && e.shiftKey){
         savaImage();
     }
+    switch(e.key.toLowerCase()){
+        case "escape":
+            canvas.style.cursor = cursorHidden ? "auto" : "none";
+            cursorHidden = !cursorHidden;
+            break;
+    }
 }
 
 function penGenerator(){
-    let pen = new Pen(c, canvas.width, canvas.height);
     function animation(){
-        pen.update();
+        pages.pen.update();
         window.requestAnimationFrame(animation);
     }
     animation();
 }
 
 function canvaGenerator(){
-    let canva = new Canva(canvas);
-    canva.setupCanva();
+    pages.canva.setupCanva();
 }
 
 function polygonGenerator(){
-    let polygon = new Polygon(canvas);
-    polygon.setupPolygon();
+    pages.polygon.setupPolygon();
+}
+
+function crashGenerator(){
+    pages.crash.setupCrash();
 }
 
 
+function resize(){
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    drawPage(page);
+}
+
 document.addEventListener("keydown", keydown);
-        
+window.addEventListener("resize", resize)
+drawPage(page);
 
