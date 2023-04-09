@@ -6,7 +6,7 @@ const c = canvas.getContext('2d');
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 let cursorHidden = false;
-let page = 11;
+let page = 4;
 
 let pages = {
     pen: new Pen(c, canvas.width, canvas.height),
