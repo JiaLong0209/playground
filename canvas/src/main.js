@@ -1,4 +1,4 @@
-import {Pen, Canva, Polygon, Crash} from "./modules/module.js";
+import {Pen, Canva, Polygon, Crash, Fractal} from "./modules/module.js";
 
 const canvas = document.querySelector('#canvas');
 const c = canvas.getContext('2d');
@@ -28,6 +28,9 @@ function drawPage(page){
             break;
         case 4:
             crashGenerator();
+            break;
+        case 5:
+            fractalGenerator();
             break;
         case 10:
             polygonGenerator();
@@ -60,25 +63,33 @@ function keydown(e){
 }
 
 function penGenerator(){
+    let pen = new Pen(c, canvas.width, canvas.height)
     function animation(){
-        pages.pen.update();
+        pen.update();
         window.requestAnimationFrame(animation);
     }
     animation();
 }
 
 function canvaGenerator(){
-    pages.canva.setupCanva();
+    let canva = new Canva(canvas)
+    canva.setupCanva();
 }
 
 function polygonGenerator(){
-    pages.polygon.setupPolygon();
+    let polygon = new Polygon(canvas)
+    polygon.setupPolygon();
 }
 
 function crashGenerator(){
-    pages.crash.setupCrash();
-}
+    let crash = new Crash(canvas)
+    crash.setupCrash();
+} 
 
+function fractalGenerator(){
+    let fractal = new Fractal(canvas);
+    fractal.setupFractal();
+}
 
 function resize(){
     canvas.width = window.innerWidth;

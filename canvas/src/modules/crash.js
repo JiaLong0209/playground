@@ -9,14 +9,17 @@ class Crash {
         this.x = undefined;
         this.y = undefined;
         this.particles = [];
-        this.particleAmount = 2;
+        this.particleAmount = 3;
         this.particleColor = {
             hue: 0,
             saturation: 100,
             lightness: 50
         }
-        this.lineDis = 100;
-        // this.hue = 0;
+        this.particleConnectCount = 3;
+        this.particleConnectMode = 1;
+        this.lineDis = 80;
+        this.isSetup = false;
+        this.isGragient = false;
     }
     drawCircle(){
         this.c.save();
@@ -25,10 +28,10 @@ class Crash {
         this.c.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
         this.c.fill();
         this.c.restore();
-    }
+    }v
     animate(){
         this.clear();
-        this.drawCircle();
+        // this.drawCircle();
         this.handlePariticles();
         requestAnimationFrame(this.animate.bind(this));
         this.changePariticleColor();
@@ -53,10 +56,7 @@ class Crash {
             this.spawnParticles(e);
         })
         this.animate();
-        console.log(this.particles)
     }
-
-
 
     spawnParticles(e){
         this.position(e);
@@ -65,27 +65,44 @@ class Crash {
         }
     }
 
+    drawLine(x,y,dx,dy,color,width){
+        this.c.save();
+        this.c.strokeStyle = color;
+        this.c.beginPath();
+        this.c.lineWidth = width;
+        this.c.moveTo(x, y);
+        this.c.lineTo(dx, dy);
+        this.c.stroke();
+        this.c.closePath();
+        this.c.restore();
+    }
+
     handlePariticles(){
         this.particles.forEach( (i,index) => {
             i.update();
             i.draw();
+            let items = [];
             for(let j = index + 1 ; j < this.particles.length; j++){
                 let dx = i.x - this.particles[j].x;
                 let dy = i.y - this.particles[j].y;
                 let dis = Math.sqrt(dx * dx + dy * dy);
-                if(dis < this.lineDis){
-                    this.c.save();
-                    this.c.strokeStyle = i.color;
-                    this.c.beginPath();
-                    this.c.lineWidth = 0.5;
-                    this.c.moveTo(i.x, i.y);
-                    this.c.lineTo(this.particles[j].x, this.particles[j].y);
-                    this.c.stroke();
-                    this.c.closePath();
-                    this.c.restore();
+                if(dis < this.lineDis && this.particleConnectMode == 0){
+                    this.drawLine(i.x,i.y,this.particles[j].x, this.particles[j].y,i.color,1);
+                }
+                items.push([dis, this.particles[j]])
+            }
+            items = items.sort((a,b) => a[0] - b[0])
+            // console.log(items)
+            if(this.particleConnectMode == 1){
+                for(let j = 0; j < this.particleConnectCount; j++){
+                    if(items[j]){
+                        this.drawLine(i.x, i.y, items[j][1].x, items[j][1].y, i.color, 1)
+                    }
+    
                 }
             }
-            
+                
+                // console.log(items[0][1])
             if(i.size <= 0.2 ||
                i.x - i.size > this.width || 
                i.x + i.size < 0 || 
@@ -115,7 +132,7 @@ class Particle{
         this.y = y;
         // this.x = Math.random() * canvas.width;
         // this.y = Math.random() * canvas.height;
-        this.baseSize = 10;
+        this.baseSize = 1;
         this.baseSpeed = 4;
         this.size = Math.random() * this.baseSize + 1;
         this.speed = {
@@ -127,9 +144,10 @@ class Particle{
     update(){
         this.x += this.speed.x;
         this.y += this.speed.y;
+        
         this.speed.x *= 0.99;
         this.speed.y *= 0.99;
-        if(this.size > 0.2) this.size -= 0.1;
+        if(this.size > 0.2) this.size -= 0.02;
     }
     draw(){
         this.c.save();
