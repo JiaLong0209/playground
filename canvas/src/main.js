@@ -6,7 +6,7 @@ const c = canvas.getContext('2d');
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 let cursorHidden = false;
-let page = 4;
+let page = 5;
 
 let pages = {
     pen: new Pen(c, canvas.width, canvas.height),
@@ -14,6 +14,7 @@ let pages = {
     polygon: new Polygon(canvas),
     crash: new Crash(canvas)
 }
+
 
 function drawPage(page){
     switch(page){
@@ -38,6 +39,9 @@ function drawPage(page){
             break;
         case 11:
             canvaGenerator();
+            crashGenerator();
+        case 12:
+            fractalGenerator();
             crashGenerator();
     }
 }

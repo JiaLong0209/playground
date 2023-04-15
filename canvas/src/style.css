@@ -23,3 +23,13 @@ h1{
     cursor:auto;
     background-color: #222;
 }
+
+#controls{
+    position: absolute;
+    padding: 10px;
+    border: 2px solid white;
+    left: 20px;
+    top: 20px;
+    width: 250px;
+    background: #fff2;
+}
