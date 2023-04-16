@@ -30,6 +30,17 @@ h1{
     border: 2px solid white;
     left: 20px;
     top: 20px;
-    width: 250px;
+    width: 150px;
     background: #fff2;
+}
+
+button{
+    padding: 5px 10px;
+    width: 125px;
+    font-size: 10px;
+}
+
+label, input{
+    color: white;
+    font-size: 13px;
 }
