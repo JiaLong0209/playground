@@ -35,7 +35,7 @@ class Fractal {
         this.color = `hsl(${Math.random() * 360},100%,50%)`
         this.isShadow = true;
         this.isHiddenUI = false;
-        this.mode = 1;
+        this.mode = 0;
     }
 
     spread(angle, i) {
