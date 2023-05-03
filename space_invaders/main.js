@@ -17,6 +17,8 @@
 // ex. show player instant life v           2022/04/29 v1.01
 // ex. Add start button v                   2022/05/06 v1.1
 // ex. Add favicon and fix bug v            2022/06/26 v1.11
+// ex. smoothing the player movement and-
+// fix the invaders projectile collide bug. 2023/05/03 v1.2
 
 const canvas = document.querySelector('canvas');
 const c = canvas.getContext('2d');
@@ -47,8 +49,9 @@ let bulletTilt = 1;
 
 // player
 let playerLife = 3;
-let playerSpeedX = 10;
-let playerSpeedY = 10;
+let playerBaseSpeed = 7;
+let playerSpeedX = playerBaseSpeed;
+let playerSpeedY = playerBaseSpeed;
 let playerShootTime = 300;
 let isPlayerAutoShoot = true;
 
@@ -130,11 +133,15 @@ class Player {
     constructor() {
         this.velocity = {
             x: 0,
-            y: 0
+            y: 0,
+            max: 7,
+            acceleration: 1.7
         }
 
+        this.rotationSpeed = 0.025;
         this.rotation = 0;
         this.opacity = 1;
+        this.maxRotation = 0.15;
 
         const image = new Image();
         image.src = './img/spaceship01.png';
@@ -411,16 +418,16 @@ function animate() {
         
     }
     animateId = requestAnimationFrame(animate);
-    c.fillStyle = 'black';
+    c.fillStyle = '#0005';
     c.fillRect(0, 0, canvas.width, canvas.height);
     // invader.update();
     player.update();
 
     particles.forEach((particle, i) => {
         if (particle.opacity <= 0) {
-            particles.splice(i, 1)
+            particles.splice(i, 1);
         } else {
-            particle.update()
+            particle.update();
         }
     })
 
@@ -430,20 +437,23 @@ function animate() {
             particle.position.y = -particle.radius
         }
         if (particle.opacity <= 0) {
-            particles.splice(i, 1)
+            particles.splice(i, 1);
         } else {
-            particle.update()
+            particle.update();
         }
     })
     invaderProjectiles.forEach((invaderProjectile, index) => {
         if (invaderProjectile.position.y + invaderProjectile.height >= canvas.height) {
-            invaderProjectiles.splice(index, 1)
+            invaderProjectiles.splice(index, 1);
         } else {
 
-            invaderProjectile.update()
+            invaderProjectile.update();
         }
         // projectiles hits player
-        if (invaderProjectile.position.y + invaderProjectile.height >= player.position.y && invaderProjectile.position.x + invaderProjectile.width >= player.position.x && invaderProjectile.position.x <= player.position.x + player.width) {
+        if (invaderProjectile.position.y + invaderProjectile.height >= player.position.y &&
+             invaderProjectile.position.x + invaderProjectile.width >= player.position.x &&
+             invaderProjectile.position.x <= player.position.x + player.width && 
+             invaderProjectile.position.y <= player.position.y + player.height) {
             // player lose
             if(player.opacity != 0 && isGameStart){
 
@@ -479,19 +489,18 @@ function animate() {
         if (projectile.position.y + projectile.radius <= 0) {
             projectiles.splice(index, 1)
         } else {
-            projectile.update()
-
+            projectile.update();
         }
 
     })
     grids.forEach((grid, gridIndex) => {
-        grid.update()
+        grid.update();
 
         // spawn projectiles
         if (frames % invaderAttackFrames === 0 && grid.invaders.length > 0) {
             let invaderAttack = Math.floor(Math.random() * grid.invaders.length);
 
-            grid.invaders[invaderAttack].shoot(invaderProjectiles)
+            grid.invaders[invaderAttack].shoot(invaderProjectiles);
         }
         grid.invaders.forEach((invader, i) => {
             invader.update({ velocity: grid.velocity })
@@ -501,7 +510,6 @@ function animate() {
                     projectile.position.x + projectile.radius >= invader.position.x &&
                     projectile.position.x - projectile.radius <= invader.position.x + invader.width &&
                     projectile.position.y + projectile.radius >= invader.position.y) {
-
                     for (let i = 0; i < particleCounts; i++) {
                         createParticles({
                             object: invader,
@@ -539,32 +547,47 @@ function animate() {
             })
         })
     })
-
+    // function canMoveLeft(){
+    //     // console.log(1);
+    //     return keys.a.pressed && player.position.x >= 0;
+    // }
+    
     if (keys.a.pressed && player.position.x >= 0) {
-        player.velocity.x = playerSpeedX * -1;
-        player.rotation = -0.15;
+        if(keys.d.pressed) {
+            player.velocity.x *= 0.9;
+            player.rotation += player.rotation > 0 ? -player.rotationSpeed : player.rotationSpeed;
+            return;
+        };
+        player.velocity.x += player.velocity.x > -player.velocity.max ? player.velocity.acceleration * -1 : 0;
+        player.rotation += player.rotation < -player.maxRotation ? 0 : -player.rotationSpeed;
     }
-    else if (keys.d.pressed && player.position.x <= canvas.width - player.width) {
-        player.velocity.x = playerSpeedX * 1;
-        player.rotation = 0.15;
+    if (keys.d.pressed && player.position.x <= canvas.width - player.width) {
+        if(keys.a.pressed) {
+            player.velocity.x *= 0.9;
+            player.rotation += player.rotation > 0 ? -player.rotationSpeed : player.rotationSpeed;
+            return;
+        };
+        player.velocity.x += player.velocity.x < player.velocity.max ? player.velocity.acceleration * 1 : 0;
+        player.rotation += player.rotation > player.maxRotation ? 0 : player.rotationSpeed;
     }
-    else if (keys.w.pressed && player.position.y >= 0) {
-        player.velocity.y = playerSpeedY * -1;
+    if (keys.w.pressed && player.position.y >= 0) {
+        player.velocity.y += player.velocity.y > -player.velocity.max ?  player.velocity.acceleration  * -1 : 0;
     }
-    else if (keys.s.pressed && player.position.y <= canvas.height - player.height) {
-        player.velocity.y = playerSpeedY * 1;
+    if (keys.s.pressed && player.position.y <= canvas.height - player.height) {
+        player.velocity.y += player.velocity.y < player.velocity.max ?  player.velocity.acceleration  * 1 : 0;
     }
-    else {
-        player.velocity.x = 0;
-        player.velocity.y = 0;
-        player.rotation = 0;
+    if(!keys.a.pressed && !keys.d.pressed && !keys.w.pressed && !keys.s.pressed){
+        player.rotation += player.rotation > 0 ? -player.rotationSpeed : player.rotationSpeed;
     }
+    player.velocity.x *= 0.9;
+    player.velocity.y *= 0.85;
+    
     // spawning enemies
     if (frames % randomInterval === 0) {
         grids.push(new Grid(invaderLife))
         randomInterval = Math.floor(Math.random() * randomSpawnFrames + SpawnFrames);
         frames = 0;
-        console.log(randomInterval)
+        console.log(randomInterval);
     }
     frames++;
 
@@ -572,6 +595,10 @@ function animate() {
 }
 
 animate();
+
+function canMoveLeft(){
+    return 
+}
 
 function playerShootFn() {
     for (let i = 0; i < bulletCounts; i++) {
