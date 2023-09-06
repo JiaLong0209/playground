@@ -43,7 +43,7 @@ function analyzeId(id, totalClasses){
     科系: ${TKU.department[id.slice(3,5)]}
     班級: ${TKU.class(id.slice(5,8),totalClasses)}
     座號: ${TKU.seatNumber(id.slice(5,8),totalClasses)}
-    流水號: ${TKU.studentSerial(id.slice(5,8))}
+    序號: ${TKU.studentSerial(id.slice(5,8))}
     `
     console.log(str)
     info.innerText = str;
