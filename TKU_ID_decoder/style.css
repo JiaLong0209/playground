@@ -1,0 +1,150 @@
+*{
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-family:sans-serif;
+    color: #333;
+    transition: 0.2s;
+}
+
+.container{
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.inputBox{
+    font-size: 1.1rem;
+    margin: 5px;
+}
+
+h1{
+    font-weight: normal;
+    font-size: 2.3rem;
+    margin: 20px;
+}
+
+input{
+    font-size: 1.1rem;
+    border: 1px solid rgb(129, 90, 90);
+    border-radius: 10px;
+    padding: 5px;
+    outline: none;
+}
+input:focus{
+    border: 1px solid rgb(110, 44, 44);
+    box-shadow: 2px 2px 4px #512;
+}
+
+button{
+    margin: 20px;
+    padding: 7px;
+    font-size: 1.1rem;
+    color: rgb(129, 77, 90);
+    background: #f3f1ec;
+    border: 1px solid #5f4343;
+    border-radius: 8px;
+}
+
+button:hover{
+    color: #ddd;
+    background: #333;
+    box-shadow: 0 0 5px rgb(100, 23, 9);
+}
+
+button:active{
+    color: rgb(129, 77, 90);
+    background: #f3f1ec;
+}
+
+#info{
+    width: 100%;
+    height: 70vh;
+    background: #fdeaea;
+    text-align: center;
+    font-size: 1.2rem;
+    color: #555;
+}
+
+.footer{
+    width: 100%;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #610d0d;
+    position: fixed;
+    bottom: 0px;
+}
+
+.link{
+    font-size: 1.1rem;
+    color: #ddd;
+    text-decoration: none;
+    transition: 0.4s;
+}
+
+.link:hover{
+    --shadow-color: rgb(163, 207, 60);
+    color: #fa3;
+    text-shadow: 
+        -150px 0px 0px var(--shadow-color),
+        150px 0px 0px var(--shadow-color),
+        -300px 0px 1px var(--shadow-color),
+        300px 0px 1px var(--shadow-color),
+        -450px 0px 2px var(--shadow-color),
+        450px 0px 2px var(--shadow-color),
+        -600px 0px 3px var(--shadow-color),
+        600px 0px 3px var(--shadow-color)
+        ;
+}
+
+.link:active{
+
+    text-shadow: 
+
+        0px -100px 0px var(--shadow-color),
+        -150px -100px 0px var(--shadow-color),
+        150px -100px 0px var(--shadow-color),
+        -300px -100px 1px var(--shadow-color),
+        300px -100px 1px var(--shadow-color),
+        -450px -100px 2px var(--shadow-color),
+        450px -100px 2px var(--shadow-color),
+        -600px -100px 3px var(--shadow-color),
+        600px -100px 3px var(--shadow-color),
+
+        0px -200px 0px var(--shadow-color),
+        -150px -200px 0px var(--shadow-color),
+        150px -200px 0px var(--shadow-color),
+        -300px -200px 1px var(--shadow-color),
+        300px -200px 1px var(--shadow-color),
+        -450px -200px 2px var(--shadow-color),
+        450px -200px 2px var(--shadow-color),
+        -600px -200px 3px var(--shadow-color),
+        600px -200px 3px var(--shadow-color),
+
+
+        0px -300px 0px var(--shadow-color),
+        -150px -300px 0px var(--shadow-color),
+        150px -300px 0px var(--shadow-color),
+        -300px -300px 1px var(--shadow-color),
+        300px -300px 1px var(--shadow-color),
+        -450px -300px 2px var(--shadow-color),
+        450px -300px 2px var(--shadow-color),
+        -600px -300px 3px var(--shadow-color),
+        600px -300px 3px var(--shadow-color),
+
+        0px -400px 0px var(--shadow-color),
+        -150px -400px 0px var(--shadow-color),
+        150px -400px 0px var(--shadow-color),
+        -300px -400px 1px var(--shadow-color),
+        300px -400px 1px var(--shadow-color),
+        -450px -400px 2px var(--shadow-color),
+        450px -400px 2px var(--shadow-color),
+        -600px -400px 3px var(--shadow-color),
+        600px -400px 3px var(--shadow-color)
+        ;
+}
