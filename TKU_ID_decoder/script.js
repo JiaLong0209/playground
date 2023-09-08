@@ -20,7 +20,7 @@ function calcYear(num, mode = "ROC"){
     if(mode == "AD"){
         return num < 85 ? num + 2011 : num + 1911
     }else if(mode == "ROC"){
-        return num < 85 ? ~~`1${num}` : num;
+        return num < 85 ? ~~num + 100 : num;
     }
 }
 
@@ -119,3 +119,7 @@ analyzeTable(DP, 'DP');   // department
 // AS_array = AS_array.slice(1)
 // AS_object = Object.fromEntries(AS_array);
 // console.log(AS_object)
+
+// Dev Log 
+// 230907 v1.0.0 create TKU_ID_decoder
+// 230908 v1.0.1 fix the enrollment year (ROC) display bug
