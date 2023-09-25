@@ -19,7 +19,7 @@ function particle(x, y, c){
 }
 
 function random(){
-    return Math.random() * 500 + 50;
+    return Math.random() * Math.min(canvasWidth, canvasHeight) + 10;
 }
 
 function create(number, color){
@@ -42,26 +42,42 @@ function rule(particle1, particle2, g){
             dy = a.y - b.y;
             d = Math.sqrt(dx**2 + dy**2);
             if(d > 0){
+                if(d > 200) return;
                 let F = g * 1/d;
                 fx += (F * dx);
                 fy += (F * dy);
             }
         })
-        a.vx = (a.vx + fx);
-        a.vy = (a.vy + fy);
+        a.vx = (a.vx + fx) * 0.99;
+        a.vy = (a.vy + fy) * 0.99;
         a.x += a.vx;
         a.y += a.vy;
-        if(a.x <= 0 || a.x > canvasWidth) a.vx *= -1;
-        if(a.y <= 0 || a.y > canvasHeight) a.vy *= -1;
+        if(a.x <= 0 || a.x > canvasWidth){
+            // Assign which one of a.x is closer to the left or right bounding
+            // To avoid the particles go out of boundary
+            a.x = Math.abs(a.x) > Math.abs(a.x - canvasWidth) ?  canvasWidth : 0;
+            a.vx *= -1;
+            
+        }
+        if(a.y <= 0 || a.y > canvasHeight){
+            a.y = Math.abs(a.y) > Math.abs(a.y - canvasHeight) ? canvasHeight : 0;
+            a.vy *= -1;
+        }
+        
+        // if(a.x <= 0 || a.x > canvasWidth) a.vx *= -1;
+        // if(a.y <= 0 || a.y > canvasHeight) a.vy *= -1;
     })
 
 }
 
-yellow = create(10, 'yellow');
+yellow = create(50, 'yellow');
+red = create(30, 'red');
 
 function update(){
     m.clearRect(0, 0, canvasWidth, canvasHeight);
-    rule(yellow, yellow, -0.05);
+    rule(yellow, yellow, -0.1);
+    rule(red, yellow, 0.1)
+    rule(yellow, red, 0.5)
     draw(0, 0, '#000', Math.max(canvasWidth, canvasHeight));
     particles.forEach((i)=>{
         draw(i.x, i.y, i.color, 5);
