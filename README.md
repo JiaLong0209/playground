@@ -7,6 +7,7 @@
 * [Shooting Game](https://jialong0209.github.io/playground/shooting-game/main.html) _`Created Date: 2022/02/04`_
 
 ## Others
+* [Artificial Life](https://jialong0209.github.io/playground/Artificial_life/) _`Created Date: 2023/09/25`_
 * [TKU ID Decoder](https://jialong0209.github.io/playground/TKU_ID_decoder/) _`Created Date: 2023/09/07`_
 * [Canvas](https://jialong0209.github.io/playground/canvas/index.html) _`Created Date: 2023/04/01`_
 * [Todo List](https://jialong0209.github.io/playground/todolist/index.html) _`Created Date: 2023/02/19`_
