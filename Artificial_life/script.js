@@ -64,16 +64,14 @@ function rule(particle1, particle2, g){
             a.vy *= -1;
         }
         if(Math.sqrt(a.vx**2 + a.vy**2) > speedLimit) a.vx *= 0, a.vy *= 0
-        // if(a.x <= 0 || a.x > canvasWidth) a.vx *= -1;
-        // if(a.y <= 0 || a.y > canvasHeight) a.vy *= -1;
     })
-
 }
 
 yellow = create(200, 'yellow');
 red = create(170, 'red');
 blue = create(200, 'blue');
 white = create(1, 'white');
+
 function update(){
     m.clearRect(0, 0, canvasWidth, canvasHeight);
     rule(yellow, yellow, -0.008);
@@ -105,6 +103,4 @@ function update(){
 }
 
 update()
-
-
 
