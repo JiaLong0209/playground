@@ -1,3 +1,5 @@
+// Reference: https://www.youtube.com/watch?v=0Kx4Y9TVMGg&ab_channel=Brainxyz
+
 let canvas = document.querySelector('#life');
 let m = canvas.getContext('2d');
 let particles = [];
@@ -30,9 +32,10 @@ function create(number, color){
 }
 
 function rule(particle1, particle2, g){
-    particle1.forEach( (i) => {
-    let fx = 0, fy = 0, a, b ,dx ,dy, d;
-        particle2.forEach( (j) => {
+    particle1.forEach((i) => {
+        let a, b ,dx ,dy, d;
+        let fx = 0, fy = 0
+        particle2.forEach((j) => {
             a = i;
             b = j;
             dx = a.x - b.x;
@@ -48,15 +51,17 @@ function rule(particle1, particle2, g){
         a.vy = (a.vy + fy);
         a.x += a.vx;
         a.y += a.vy;
+        if(a.x <= 0 || a.x > canvasWidth) a.vx *= -1;
+        if(a.y <= 0 || a.y > canvasHeight) a.vy *= -1;
     })
 
 }
 
-yellow = create(20, 'yellow');
+yellow = create(10, 'yellow');
 
 function update(){
     m.clearRect(0, 0, canvasWidth, canvasHeight);
-    rule(yellow, yellow, -0.02);
+    rule(yellow, yellow, -0.05);
     draw(0, 0, '#000', Math.max(canvasWidth, canvasHeight));
     particles.forEach((i)=>{
         draw(i.x, i.y, i.color, 5);
