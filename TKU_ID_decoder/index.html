@@ -4,28 +4,40 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="淡江大學學號解碼(僅供參考)">
-    <title>淡江大學學號解碼</title>
+    <title>淡江大學學號解碼器</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="nav.css">
+    <script src="variable.js" defer></script>
+    <script src="script.js" defer></script>
 </head>
 <body>
     <div class="container">
-        <h1>淡江大學學號解碼(僅供參考)</h1>
-        <div class="inputBox">
-            <label for="">該學生學號:</label>
-            <input type="text" id="tkuId" placeholder="4aabbcccd">
+        <nav class="navigation">
+            <ul>
+                <li><a href="./table.html" class="">Table</a></li>
+                <li><a href="./index.html">Decoder</a></li>
+            </ul>
+        </nav>
+        <h1>淡江大學學號解碼（僅供參考）</h1>
+        <div class="section">
+            <div class="inputBox">
+                <label for="">該學生學號:</label>
+                <input type="text" id="tkuId" placeholder="4aabbcccd">
+            </div>
+            <div class="inputBox">
+                <label for="">科系班級數:</label>
+                <input type="number" id="totalClasses" placeholder="影響班級跟座號，結果不一定正確" value="1">
+            </div>
+            <button id="send">解碼</button>
         </div>
-        <div class="inputBox">
-            <label for="">科系班級數:</label>
-            <input type="number" id="totalClasses" placeholder="影響班級跟座號，結果不一定正確" value="0">
+
+        <div id="info" class="section">
+            <div class="item_box">
+            </div>
         </div>
-        
-        <button id="send">解碼</button>
-        
-        <div id="info"></div>
     </div>
     <div class="footer">
-        <div ><a class="link" href="https://github.com/JiaLong0209/playground/tree/main/TKU_ID_decoder">Source Code</a></div>
+        <div ><a class="link" href="https://github.com/JiaLong0209/TKU_Assignments/tree/main/AI_lab/112-1/412770116_%E8%A8%B1%E5%98%89%E9%9A%86_20231107_%E6%9C%9F%E4%B8%AD%E4%BD%9C%E6%A5%AD">Source Code</a></div>
     </div>
-    <script src="script.js"></script>
 </body>
 </html>
